@@ -1,0 +1,24 @@
+spring:
+  profiles:
+    active: development
+  jpa:
+    show-sql: false
+    format_sql: true
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create
+  datasource:
+    url: jdbc:h2:mem:motiion
+    username: SA
+    password:
+    driver-class-name: org.h2.Driver
+
+---
+
+spring:
+  profiles: production
+
+terrafreights:
+  properties:
+    korea_csv: https://s3.amazonaws.com/tariffs/20190430/Korea.csv

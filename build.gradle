@@ -19,6 +19,6 @@ dependencies {
 	implementation 'org.projectlombok:lombok:1.18.8'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'commons-io:commons-io:2.4'
-	compile "org.apache.commons:commons-csv:1.5"
+	implementation 'commons-io:commons-io:2.4'
+	implementation "org.apache.commons:commons-csv:1.5"
 }

@@ -3,6 +3,7 @@ package gov.ita.terrafreights.tariff;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -10,6 +11,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class TariffCsvTranslator {
 
   public List<Tariff> translate(String country, String csv) {

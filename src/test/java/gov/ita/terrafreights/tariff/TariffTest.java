@@ -1,63 +1,54 @@
 package gov.ita.terrafreights.tariff;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TariffTest {
 
-  private Tariff tariff;
-
-  @Before
-  public void set_up() {
-    tariff = new Tariff();
+  @Test
+  public void returns_hsPrefix() {
+    Tariff tariff = new Tariff();
     tariff.setTariffLine("123456789");
-  }
-
-  @Test
-  public void returns_hsPrefix1() {
     assertEquals("1", tariff.getHsPrefix1());
+    assertEquals("12", tariff.getHsPrefix2());
+    assertEquals("123", tariff.getHsPrefix3());
+    assertEquals("1234", tariff.getHsPrefix4());
+    assertEquals("12345", tariff.getHsPrefix5());
+    assertEquals("123456", tariff.getHsPrefix6());
+    assertEquals("1234567", tariff.getHsPrefix7());
+    assertEquals("12345678", tariff.getHsPrefix8());
+    assertEquals("123456789", tariff.getHsPrefix9());
   }
 
   @Test
-  public void returns_hsPrefix2() {
-    assertEquals("2", tariff.getHsPrefix2());
+  public void returns_null_hsPrefix_when_tariffLine_is_null() {
+    Tariff tariff = new Tariff();
+    assertNull(tariff.getHsPrefix1());
+    assertNull(tariff.getHsPrefix2());
+    assertNull(tariff.getHsPrefix3());
+    assertNull(tariff.getHsPrefix4());
+    assertNull(tariff.getHsPrefix5());
+    assertNull(tariff.getHsPrefix6());
+    assertNull(tariff.getHsPrefix7());
+    assertNull(tariff.getHsPrefix8());
+    assertNull(tariff.getHsPrefix9());
   }
 
   @Test
-  public void returns_hsPrefix3() {
-    assertEquals("3", tariff.getHsPrefix3());
-  }
-
-  @Test
-  public void returns_hsPrefix4() {
-    assertEquals("4", tariff.getHsPrefix4());
-  }
-
-  @Test
-  public void returns_hsPrefix5() {
-    assertEquals("5", tariff.getHsPrefix5());
-  }
-
-  @Test
-  public void returns_hsPrefix6() {
-    assertEquals("6", tariff.getHsPrefix6());
-  }
-
-  @Test
-  public void returns_hsPrefix7() {
-    assertEquals("7", tariff.getHsPrefix7());
-  }
-
-  @Test
-  public void returns_hsPrefix8() {
-    assertEquals("8", tariff.getHsPrefix8());
-  }
-
-  @Test
-  public void returns_hsPrefix9() {
-    assertEquals("9", tariff.getHsPrefix9());
+  public void returns_null_hsPrefix_when_tariffLine_is_less_than_9_digits() {
+    Tariff tariff = new Tariff();
+    tariff.setTariffLine("");
+    assertNull(tariff.getHsPrefix1());
+    assertNull(tariff.getHsPrefix2());
+    assertNull(tariff.getHsPrefix3());
+    assertNull(tariff.getHsPrefix4());
+    assertNull(tariff.getHsPrefix5());
+    assertNull(tariff.getHsPrefix6());
+    assertNull(tariff.getHsPrefix7());
+    assertNull(tariff.getHsPrefix8());
+    assertNull(tariff.getHsPrefix9());
   }
 
 }
