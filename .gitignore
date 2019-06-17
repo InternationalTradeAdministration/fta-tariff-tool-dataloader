@@ -7,6 +7,7 @@ HELP.md
 /client/node_modules/
 /client/build/
 /src/main/resources/public/
+/client/test/unit/coverage/
 
 ### STS ###
 .apt_generated

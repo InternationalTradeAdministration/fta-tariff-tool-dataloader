@@ -10,15 +10,13 @@ Steps to run this application on you local for development purposes
 
 **Backend** `./gradlew bootRun`, http://localhost:8080
 
-**Frontend** `cd client && npm start`, http://localhost:3000
+**Frontend** `cd client && npm start`, http://localhost:8081
 
 ## Running Tests
 
 **Backend** `./gradlew test`
 
-**Frontend**  `cd client`
- - `npm start` : Unit & Integration tests
- - `npm run contracts` : Contract tests (these require the Backend to be running locally)
+**Frontend**  `cd client && npm test`
 
 ## Production Build
 ```build.sh```
