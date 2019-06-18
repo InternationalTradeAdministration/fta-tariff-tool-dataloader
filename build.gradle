@@ -17,10 +17,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.projectlombok:lombok:1.18.8'
+	annotationProcessor 'org.projectlombok:lombok:1.18.8'
 	implementation 'com.h2database:h2'
 	implementation 'commons-io:commons-io:2.4'
 	implementation 'org.apache.commons:commons-csv:1.5'
 	implementation 'org.flywaydb:flyway-core'
-	implementation 'com.microsoft.sqlserver:mssql-jdbc:7.0.0.jre8'
+	implementation 'mysql:mysql-connector-java:'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
