@@ -1,5 +1,7 @@
 package gov.ita.terrafreights;
 
+import gov.ita.terrafreights.country.Country;
+import gov.ita.terrafreights.country.CountryRepository;
 import gov.ita.terrafreights.tariff.TariffRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +14,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,16 +29,25 @@ public class TerraFreightsApplicationDevelopmentTests {
   private TariffRepository tariffRepository;
 
   @Autowired
+  private CountryRepository countryRepository;
+
+  @Autowired
   private MockMvc mockMvc;
 
   @Test
   public void database_is_seeded_with_sample_tariff_data() {
-    assertEquals(100, tariffRepository.findAll().size());
+    assertEquals(200, tariffRepository.findAll().size());
+    assertEquals(2, countryRepository.findAll().size());
+    assertTrue(countryRepository.findAll().contains(new Country("KR", "South Korea")));
   }
 
   @Test
   public void tariff_api_provides_sample_tariff_data() throws Exception {
     mockMvc.perform(get("/api/tariffs?country=KR&page=5&size=10&sort=id,desc"))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.content", hasSize(10)));
+
+    mockMvc.perform(get("/api/tariffs?country=AU&page=5&size=10&sort=id,desc"))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.content", hasSize(10)));
   }
