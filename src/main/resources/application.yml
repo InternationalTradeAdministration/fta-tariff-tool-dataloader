@@ -29,7 +29,9 @@ spring:
       hibernate:
         hbm2ddl:
           auto: validate
-terrafreights:
-  properties:
-    korea_csv: https://s3.amazonaws.com/tariffs/20190430/Korea.csv
-    australia_csv: https://s3.amazonaws.com/tariffs/20190502/Australia.csv
+seed:
+  csvs:
+    - country: KR
+      url: https://s3.amazonaws.com/tariffs/20190430/Korea.csv
+    - country: AU
+      url: https://s3.amazonaws.com/tariffs/20190502/Australia.csv

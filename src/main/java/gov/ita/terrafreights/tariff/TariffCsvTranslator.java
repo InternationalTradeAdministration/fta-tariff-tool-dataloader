@@ -91,7 +91,11 @@ public class TariffCsvTranslator {
 
   private Integer intParser(String potentialInteger) {
     if (potentialInteger == null) return null;
-    return Integer.parseInt(potentialInteger);
+    try {
+      return Integer.parseInt(potentialInteger);
+    } catch (NumberFormatException e) {
+      return null;
+    }
   }
 
   private Double doubleParser(String potentialDouble) {

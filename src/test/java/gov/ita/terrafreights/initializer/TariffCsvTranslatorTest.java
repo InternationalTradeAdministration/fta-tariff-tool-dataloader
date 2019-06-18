@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static gov.ita.terrafreights.Helpers.getFileAsString;
+import static gov.ita.terrafreights.initializer.Helpers.getFileAsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

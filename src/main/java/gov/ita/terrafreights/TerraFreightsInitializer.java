@@ -18,7 +18,7 @@ public class TerraFreightsInitializer implements ApplicationListener<ContextRefr
 
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
-    if(tariffRepository.count() == 0)
+    if (tariffRepository.count() == 0)
       dataSeeder.seed();
   }
 }

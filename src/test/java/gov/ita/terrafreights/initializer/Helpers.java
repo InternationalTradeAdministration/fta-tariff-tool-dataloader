@@ -1,4 +1,4 @@
-package gov.ita.terrafreights;
+package gov.ita.terrafreights.initializer;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.ClassPathResource;

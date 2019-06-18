@@ -14,7 +14,7 @@ import javax.persistence.Id;
 public class Rate {
 
   @Id
-  @GeneratedValue(strategy= GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private Integer year;
   private Double value;

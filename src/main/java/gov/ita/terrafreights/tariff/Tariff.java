@@ -1,6 +1,7 @@
 package gov.ita.terrafreights.tariff;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tariff {
@@ -23,6 +25,7 @@ public class Tariff {
   private String baseRateAlt;
   private Integer finalYear;
   private Integer tariffRateQuota;
+  @Lob
   private String tariffRateQuotaNotes;
   private Boolean tariffEliminated;
   private String partnerName;
