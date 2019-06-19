@@ -38,7 +38,6 @@ public class DevelopmentDatabaseSeederTest {
   public void database_is_seeded_with_sample_tariff_data() {
     assertEquals(200, tariffRepository.findAll().size());
     assertEquals(2, countryRepository.findAll().size());
-    assertTrue(countryRepository.findAll().contains(new Country("KR", "South Korea")));
   }
 
   @Test

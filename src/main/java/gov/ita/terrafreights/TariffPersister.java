@@ -1,6 +1,10 @@
 package gov.ita.terrafreights;
 
 import gov.ita.terrafreights.country.CountryRepository;
+import gov.ita.terrafreights.product.ProductType;
+import gov.ita.terrafreights.product.ProductTypeRepository;
+import gov.ita.terrafreights.staging_basket.StagingBasket;
+import gov.ita.terrafreights.staging_basket.StagingBasketRepository;
 import gov.ita.terrafreights.tariff.*;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package gov.ita.terrafreights.tariff;
+package gov.ita.terrafreights.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class StagingBasket {
+public class ProductType {
   @Id
   private Long id;
   private String description;

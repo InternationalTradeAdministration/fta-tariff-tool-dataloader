@@ -1,5 +1,7 @@
 package gov.ita.terrafreights.tariff;
 
+import gov.ita.terrafreights.product.ProductType;
+import gov.ita.terrafreights.staging_basket.StagingBasket;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
