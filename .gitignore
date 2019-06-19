@@ -5,7 +5,7 @@ HELP.md
 .DS_Store
 /gradle
 /client/node_modules/
-/client/build/
+/client/dist/
 /src/main/resources/public/
 /client/test/unit/coverage/
 
