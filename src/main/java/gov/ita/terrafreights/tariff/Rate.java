@@ -17,13 +17,11 @@ public class Rate {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private Integer year;
-  private Double value;
-  private String alt;
+  private String value;
 
-  public Rate(Integer year, Double value, String alt) {
+  public Rate(Integer year, String value) {
     this.year = year;
     this.value = value;
-    this.alt = alt;
   }
 
 }

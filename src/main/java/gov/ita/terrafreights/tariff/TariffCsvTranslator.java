@@ -78,9 +78,13 @@ public class TariffCsvTranslator {
 
         List<Rate> rates = new ArrayList<>();
         for (int i = 2004; i <= 2041; i++) {
-          Double value = doubleParser(csvRecord.get("Y".concat(String.valueOf(i))));
+          String value = csvRecord.get("Y".concat(String.valueOf(i)));
           String alt = csvRecord.get("Alt_".concat(String.valueOf(i)));
-          rates.add(new Rate(i, value, alt));
+          if(alt !=null) {
+            rates.add(new Rate(i, alt));
+          } else if (value != null && doubleParser(value) != 0) {
+            rates.add(new Rate(i, value));
+          }
         }
         tf.setRates(rates);
 

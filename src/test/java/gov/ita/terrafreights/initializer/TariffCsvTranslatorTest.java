@@ -153,14 +153,12 @@ public class TariffCsvTranslatorTest {
 
   @Test
   public void translates_tarrif_line_Rates_values() {
-    assertEquals(38, tariffs.get(0).getRates().size(), 0);
+    assertEquals(12, tariffs.get(0).getRates().size(), 0);
 
     Rate rate2004 = tariffs.get(0).getRates().stream().filter(r -> r.getYear().equals(2004)).findFirst().get();
-    assertEquals(0, rate2004.getValue(), 0);
-    assertEquals("$0.724/kg + 10.4%", rate2004.getAlt());
+    assertEquals("$0.724/kg + 10.4%", rate2004.getValue());
 
     Rate rate2011 = tariffs.get(0).getRates().stream().filter(r -> r.getYear().equals(2011)).findFirst().get();
-    assertEquals(4.4, rate2011.getValue(), 0);
-    assertEquals("frog", rate2011.getAlt());
+    assertEquals("4.4", rate2011.getValue());
   }
 }

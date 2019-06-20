@@ -3,6 +3,7 @@ package gov.ita.terrafreights;
 import gov.ita.terrafreights.country.CountryRepository;
 import gov.ita.terrafreights.product.ProductTypeRepository;
 import gov.ita.terrafreights.stagingbasket.StagingBasketRepository;
+import gov.ita.terrafreights.tariff.RateRepository;
 import gov.ita.terrafreights.tariff.TariffRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +39,9 @@ public class DevelopmentDataSeederTest {
   private CountryRepository countryRepository;
 
   @Autowired
+  private RateRepository rateRepository;
+
+  @Autowired
   private MockMvc mockMvc;
 
   @Test
@@ -46,6 +50,7 @@ public class DevelopmentDataSeederTest {
     assertEquals(4, countryRepository.count());
     assertEquals(2, productTypeRepository.count());
     assertEquals(9, stagingBasketRepository.count());
+    assertEquals(336, rateRepository.count());
   }
 
   @Test
