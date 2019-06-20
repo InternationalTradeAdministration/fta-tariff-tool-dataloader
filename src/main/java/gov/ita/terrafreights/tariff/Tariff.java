@@ -1,5 +1,6 @@
 package gov.ita.terrafreights.tariff;
 
+import gov.ita.terrafreights.country.Country;
 import gov.ita.terrafreights.product.ProductType;
 import gov.ita.terrafreights.stagingbasket.StagingBasket;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,6 @@ public class Tariff {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private Long legacyId;
-  private String country;
   private String tariffLine;
   private String description;
   private String sectorCode;
@@ -42,6 +42,9 @@ public class Tariff {
   private String ruleText;
   private String linkText;
   private String linkUrl;
+
+  @ManyToOne
+  private Country country;
 
   @ManyToOne
   private HS6 hs6;

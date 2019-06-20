@@ -10,30 +10,21 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @Profile("development")
 @Slf4j
 public class DevelopmentDataSeeder implements DataSeeder {
 
+  private SeedDataProperties seedDataProperties;
   private TariffCsvTranslator tariffCsvTranslator;
   private TariffPersister tariffPersister;
 
-  private static final Map<String, String> countryCsvFilesMap;
-
-  static {
-    Map<String, String> map = new HashMap<>();
-    map.put("KR", "korea.csv");
-    map.put("AU", "australia.csv");
-    countryCsvFilesMap = Collections.unmodifiableMap(map);
-  }
-
-  public DevelopmentDataSeeder(TariffCsvTranslator tariffCsvTranslator,
+  public DevelopmentDataSeeder(SeedDataProperties seedDataProperties,
+                               TariffCsvTranslator tariffCsvTranslator,
                                TariffPersister tariffPersister) {
+    this.seedDataProperties = seedDataProperties;
     this.tariffCsvTranslator = tariffCsvTranslator;
     this.tariffPersister = tariffPersister;
   }
@@ -42,12 +33,9 @@ public class DevelopmentDataSeeder implements DataSeeder {
   public void seed() {
     log.info("Seeding development database with sample tariff data");
 
-    for (String countryCode : countryCsvFilesMap.keySet()) {
-      String countryCsv = countryCsvFilesMap.get(countryCode);
-
-      log.info("Loading sample tariff data file: {}", countryCsv);
-
-      String path = "fixtures/" + countryCsv;
+    for (Csv csv : seedDataProperties.getCsvs()) {
+      log.info("Loading sample tariff data file: {}", csv.getUrl());
+      String path = "fixtures/" + csv.getUrl();
       File file;
       String fileString = null;
       try {
@@ -57,7 +45,7 @@ public class DevelopmentDataSeeder implements DataSeeder {
         e.printStackTrace();
       }
 
-      List<Tariff> tariffs = tariffCsvTranslator.translate(countryCode, fileString);
+      List<Tariff> tariffs = tariffCsvTranslator.translate(csv.getCountryCode(), fileString);
       tariffPersister.persist(tariffs);
     }
   }

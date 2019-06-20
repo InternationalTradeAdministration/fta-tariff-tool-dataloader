@@ -35,7 +35,7 @@ public class TariffCsvTranslatorTest {
 
   @Test
   public void adds_tariff_country_field() {
-    assertEquals("KR", tariffs.get(0).getCountry());
+    assertEquals("KR", tariffs.get(0).getCountry().getCode());
   }
 
   @Test

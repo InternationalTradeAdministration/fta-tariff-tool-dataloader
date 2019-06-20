@@ -17,6 +17,10 @@ spring:
     url: jdbc:h2:mem:terrafreights;MODE=MySQL
     username: SA
     password:
+seed:
+  csvs: "KR,korea.csv;
+         AU,australia.csv;
+         BH,bahrain.csv"
 
 ---
 
@@ -30,5 +34,7 @@ spring:
         hbm2ddl:
           auto: validate
 seed:
-  csvs: "KR, https://s3.amazonaws.com/tariffs/20190430/Korea.csv;
-         AU, https://s3.amazonaws.com/tariffs/20190502/Australia.csv"
+  csvs: "KR,https://s3.amazonaws.com/tariffs/20190430/Korea.csv;
+         AU,https://s3.amazonaws.com/tariffs/20190502/Australia.csv;
+         BH,https://s3.amazonaws.com/tariffs/20190502/Bahrain.csv;
+         CA-USMCA,https://tariffs.s3.amazonaws.com/20190617/Canada+USMCA.csv"

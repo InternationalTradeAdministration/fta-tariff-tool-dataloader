@@ -16,7 +16,7 @@ public class TariffController {
   }
 
   @GetMapping("/api/tariffs")
-  public Page<Tariff> tariffs(Pageable pageable, @RequestParam("countryCode") String country) {
-    return tariffRepository.findByCountry(country, pageable);
+  public Page<Tariff> tariffs(Pageable pageable, @RequestParam("countryCode") String countryCode) {
+    return tariffRepository.findByCountryCode(countryCode, pageable);
   }
 }

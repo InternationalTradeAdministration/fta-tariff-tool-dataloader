@@ -1,5 +1,6 @@
 package gov.ita.terrafreights;
 
+import gov.ita.terrafreights.country.Country;
 import gov.ita.terrafreights.tariff.Tariff;
 import gov.ita.terrafreights.tariff.TariffCsvTranslator;
 import org.junit.Before;
@@ -56,8 +57,8 @@ public class ProductionDataSeederTest {
     when(restTemplate.getForEntity("http://gr.csv", String.class))
       .thenReturn(fake_gr_csv_data);
 
-    mockUsTariffs = Collections.singletonList(Tariff.builder().country("US").build());
-    mockGrTariffs = Collections.singletonList(Tariff.builder().country("GR").build());
+    mockUsTariffs = Collections.singletonList(Tariff.builder().country(new Country(null, "US", null)).build());
+    mockGrTariffs = Collections.singletonList(Tariff.builder().country(new Country(null, "GR", null)).build());
 
     when(tariffCsvTranslator.translate("US", "fake us csv data"))
       .thenReturn(mockUsTariffs);
