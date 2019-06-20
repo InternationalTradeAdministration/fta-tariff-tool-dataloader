@@ -22,6 +22,7 @@ public class Tariff {
   private Long id;
   private Long legacyId;
   private String tariffLine;
+  @Lob
   private String description;
   private String sectorCode;
   private String baseRate;

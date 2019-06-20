@@ -1,67 +1,67 @@
-CREATE TABLE COUNTRY (
-    ID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    CODE VARCHAR(25) NOT NULL,
-    NAME VARCHAR(100) NOT NULL
+create table country (
+    id bigint not null auto_increment primary key,
+    code varchar(25) not null,
+    name varchar(100) not null
 );
 
-INSERT INTO COUNTRY (CODE, NAME) VALUES ('KR', 'SOUTH KOREA');
-INSERT INTO COUNTRY (CODE, NAME) VALUES ('AU', 'AUSTRALIA');
-INSERT INTO COUNTRY (CODE, NAME) VALUES ('BH', 'BAHRAIN');
-INSERT INTO COUNTRY (CODE, NAME) VALUES ('CA-USMCA', 'CANADA - USMCA');
+insert into country (code, name) values ('KR', 'South Korea');
+insert into country (code, name) values ('AU', 'Australia');
+insert into country (code, name) values ('BH', 'Bahrain');
+insert into country (code, name) values ('CA-USMCA', 'Canada - USMCA');
 
-CREATE TABLE HS6 (
-    CODE VARCHAR(6) NOT NULL PRIMARY KEY,
-    DESCRIPTION VARCHAR(255) NULL
+create table hs6 (
+    code varchar(6) not null primary key,
+    description varchar(255) null
 );
 
-CREATE TABLE PRODUCT_TYPE (
-    ID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    LEGACY_ID BIGINT NOT NULL,
-    DESCRIPTION VARCHAR(255)
+create table product_type (
+    id bigint not null auto_increment primary key,
+    legacy_id bigint not null,
+    description varchar(255)
 );
 
-CREATE TABLE RATE (
-  ID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  YEAR INT NOT NULL,
-  VALUE VARCHAR(255) NOT NULL,
+create table rate (
+  id bigint not null auto_increment primary key,
+  year int not null,
+  value varchar(255) not null
 );
 
-CREATE TABLE STAGING_BASKET (
-    ID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    LEGACY_ID BIGINT NOT NULL,
-    DESCRIPTION VARCHAR(255)
+create table staging_basket (
+    id bigint not null auto_increment primary key,
+    legacy_id bigint not null,
+    description varchar(255)
 );
 
-CREATE TABLE TARIFF (
-    ID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    LEGACY_ID BIGINT NOT NULL,
-    TARIFF_LINE VARCHAR(255) NULL,
-    DESCRIPTION VARCHAR(255) NULL,
-    SECTOR_CODE VARCHAR(255) NULL,
-    BASE_RATE VARCHAR(255) NULL,
-    BASE_RATE_ALT VARCHAR(255) NULL,
-    FINAL_YEAR INT NULL,
-    TARIFF_RATE_QUOTA INT NULL,
-    TARIFF_RATE_QUOTA_NOTES LONGTEXT,
-    TARIFF_ELIMINATED BIT NULL,
-    PARTNER_NAME VARCHAR(255) NULL,
-    REPORTER_NAME VARCHAR(255) NULL,
-    PARTNER_START_YEAR INT NULL,
-    REPORTER_START_YEAR INT NULL,
-    PARTNER_AGREEMENT_NAME VARCHAR(255) NULL,
-    REPORTER_AGREEMENT_NAME VARCHAR(255) NULL,
-    QUOTA_NAME VARCHAR(255) NULL,
-    RULE_TEXT LONGTEXT NULL,
-    LINK_TEXT VARCHAR(255) NULL,
-    LINK_URL VARCHAR(255) NULL,
-    HS6_CODE VARCHAR(6) NOT NULL,
-    COUNTRY_ID BIGINT NOT NULL,
-    STAGING_BASKET_ID BIGINT NOT NULL,
-    PRODUCT_TYPE_ID BIGINT NOT NULL
+create table tariff (
+    id bigint not null auto_increment primary key,
+    legacy_id bigint not null,
+    tariff_line varchar(255) null,
+    description longtext null,
+    sector_code varchar(255) null,
+    base_rate varchar(255) null,
+    base_rate_alt varchar(255) null,
+    final_year int null,
+    tariff_rate_quota int null,
+    tariff_rate_quota_notes longtext,
+    tariff_eliminated bit null,
+    partner_name varchar(255) null,
+    reporter_name varchar(255) null,
+    partner_start_year int null,
+    reporter_start_year int null,
+    partner_agreement_name varchar(255) null,
+    reporter_agreement_name varchar(255) null,
+    quota_name varchar(255) null,
+    rule_text longtext null,
+    link_text varchar(255) null,
+    link_url varchar(255) null,
+    hs6_code varchar(6) not null,
+    country_id bigint not null,
+    staging_basket_id bigint not null,
+    product_type_id bigint not null
 );
 
-CREATE TABLE TARIFF_RATES (
-    TARIFF_ID BIGINT,
-    RATES_ID BIGINT,
-    PRIMARY KEY (TARIFF_ID, RATES_ID)
-)
+create table tariff_rates (
+    tariff_id bigint,
+    rates_id bigint,
+    primary key (tariff_id, rates_id)
+);

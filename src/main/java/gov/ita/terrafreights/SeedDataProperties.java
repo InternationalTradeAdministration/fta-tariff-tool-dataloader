@@ -17,7 +17,7 @@ public class SeedDataProperties {
     List<Csv> csvList = new ArrayList<>();
     String[] csvElements = csvs.split(";");
 
-    for(String csvElement: csvElements) {
+    for (String csvElement : csvElements) {
       String[] csvProperties = csvElement.split(",");
       String countryCode = csvProperties[0].trim();
       String url = csvProperties[1].trim();

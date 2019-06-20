@@ -77,15 +77,29 @@ public class TariffCsvTranslator {
         tf.setProductType(productType);
 
         List<Rate> rates = new ArrayList<>();
-        for (int i = 2004; i <= 2041; i++) {
-          String value = csvRecord.get("Y".concat(String.valueOf(i)));
-          String alt = csvRecord.get("Alt_".concat(String.valueOf(i)));
-          if(alt !=null) {
-            rates.add(new Rate(i, alt));
-          } else if (value != null && doubleParser(value) != 0) {
-            rates.add(new Rate(i, value));
+
+        if (countryCode.contains("USMCA")) {
+          for (int i = 1; i <= 30; i++) {
+            String value = csvRecord.get("YEAR".concat(String.valueOf(i)));
+            String alt = csvRecord.get("YEAR".concat(String.valueOf(i).concat("_Alt")));
+            if (alt != null) {
+              rates.add(new Rate(i, alt));
+            } else if (value != null && doubleParser(value) != 0) {
+              rates.add(new Rate(i, value));
+            }
+          }
+        } else {
+          for (int i = 2004; i <= 2041; i++) {
+            String value = csvRecord.get("Y".concat(String.valueOf(i)));
+            String alt = csvRecord.get("Alt_".concat(String.valueOf(i)));
+            if (alt != null) {
+              rates.add(new Rate(i, alt));
+            } else if (value != null && doubleParser(value) != 0) {
+              rates.add(new Rate(i, value));
+            }
           }
         }
+
         tf.setRates(rates);
 
         tariffs.add(tf);

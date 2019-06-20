@@ -20,7 +20,8 @@ spring:
 seed:
   csvs: "KR,korea.csv;
          AU,australia.csv;
-         BH,bahrain.csv"
+         BH,bahrain.csv;
+         CA-USMCA,canada-usmca.csv"
 
 ---
 
@@ -33,6 +34,10 @@ spring:
       hibernate:
         hbm2ddl:
           auto: validate
+  datasource:
+    url: jdbc:mysql://localhost:3306/terrafreights?serverTimezone=UTC
+    username: service
+    password: password
 seed:
   csvs: "KR,https://s3.amazonaws.com/tariffs/20190430/Korea.csv;
          AU,https://s3.amazonaws.com/tariffs/20190502/Australia.csv;

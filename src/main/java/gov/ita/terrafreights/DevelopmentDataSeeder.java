@@ -12,9 +12,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Component
 @Profile("development")
-@Slf4j
 public class DevelopmentDataSeeder implements DataSeeder {
 
   private SeedDataProperties seedDataProperties;

@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.1.5.RELEASE'
 	id 'java'
+	id 'org.flywaydb.flyway' version '5.2.4'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -22,6 +23,12 @@ dependencies {
 	implementation 'commons-io:commons-io:2.4'
 	implementation 'org.apache.commons:commons-csv:1.5'
 	implementation 'org.flywaydb:flyway-core'
-	implementation 'mysql:mysql-connector-java:'
+	compile 'mysql:mysql-connector-java'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+flyway {
+	url = 'jdbc:mysql://localhost:3306/terrafreights?serverTimezone=UTC'
+	user = 'service'
+	password = 'password'
 }

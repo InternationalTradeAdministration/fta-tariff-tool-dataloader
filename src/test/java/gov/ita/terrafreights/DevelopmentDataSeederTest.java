@@ -46,11 +46,11 @@ public class DevelopmentDataSeederTest {
 
   @Test
   public void database_is_seeded_with_sample_tariff_data() {
-    assertEquals(300, tariffRepository.count());
+    assertEquals(400, tariffRepository.count());
     assertEquals(4, countryRepository.count());
     assertEquals(2, productTypeRepository.count());
-    assertEquals(9, stagingBasketRepository.count());
-    assertEquals(336, rateRepository.count());
+    assertEquals(11, stagingBasketRepository.count());
+    assertEquals(416, rateRepository.count());
   }
 
   @Test
@@ -64,6 +64,10 @@ public class DevelopmentDataSeederTest {
       .andExpect(jsonPath("$.content", hasSize(10)));
 
     mockMvc.perform(get("/api/tariffs?countryCode=BH&page=5&size=10&sort=id,desc"))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.content", hasSize(10)));
+
+    mockMvc.perform(get("/api/tariffs?countryCode=CA-USMCA&page=5&size=10&sort=id,desc"))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.content", hasSize(10)));
   }
