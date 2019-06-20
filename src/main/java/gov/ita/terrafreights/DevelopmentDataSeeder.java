@@ -1,7 +1,5 @@
 package gov.ita.terrafreights;
 
-import gov.ita.terrafreights.country.Country;
-import gov.ita.terrafreights.country.CountryRepository;
 import gov.ita.terrafreights.tariff.Tariff;
 import gov.ita.terrafreights.tariff.TariffCsvTranslator;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +18,7 @@ import java.util.Map;
 @Component
 @Profile("development")
 @Slf4j
-public class DevelopmentDatabaseSeeder implements DataSeeder {
+public class DevelopmentDataSeeder implements DataSeeder {
 
   private TariffCsvTranslator tariffCsvTranslator;
   private TariffPersister tariffPersister;
@@ -34,8 +32,8 @@ public class DevelopmentDatabaseSeeder implements DataSeeder {
     countryCsvFilesMap = Collections.unmodifiableMap(map);
   }
 
-  public DevelopmentDatabaseSeeder(TariffCsvTranslator tariffCsvTranslator,
-                                   TariffPersister tariffPersister) {
+  public DevelopmentDataSeeder(TariffCsvTranslator tariffCsvTranslator,
+                               TariffPersister tariffPersister) {
     this.tariffCsvTranslator = tariffCsvTranslator;
     this.tariffPersister = tariffPersister;
   }

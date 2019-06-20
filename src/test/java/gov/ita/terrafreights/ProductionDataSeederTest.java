@@ -18,7 +18,7 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductionDatabaseSeederTest {
+public class ProductionDataSeederTest {
 
   @Mock
   private ProductionSeedDataConfiguration productionSeedDataConfiguration;
@@ -37,7 +37,7 @@ public class ProductionDatabaseSeederTest {
 
   @Before
   public void set_up() {
-    ProductionDatabaseSeeder productionDatabaseSeeder = new ProductionDatabaseSeeder(
+    ProductionDataSeeder productionDataSeeder = new ProductionDataSeeder(
       productionSeedDataConfiguration,
       restTemplate,
       tariffCsvTranslator,
@@ -64,7 +64,7 @@ public class ProductionDatabaseSeederTest {
     when(tariffCsvTranslator.translate("GR", "fake gr csv data"))
       .thenReturn(mockGrTariffs);
 
-    productionDatabaseSeeder.seed();
+    productionDataSeeder.seed();
   }
 
   @Test

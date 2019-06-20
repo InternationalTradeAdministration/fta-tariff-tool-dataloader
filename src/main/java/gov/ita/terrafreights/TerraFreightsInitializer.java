@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TerraFreightsInitializer implements ApplicationListener<ContextRefreshedEvent> {
-
   private DataSeeder dataSeeder;
   private TariffRepository tariffRepository;
 

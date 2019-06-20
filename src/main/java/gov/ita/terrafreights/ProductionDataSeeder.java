@@ -14,17 +14,16 @@ import java.util.List;
 @Component
 @Slf4j
 @Profile("production")
-public class ProductionDatabaseSeeder implements DataSeeder {
-
+public class ProductionDataSeeder implements DataSeeder {
   private ProductionSeedDataConfiguration productionSeedDataConfiguration;
   private RestTemplate restTemplate;
   private TariffCsvTranslator tariffCsvTranslator;
   private TariffPersister tariffPersister;
 
-  public ProductionDatabaseSeeder(ProductionSeedDataConfiguration productionSeedDataConfiguration,
-                                  RestTemplate restTemplate,
-                                  TariffCsvTranslator tariffCsvTranslator,
-                                  TariffPersister tariffPersister) {
+  public ProductionDataSeeder(ProductionSeedDataConfiguration productionSeedDataConfiguration,
+                              RestTemplate restTemplate,
+                              TariffCsvTranslator tariffCsvTranslator,
+                              TariffPersister tariffPersister) {
     this.productionSeedDataConfiguration = productionSeedDataConfiguration;
     this.restTemplate = restTemplate;
     this.tariffCsvTranslator = tariffCsvTranslator;

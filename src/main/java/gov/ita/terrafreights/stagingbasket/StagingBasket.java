@@ -1,10 +1,12 @@
-package gov.ita.terrafreights.staging_basket;
+package gov.ita.terrafreights.stagingbasket;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
@@ -13,6 +15,8 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class StagingBasket {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  private Long legacyId;
   private String description;
 }

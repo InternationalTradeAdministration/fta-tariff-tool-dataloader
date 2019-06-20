@@ -1,7 +1,7 @@
 package gov.ita.terrafreights.tariff;
 
 import gov.ita.terrafreights.product.ProductType;
-import gov.ita.terrafreights.staging_basket.StagingBasket;
+import gov.ita.terrafreights.stagingbasket.StagingBasket;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -33,7 +33,7 @@ public class TariffCsvTranslator {
       for (CSVRecord csvRecord : csvParser) {
         Tariff tf = new Tariff();
         tf.setCountry(country);
-        tf.setId(Long.parseLong(csvRecord.get("ID")));
+        tf.setLegacyId(Long.parseLong(csvRecord.get("ID")));
         tf.setTariffLine(csvRecord.get("TL"));
         tf.setDescription(csvRecord.get("TL_Desc"));
         tf.setSectorCode(csvRecord.get("Sector_Code"));
@@ -61,6 +61,7 @@ public class TariffCsvTranslator {
         tf.setHs6(hs6);
 
         StagingBasket stagingBasket = new StagingBasket(
+          null,
           Long.parseLong(csvRecord.get("StagingBasketId")),
           csvRecord.get("StagingBasket")
         );
@@ -68,6 +69,7 @@ public class TariffCsvTranslator {
 
 
         ProductType productType = new ProductType(
+          null,
           Long.parseLong(csvRecord.get("Product_Type")),
           csvRecord.get("ProductType")
         );

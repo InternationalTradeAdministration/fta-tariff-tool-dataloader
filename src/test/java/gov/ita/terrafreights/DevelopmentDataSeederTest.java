@@ -1,7 +1,8 @@
 package gov.ita.terrafreights;
 
-import gov.ita.terrafreights.country.Country;
 import gov.ita.terrafreights.country.CountryRepository;
+import gov.ita.terrafreights.product.ProductTypeRepository;
+import gov.ita.terrafreights.stagingbasket.StagingBasketRepository;
 import gov.ita.terrafreights.tariff.TariffRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,10 +23,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("development")
-public class DevelopmentDatabaseSeederTest {
+public class DevelopmentDataSeederTest {
 
   @Autowired
   private TariffRepository tariffRepository;
+
+  @Autowired
+  private ProductTypeRepository productTypeRepository;
+
+  @Autowired
+  private StagingBasketRepository stagingBasketRepository;
 
   @Autowired
   private CountryRepository countryRepository;
@@ -36,8 +42,10 @@ public class DevelopmentDatabaseSeederTest {
 
   @Test
   public void database_is_seeded_with_sample_tariff_data() {
-    assertEquals(200, tariffRepository.findAll().size());
-    assertEquals(2, countryRepository.findAll().size());
+    assertEquals(200, tariffRepository.count());
+    assertEquals(2, countryRepository.count());
+    assertEquals(2, productTypeRepository.count());
+    assertEquals(7, stagingBasketRepository.count());
   }
 
   @Test

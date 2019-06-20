@@ -30,7 +30,7 @@ public class TariffCsvTranslatorTest {
 
   @Test
   public void translates_tariff_ID_field() {
-    assertEquals(439058L, tariffs.get(0).getId(), 0);
+    assertEquals(439058L, tariffs.get(0).getLegacyId(), 0);
   }
 
   @Test
@@ -76,7 +76,7 @@ public class TariffCsvTranslatorTest {
 
   @Test
   public void translates_tariff_StagingBasket_field() {
-    assertEquals(6, tariffs.get(0).getStagingBasket().getId(), 0);
+    assertEquals(6, tariffs.get(0).getStagingBasket().getLegacyId(), 0);
     assertEquals("Immediate", tariffs.get(0).getStagingBasket().getDescription());
   }
 
@@ -132,7 +132,7 @@ public class TariffCsvTranslatorTest {
 
   @Test
   public void translates_tariff_ProductType_field() {
-    assertEquals(2, tariffs.get(0).getProductType().getId(), 0);
+    assertEquals(2, tariffs.get(0).getProductType().getLegacyId(), 0);
     assertEquals("Agricultural", tariffs.get(0).getProductType().getDescription());
   }
 

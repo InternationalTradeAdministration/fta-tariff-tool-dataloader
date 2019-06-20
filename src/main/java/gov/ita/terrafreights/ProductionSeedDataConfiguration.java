@@ -9,7 +9,6 @@ import java.util.List;
 @Configuration
 @ConfigurationProperties(prefix = "seed")
 public class ProductionSeedDataConfiguration {
-
   private List<Csv> csvs = new ArrayList<>();
 
   public List<Csv> getCsvs() {

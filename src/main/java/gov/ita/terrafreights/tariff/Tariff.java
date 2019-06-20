@@ -1,7 +1,7 @@
 package gov.ita.terrafreights.tariff;
 
 import gov.ita.terrafreights.product.ProductType;
-import gov.ita.terrafreights.staging_basket.StagingBasket;
+import gov.ita.terrafreights.stagingbasket.StagingBasket;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,9 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tariff {
-
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  private Long legacyId;
   private String country;
   private String tariffLine;
   private String description;
