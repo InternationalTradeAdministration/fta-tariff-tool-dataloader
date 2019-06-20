@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 public class ProductionDataSeederTest {
 
   @Mock
-  private ProductionSeedDataConfiguration productionSeedDataConfiguration;
+  private SeedDataProperties seedDataProperties;
 
   @Mock
   private RestTemplate restTemplate;
@@ -38,12 +38,12 @@ public class ProductionDataSeederTest {
   @Before
   public void set_up() {
     ProductionDataSeeder productionDataSeeder = new ProductionDataSeeder(
-      productionSeedDataConfiguration,
+      seedDataProperties,
       restTemplate,
       tariffCsvTranslator,
       tariffPersister);
 
-    when(productionSeedDataConfiguration.getCsvs())
+    when(seedDataProperties.getCsvs())
       .thenReturn(Arrays.asList(
         new Csv("US", "http://us.csv"),
         new Csv("GR", "http://gr.csv")

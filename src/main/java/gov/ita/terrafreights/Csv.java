@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 class Csv {
-  String country;
+  String countryCode;
   String url;
 }

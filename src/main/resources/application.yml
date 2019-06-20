@@ -30,8 +30,5 @@ spring:
         hbm2ddl:
           auto: validate
 seed:
-  csvs:
-    - country: KR
-      url: https://s3.amazonaws.com/tariffs/20190430/Korea.csv
-    - country: AU
-      url: https://s3.amazonaws.com/tariffs/20190502/Australia.csv
+  csvs: "KR, https://s3.amazonaws.com/tariffs/20190430/Korea.csv;
+         AU, https://s3.amazonaws.com/tariffs/20190502/Australia.csv"

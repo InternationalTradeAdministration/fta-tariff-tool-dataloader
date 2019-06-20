@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @Profile("production")
 public class ProductionConfiguration {
-
   @Bean
   public RestTemplate restTemplate(RestTemplateBuilder builder) {
     return builder.build();

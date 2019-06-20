@@ -50,11 +50,11 @@ public class DevelopmentDataSeederTest {
 
   @Test
   public void tariff_api_provides_sample_tariff_data() throws Exception {
-    mockMvc.perform(get("/api/tariffs?country=KR&page=5&size=10&sort=id,desc"))
+    mockMvc.perform(get("/api/tariffs?countryCode=KR&page=5&size=10&sort=id,desc"))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.content", hasSize(10)));
 
-    mockMvc.perform(get("/api/tariffs?country=AU&page=5&size=10&sort=id,desc"))
+    mockMvc.perform(get("/api/tariffs?countryCode=AU&page=5&size=10&sort=id,desc"))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.content", hasSize(10)));
   }
