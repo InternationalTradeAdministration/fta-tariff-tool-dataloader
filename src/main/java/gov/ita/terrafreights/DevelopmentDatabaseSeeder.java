@@ -23,7 +23,6 @@ import java.util.Map;
 public class DevelopmentDatabaseSeeder implements DataSeeder {
 
   private TariffCsvTranslator tariffCsvTranslator;
-  private CountryRepository countryRepository;
   private TariffPersister tariffPersister;
 
   private static final Map<String, String> countryCsvFilesMap;
@@ -36,10 +35,8 @@ public class DevelopmentDatabaseSeeder implements DataSeeder {
   }
 
   public DevelopmentDatabaseSeeder(TariffCsvTranslator tariffCsvTranslator,
-                                   CountryRepository countryRepository,
                                    TariffPersister tariffPersister) {
     this.tariffCsvTranslator = tariffCsvTranslator;
-    this.countryRepository = countryRepository;
     this.tariffPersister = tariffPersister;
   }
 
@@ -65,9 +62,5 @@ public class DevelopmentDatabaseSeeder implements DataSeeder {
       List<Tariff> tariffs = tariffCsvTranslator.translate(countryCode, fileString);
       tariffPersister.persist(tariffs);
     }
-
-    log.info("Loading countries table");
-    countryRepository.save(new Country("KR", "South Korea"));
-    countryRepository.save(new Country("AU", "Australia"));
   }
 }

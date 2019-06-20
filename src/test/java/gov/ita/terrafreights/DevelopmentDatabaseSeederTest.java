@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("development")
-public class TerraFreightsApplicationDevelopmentTest {
+public class DevelopmentDatabaseSeederTest {
 
   @Autowired
   private TariffRepository tariffRepository;
