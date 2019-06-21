@@ -22,7 +22,8 @@ seed:
          AU,australia.csv;
          BH,bahrain.csv;
          CA-USMCA,canada-usmca.csv"
-
+terrafreights:
+  version: 1.0.0
 ---
 
 spring:
@@ -43,3 +44,5 @@ seed:
          AU,https://s3.amazonaws.com/tariffs/20190502/Australia.csv;
          BH,https://s3.amazonaws.com/tariffs/20190502/Bahrain.csv;
          CA-USMCA,https://tariffs.s3.amazonaws.com/20190617/Canada+USMCA.csv"
+terrafreights:
+  version: 1.0.0
