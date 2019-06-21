@@ -164,15 +164,15 @@ public class TariffCsvTranslatorTest {
   }
 
   @Test
-  public void translates_tariff_LinkText_field() {
+  public void translates_tariff_Link_field() {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsString("korea.csv"));
-    assertEquals("cool", tariffs.get(0).getLinkText());
+    assertEquals("cool", tariffs.get(0).getLinks().get(0).getLinkText());
+    assertEquals("http://cool.com", tariffs.get(0).getLinks().get(0).getLinkUrl());
   }
 
   @Test
   public void translates_tariff_LinkUrl_field() {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsString("korea.csv"));
-    assertEquals("http://cool.com", tariffs.get(0).getLinkUrl());
   }
 
   @Test
@@ -191,11 +191,25 @@ public class TariffCsvTranslatorTest {
   @Test
   public void translates_tarrif_line_Rates_values_for_year_1_to_x() {
     tariffs = tariffCsvTranslator.translate("CA-USMCA", getFileAsString("canada-usmca.csv"));
-    assertEquals(5, tariffs.get(26).getRates().size(), 0);
-    Rate rate2004 = tariffs.get(26).getRates().stream().filter(r -> r.getYear().equals(1)).findFirst().get();
+    Tariff tariff = tariffs.get(26);
+    assertEquals(5, tariff.getRates().size(), 0);
+    Rate rate2004 = tariff.getRates().stream().filter(r -> r.getYear().equals(1)).findFirst().get();
     assertEquals("249% but not less than $3.78/kg", rate2004.getValue());
 
-    Rate rate2011 = tariffs.get(26).getRates().stream().filter(r -> r.getYear().equals(3)).findFirst().get();
+    Rate rate2011 = tariff.getRates().stream().filter(r -> r.getYear().equals(3)).findFirst().get();
     assertEquals("249% but not less than $3.78/kg", rate2011.getValue());
+  }
+
+  @Test
+  public void translates_tariff_line_Link_Urls_values() {
+    tariffs = tariffCsvTranslator.translate("CA-USMCA", getFileAsString("canada-usmca.csv"));
+    Tariff tariff = tariffs.get(0);
+    assertEquals(3, tariff.getLinks().size(), 0);
+    assertEquals("such a cool link", tariff.getLinks().get(0).getLinkText());
+    assertEquals("https://cool.com", tariff.getLinks().get(0).getLinkUrl());
+    assertEquals("another cool link", tariff.getLinks().get(1).getLinkText());
+    assertEquals("http://what.ever", tariff.getLinks().get(1).getLinkUrl());
+    assertEquals("plenty links", tariff.getLinks().get(2).getLinkText());
+    assertEquals("https://plenty.com", tariff.getLinks().get(2).getLinkUrl());
   }
 }

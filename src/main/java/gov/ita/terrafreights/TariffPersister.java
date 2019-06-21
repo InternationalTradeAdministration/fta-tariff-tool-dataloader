@@ -21,31 +21,37 @@ public class TariffPersister {
   private final StagingBasketRepository stagingBasketRepository;
   private final RateRepository rateRepository;
   private final CountryRepository countryRepository;
+  private LinkRepository linkRepository;
 
   public TariffPersister(TariffRepository tariffRepository,
                          HS6Repository hs6Repository,
                          ProductTypeRepository productTypeRepository,
                          StagingBasketRepository stagingBasketRepository,
                          RateRepository rateRepository,
-                         CountryRepository countryRepository) {
+                         CountryRepository countryRepository,
+                         LinkRepository linkRepository) {
     this.tariffRepository = tariffRepository;
     this.hs6Repository = hs6Repository;
     this.productTypeRepository = productTypeRepository;
     this.stagingBasketRepository = stagingBasketRepository;
     this.rateRepository = rateRepository;
     this.countryRepository = countryRepository;
+    this.linkRepository = linkRepository;
   }
 
   public void persist(List<Tariff> tariffs) {
     Map<String, ProductType> existingProductTypes = getExistingProductTypes();
     Map<String, StagingBasket> existingStagingBaskets = getExistingStagingBaskets();
     Map<String, Country> existingCountries = getExistingCountries();
+    Map<String, Link> existingLinks = getExistingLinkds();
+
     Set<HS6> hs6s = new HashSet<>();
     List<Rate> rates = new ArrayList<>();
 
     for (Tariff t : tariffs) {
       setProductType(existingProductTypes, t);
       setStagingBasket(existingStagingBaskets, t);
+      setLinks(existingLinks, t);
 
       //Countries are seeded with flyway migration scripts
       Country country = existingCountries.get(t.getCountry().getCode());
@@ -58,6 +64,21 @@ public class TariffPersister {
     hs6Repository.saveAll(hs6s);
     rateRepository.saveAll(rates);
     tariffRepository.saveAll(tariffs);
+  }
+
+  private void setLinks(Map<String, Link> existingLinks, Tariff t) {
+    List<Link> links = new ArrayList<>();
+    for(Link tariffLink: t.getLinks()) {
+      Link link = existingLinks.get(tariffLink.getLinkUrl());
+      if(link != null) {
+        links.add(link);
+      } else {
+        Link persistedLink = linkRepository.save(tariffLink);
+        existingLinks.put(persistedLink.getLinkUrl(), persistedLink);
+        links.add(persistedLink);
+      }
+    }
+    t.setLinks(links);
   }
 
   private void setStagingBasket(Map<String, StagingBasket> existingStagingBaskets, Tariff t) {
@@ -100,5 +121,11 @@ public class TariffPersister {
       .stream()
       .collect(Collectors.toMap(ProductType::getDescription, Function.identity()));
   }
+
+  private Map<String, Link> getExistingLinkds() {
+    return linkRepository
+      .findAll()
+      .stream()
+      .collect(Collectors.toMap(Link::getLinkUrl, Function.identity()));  }
 
 }

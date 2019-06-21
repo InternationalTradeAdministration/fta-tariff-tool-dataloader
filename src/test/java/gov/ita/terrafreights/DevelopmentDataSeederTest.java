@@ -4,6 +4,7 @@ import gov.ita.terrafreights.country.CountryRepository;
 import gov.ita.terrafreights.product.ProductTypeRepository;
 import gov.ita.terrafreights.stagingbasket.StagingBasketRepository;
 import gov.ita.terrafreights.tariff.RateRepository;
+import gov.ita.terrafreights.tariff.Tariff;
 import gov.ita.terrafreights.tariff.TariffRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +43,9 @@ public class DevelopmentDataSeederTest {
   private RateRepository rateRepository;
 
   @Autowired
+  private LinkRepository linkRepository;
+
+  @Autowired
   private MockMvc mockMvc;
 
   @Test
@@ -51,6 +55,13 @@ public class DevelopmentDataSeederTest {
     assertEquals(2, productTypeRepository.count());
     assertEquals(11, stagingBasketRepository.count());
     assertEquals(416, rateRepository.count());
+    assertEquals(4, linkRepository.count());
+
+    int linkCount = 0;
+    for(Tariff t: tariffRepository.findAll()) {
+      linkCount += t.getLinks().size();
+    }
+    assertEquals(6, linkCount);
   }
 
   @Test

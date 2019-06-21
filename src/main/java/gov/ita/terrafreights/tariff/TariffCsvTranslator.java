@@ -51,8 +51,6 @@ public class TariffCsvTranslator {
           .reporterAgreementName(csvRecord.get("ReporterAgreementName"))
           .quotaName(csvRecord.get("QuotaName"))
           .ruleText(csvRecord.get("Rule_Text"))
-          .linkText(csvRecord.get("Link_Text"))
-          .linkUrl(csvRecord.get("Link_Url"))
           .country(new Country(null, countryCode, null))
           .hs6(new HS6(
             csvRecord.get("HS6"),
@@ -70,29 +68,42 @@ public class TariffCsvTranslator {
           )).build();
 
         List<Rate> rates = new ArrayList<>();
+        List<Link> links = new ArrayList<>();
         if (countryCode.contains("USMCA")) {
           for (int i = 1; i <= 30; i++) {
-            String value = csvRecord.get("YEAR" .concat(String.valueOf(i)));
-            String alt = csvRecord.get("YEAR" .concat(String.valueOf(i).concat("_Alt")));
+            String value = csvRecord.get("YEAR".concat(String.valueOf(i)));
+            String alt = csvRecord.get("YEAR".concat(String.valueOf(i).concat("_Alt")));
             if (alt != null) {
               rates.add(new Rate(i, alt));
             } else if (value != null && doubleParser(value) != 0) {
               rates.add(new Rate(i, value));
             }
           }
+
+          if(csvRecord.get("Link_Url") != null)
+            links.add(new Link(null, csvRecord.get("Link_Url"), csvRecord.get("Link_Text")));
+          if(csvRecord.get("Link_Url2") != null)
+            links.add(new Link(null, csvRecord.get("Link_Url2"), csvRecord.get("Link_Text2")));
+          if(csvRecord.get("Link_Url3") != null)
+            links.add(new Link(null, csvRecord.get("Link_Url3"), csvRecord.get("Link_Text3")));
+
         } else {
           for (int i = 2004; i <= 2041; i++) {
-            String value = csvRecord.get("Y" .concat(String.valueOf(i)));
-            String alt = csvRecord.get("Alt_" .concat(String.valueOf(i)));
+            String value = csvRecord.get("Y".concat(String.valueOf(i)));
+            String alt = csvRecord.get("Alt_".concat(String.valueOf(i)));
             if (alt != null) {
               rates.add(new Rate(i, alt));
             } else if (value != null && doubleParser(value) != 0) {
               rates.add(new Rate(i, value));
             }
           }
+
+          if (csvRecord.get("Link_Url") != null)
+            links.add(new Link(null, csvRecord.get("Link_Url"), csvRecord.get("Link_Text")));
         }
 
         tf.setRates(rates);
+        tf.setLinks(links);
 
         tariffs.add(tf);
       }

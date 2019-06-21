@@ -41,8 +41,6 @@ public class Tariff {
   private String quotaName;
   @Lob
   private String ruleText;
-  private String linkText;
-  private String linkUrl;
 
   @ManyToOne
   private Country country;
@@ -55,6 +53,9 @@ public class Tariff {
 
   @ManyToOne
   private ProductType productType;
+
+  @OneToMany(fetch = FetchType.EAGER)
+  private List<Link> links;
 
   @OneToMany
   private List<Rate> rates;

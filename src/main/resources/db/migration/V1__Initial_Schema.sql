@@ -52,8 +52,6 @@ create table tariff (
     reporter_agreement_name varchar(255) null,
     quota_name varchar(255) null,
     rule_text longtext null,
-    link_text varchar(255) null,
-    link_url varchar(255) null,
     hs6_code varchar(6) not null,
     country_id bigint not null,
     staging_basket_id bigint not null,
@@ -64,4 +62,16 @@ create table tariff_rates (
     tariff_id bigint,
     rates_id bigint,
     primary key (tariff_id, rates_id)
+);
+
+create table link (
+  id bigint not null auto_increment primary key,
+  link_url varchar(255) not null,
+  link_text varchar(255)
+);
+
+create table tariff_links (
+    tariff_id bigint,
+    links_id bigint,
+    primary key (tariff_id, links_id)
 );
