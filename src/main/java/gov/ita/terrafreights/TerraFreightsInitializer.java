@@ -38,7 +38,6 @@ public class TerraFreightsInitializer implements ApplicationListener<ContextRefr
     System.out.println("                                          |___/                      ");
     System.out.println("-- TerraFreights v"+version+" --                                     ");
     System.out.println("                                                                     ");
-
   }
 
 }

@@ -4,10 +4,24 @@ create table country (
     name varchar(100) not null
 );
 
-insert into country (code, name) values ('KR', 'South Korea');
 insert into country (code, name) values ('AU', 'Australia');
 insert into country (code, name) values ('BH', 'Bahrain');
 insert into country (code, name) values ('CA-USMCA', 'Canada - USMCA');
+insert into country (code, name) values ('CL', 'Chile');
+insert into country (code, name) values ('CO', 'Colombia');
+insert into country (code, name) values ('CR', 'Costa Rica');
+insert into country (code, name) values ('DO', 'Dominican Republic');
+insert into country (code, name) values ('SV', 'El Salvador');
+insert into country (code, name) values ('GT', 'Guatemala');
+insert into country (code, name) values ('HN', 'Honduras');
+insert into country (code, name) values ('MX-USMCA', 'Mexico');
+insert into country (code, name) values ('MA', 'Morocco');
+insert into country (code, name) values ('NI', 'Nicaragua');
+insert into country (code, name) values ('OM', 'Oman');
+insert into country (code, name) values ('PA', 'Panama');
+insert into country (code, name) values ('PE', 'Peru');
+insert into country (code, name) values ('KR', 'South Korea');
+insert into country (code, name) values ('SG', 'Singapore');
 
 create table hs6 (
     code varchar(6) not null primary key,

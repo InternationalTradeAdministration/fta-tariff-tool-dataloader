@@ -40,9 +40,23 @@ spring:
     username: service
     password: password
 seed:
-  csvs: "KR,https://s3.amazonaws.com/tariffs/20190430/Korea.csv;
-         AU,https://s3.amazonaws.com/tariffs/20190502/Australia.csv;
-         BH,https://s3.amazonaws.com/tariffs/20190502/Bahrain.csv;
-         CA-USMCA,https://tariffs.s3.amazonaws.com/20190617/Canada+USMCA.csv"
+  csvs: "SG,https://s3.amazonaws.com/tariffs/20190502/Singapore.csv;
+        PE,https://s3.amazonaws.com/tariffs/20190502/Peru.csv;
+        PA,https://s3.amazonaws.com/tariffs/20190502/Panama.csv;
+        OM, https://s3.amazonaws.com/tariffs/20190502/Oman.csv;
+        NI,https://s3.amazonaws.com/tariffs/20190502/Nicaragua.csv;
+        MA,https://s3.amazonaws.com/tariffs/20190502/Morocco.csv;
+        MX-USMCA,https://tariffs.s3.amazonaws.com/20190617/Mexico+USMCA.csv;
+        HN,https://s3.amazonaws.com/tariffs/20190502/Honduras.csv;
+        GT,https://s3.amazonaws.com/tariffs/20190502/Guatemala.csv;
+        SV,https://s3.amazonaws.com/tariffs/20190502/El+Salvador.csv;
+        DO, https://s3.amazonaws.com/tariffs/20190502/Dominican+Republic.csv;
+        CR,https://s3.amazonaws.com/tariffs/20190502/Costa+Rica.csv;
+        CO,https://s3.amazonaws.com/tariffs/20190502/Colombia.csv;
+        KR,https://s3.amazonaws.com/tariffs/20190430/Korea.csv;
+        AU,https://s3.amazonaws.com/tariffs/20190502/Australia.csv;
+        BH,https://s3.amazonaws.com/tariffs/20190502/Bahrain.csv;
+        CA-USMCA,https://tariffs.s3.amazonaws.com/20190617/Canada+USMCA.csv;
+        CL,https://s3.amazonaws.com/tariffs/20190502/Chile.csv"
 terrafreights:
   version: 1.0.0
