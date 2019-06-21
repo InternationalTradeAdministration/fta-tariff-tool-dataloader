@@ -32,56 +32,48 @@ public class TariffCsvTranslator {
       );
 
       for (CSVRecord csvRecord : csvParser) {
-        Tariff tf = new Tariff();
-        tf.setLegacyId(Long.parseLong(csvRecord.get("ID")));
-        tf.setTariffLine(csvRecord.get("TL"));
-        tf.setDescription(csvRecord.get("TL_Desc"));
-        tf.setSectorCode(csvRecord.get("Sector_Code"));
-        tf.setBaseRate(csvRecord.get("Base_Rate"));
-        tf.setBaseRateAlt(csvRecord.get("Base_Rate_Alt"));
-        tf.setFinalYear(intParser(csvRecord.get("Final_Year")));
-        tf.setTariffRateQuota(intParser(csvRecord.get("TRQ_Quota")));
-        tf.setTariffRateQuotaNotes(csvRecord.get("TRQ_Note"));
-        tf.setTariffEliminated(Boolean.parseBoolean(csvRecord.get("Tariff_Eliminated")));
-        tf.setPartnerName(csvRecord.get("PartnerName"));
-        tf.setReporterName(csvRecord.get("ReporterName"));
-        tf.setPartnerStartYear(intParser(csvRecord.get("PartnerStartYear")));
-        tf.setReporterStartYear(intParser(csvRecord.get("ReporterStartYear")));
-        tf.setPartnerAgreementName(csvRecord.get("PartnerAgreementName"));
-        tf.setReporterAgreementName(csvRecord.get("ReporterAgreementName"));
-        tf.setQuotaName(csvRecord.get("QuotaName"));
-        tf.setRuleText(csvRecord.get("Rule_Text"));
-        tf.setLinkText(csvRecord.get("Link_Text"));
-        tf.setLinkUrl(csvRecord.get("Link_Url"));
-        tf.setCountry(new Country(null, countryCode, null));
-
-        HS6 hs6 = new HS6(
-          csvRecord.get("HS6"),
-          csvRecord.get("HS6_Desc")
-        );
-        tf.setHs6(hs6);
-
-        StagingBasket stagingBasket = new StagingBasket(
-          null,
-          Long.parseLong(csvRecord.get("StagingBasketId")),
-          csvRecord.get("StagingBasket")
-        );
-        tf.setStagingBasket(stagingBasket);
-
-
-        ProductType productType = new ProductType(
-          null,
-          Long.parseLong(csvRecord.get("Product_Type")),
-          csvRecord.get("ProductType")
-        );
-        tf.setProductType(productType);
+        Tariff tf = Tariff.builder()
+          .legacyId(Long.parseLong(csvRecord.get("ID")))
+          .tariffLine(csvRecord.get("TL"))
+          .description(csvRecord.get("TL_Desc"))
+          .sectorCode(csvRecord.get("Sector_Code"))
+          .baseRate(csvRecord.get("Base_Rate"))
+          .baseRateAlt(csvRecord.get("Base_Rate_Alt"))
+          .finalYear(intParser(csvRecord.get("Final_Year")))
+          .tariffRateQuota(intParser(csvRecord.get("TRQ_Quota")))
+          .tariffRateQuotaNotes(csvRecord.get("TRQ_Note"))
+          .tariffEliminated(Boolean.parseBoolean(csvRecord.get("Tariff_Eliminated")))
+          .partnerName(csvRecord.get("PartnerName"))
+          .reporterName(csvRecord.get("ReporterName"))
+          .partnerStartYear(intParser(csvRecord.get("PartnerStartYear")))
+          .reporterStartYear(intParser(csvRecord.get("ReporterStartYear")))
+          .partnerAgreementName(csvRecord.get("PartnerAgreementName"))
+          .reporterAgreementName(csvRecord.get("ReporterAgreementName"))
+          .quotaName(csvRecord.get("QuotaName"))
+          .ruleText(csvRecord.get("Rule_Text"))
+          .linkText(csvRecord.get("Link_Text"))
+          .linkUrl(csvRecord.get("Link_Url"))
+          .country(new Country(null, countryCode, null))
+          .hs6(new HS6(
+            csvRecord.get("HS6"),
+            csvRecord.get("HS6_Desc")
+          ))
+          .stagingBasket(new StagingBasket(
+            null,
+            Long.parseLong(csvRecord.get("StagingBasketId")),
+            csvRecord.get("StagingBasket")
+          ))
+          .productType(new ProductType(
+            null,
+            Long.parseLong(csvRecord.get("Product_Type")),
+            csvRecord.get("ProductType")
+          )).build();
 
         List<Rate> rates = new ArrayList<>();
-
         if (countryCode.contains("USMCA")) {
           for (int i = 1; i <= 30; i++) {
-            String value = csvRecord.get("YEAR".concat(String.valueOf(i)));
-            String alt = csvRecord.get("YEAR".concat(String.valueOf(i).concat("_Alt")));
+            String value = csvRecord.get("YEAR" .concat(String.valueOf(i)));
+            String alt = csvRecord.get("YEAR" .concat(String.valueOf(i).concat("_Alt")));
             if (alt != null) {
               rates.add(new Rate(i, alt));
             } else if (value != null && doubleParser(value) != 0) {
@@ -90,8 +82,8 @@ public class TariffCsvTranslator {
           }
         } else {
           for (int i = 2004; i <= 2041; i++) {
-            String value = csvRecord.get("Y".concat(String.valueOf(i)));
-            String alt = csvRecord.get("Alt_".concat(String.valueOf(i)));
+            String value = csvRecord.get("Y" .concat(String.valueOf(i)));
+            String alt = csvRecord.get("Alt_" .concat(String.valueOf(i)));
             if (alt != null) {
               rates.add(new Rate(i, alt));
             } else if (value != null && doubleParser(value) != 0) {

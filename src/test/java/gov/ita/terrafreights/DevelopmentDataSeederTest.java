@@ -54,20 +54,27 @@ public class DevelopmentDataSeederTest {
   }
 
   @Test
-  public void tariff_api_provides_sample_tariff_data() throws Exception {
-    mockMvc.perform(get("/api/tariffs?countryCode=KR&page=5&size=10&sort=id,desc"))
-      .andExpect(status().isOk())
-      .andExpect(jsonPath("$.content", hasSize(10)));
+  public void tariff_api_provides_sample_tariff_data_for_KOREA() throws Exception {
+    assertCountry("KR");
+  }
 
-    mockMvc.perform(get("/api/tariffs?countryCode=AU&page=5&size=10&sort=id,desc"))
-      .andExpect(status().isOk())
-      .andExpect(jsonPath("$.content", hasSize(10)));
+  @Test
+  public void tariff_api_provides_sample_tariff_data_for_AUSTRALIA() throws Exception {
+    assertCountry("AU");
+  }
 
-    mockMvc.perform(get("/api/tariffs?countryCode=BH&page=5&size=10&sort=id,desc"))
-      .andExpect(status().isOk())
-      .andExpect(jsonPath("$.content", hasSize(10)));
+  @Test
+  public void tariff_api_provides_sample_tariff_data_for_BAHRAIN() throws Exception {
+    assertCountry("BH");
+  }
 
-    mockMvc.perform(get("/api/tariffs?countryCode=CA-USMCA&page=5&size=10&sort=id,desc"))
+  @Test
+  public void tariff_api_provides_sample_tariff_data_for_CANADA_USMCA() throws Exception {
+    assertCountry("CA-USMCA");
+  }
+
+  private void assertCountry(String countryCode) throws Exception {
+    mockMvc.perform(get("/api/tariffs?countryCode={countryCode}&page=5&size=10&sort=id,desc",countryCode))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.content", hasSize(10)));
   }

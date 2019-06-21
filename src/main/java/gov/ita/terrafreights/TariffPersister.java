@@ -37,41 +37,15 @@ public class TariffPersister {
   }
 
   public void persist(List<Tariff> tariffs) {
-    Map<String, ProductType> existingProductTypes =
-      productTypeRepository
-        .findAll()
-        .stream()
-        .collect(Collectors.toMap(ProductType::getDescription, Function.identity()));
-    Map<String, StagingBasket> existingStagingBaskets =
-      stagingBasketRepository
-        .findAll()
-        .stream()
-        .collect(Collectors.toMap(StagingBasket::getDescription, Function.identity()));
-    Map<String, Country> existingCountries =
-      countryRepository
-        .findAll()
-        .stream()
-        .collect(Collectors.toMap(Country::getCode, Function.identity()));
-
+    Map<String, ProductType> existingProductTypes = getExistingProductTypes();
+    Map<String, StagingBasket> existingStagingBaskets = getExistingStagingBaskets();
+    Map<String, Country> existingCountries = getExistingCountries();
     Set<HS6> hs6s = new HashSet<>();
     List<Rate> rates = new ArrayList<>();
 
     for (Tariff t : tariffs) {
-      ProductType productType = existingProductTypes.get(t.getProductType().getDescription());
-      if (productType != null) {
-        t.setProductType(productType);
-      } else {
-        ProductType persistedProductType = productTypeRepository.save(t.getProductType());
-        existingProductTypes.put(persistedProductType.getDescription(), persistedProductType);
-      }
-
-      StagingBasket stagingBasket = existingStagingBaskets.get(t.getStagingBasket().getDescription());
-      if (stagingBasket != null) {
-        t.setStagingBasket(stagingBasket);
-      } else {
-        StagingBasket persistedStagingBasket = stagingBasketRepository.save(t.getStagingBasket());
-        existingStagingBaskets.put(persistedStagingBasket.getDescription(), persistedStagingBasket);
-      }
+      setProductType(existingProductTypes, t);
+      setStagingBasket(existingStagingBaskets, t);
 
       //Countries are seeded with flyway migration scripts
       Country country = existingCountries.get(t.getCountry().getCode());
@@ -84,6 +58,47 @@ public class TariffPersister {
     hs6Repository.saveAll(hs6s);
     rateRepository.saveAll(rates);
     tariffRepository.saveAll(tariffs);
+  }
+
+  private void setStagingBasket(Map<String, StagingBasket> existingStagingBaskets, Tariff t) {
+    StagingBasket stagingBasket = existingStagingBaskets.get(t.getStagingBasket().getDescription());
+    if (stagingBasket != null) {
+      t.setStagingBasket(stagingBasket);
+    } else {
+      StagingBasket persistedStagingBasket = stagingBasketRepository.save(t.getStagingBasket());
+      existingStagingBaskets.put(persistedStagingBasket.getDescription(), persistedStagingBasket);
+    }
+  }
+
+  private void setProductType(Map<String, ProductType> existingProductTypes, Tariff t) {
+    ProductType productType = existingProductTypes.get(t.getProductType().getDescription());
+    if (productType != null) {
+      t.setProductType(productType);
+    } else {
+      ProductType persistedProductType = productTypeRepository.save(t.getProductType());
+      existingProductTypes.put(persistedProductType.getDescription(), persistedProductType);
+    }
+  }
+
+  private Map<String, Country> getExistingCountries() {
+    return countryRepository
+      .findAll()
+      .stream()
+      .collect(Collectors.toMap(Country::getCode, Function.identity()));
+  }
+
+  private Map<String, StagingBasket> getExistingStagingBaskets() {
+    return stagingBasketRepository
+      .findAll()
+      .stream()
+      .collect(Collectors.toMap(StagingBasket::getDescription, Function.identity()));
+  }
+
+  private Map<String, ProductType> getExistingProductTypes() {
+    return productTypeRepository
+      .findAll()
+      .stream()
+      .collect(Collectors.toMap(ProductType::getDescription, Function.identity()));
   }
 
 }
