@@ -5,9 +5,11 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 
 public class Helpers {
-  public static String getFileAsString(String fileName) {
+  public static Reader getFileAsReader(String fileName) {
     String path = "fixtures/" + fileName;
     File file = null;
     try {
@@ -16,13 +18,13 @@ public class Helpers {
       e.printStackTrace();
     }
 
-    String fileString = null;
-    try {
-      fileString = FileUtils.readFileToString(file, "UTF-8");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    if(file != null)
+      try {
+        return new StringReader(FileUtils.readFileToString(file, "UTF-8"));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
 
-    return fileString;
+    return null;
   }
 }

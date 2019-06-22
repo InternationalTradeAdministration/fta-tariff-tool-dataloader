@@ -35,6 +35,8 @@ spring:
       hibernate:
         hbm2ddl:
           auto: validate
+        jdbc:
+          batch_size: 1000
   datasource:
     url: ${TERRAFREIGHTS_DB_URL}
     username: ${TERRAFREIGHTS_DB_USERNAME}

@@ -13,21 +13,19 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class TariffCsvTranslator {
 
-  public List<Tariff> translate(String countryCode, String csv) {
+  public List<Tariff> translate(String countryCode, Reader csvReader) {
     CSVParser csvParser;
-    Reader reader = new StringReader(csv);
     List<Tariff> tariffs = new ArrayList<>();
 
     try {
       csvParser = new CSVParser(
-        reader,
+        csvReader,
         CSVFormat.DEFAULT
           .withFirstRecordAsHeader()
           .withTrim()

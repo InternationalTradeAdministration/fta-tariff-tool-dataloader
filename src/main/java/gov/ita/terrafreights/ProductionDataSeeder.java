@@ -5,11 +5,15 @@ import gov.ita.terrafreights.tariff.TariffCsvTranslator;
 import gov.ita.terrafreights.tariff.TariffPersister;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -35,15 +39,22 @@ public class ProductionDataSeeder implements DataSeeder {
   public void seed() {
     log.info("Seeding production database with tariff data");
 
+    RequestCallback requestCallback = request -> request.getHeaders()
+      .setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM, MediaType.ALL));
+
     for (Csv csv : seedDataProperties.getCsvs()) {
-      ResponseEntity<String> csvEntity = restTemplate.getForEntity(csv.url, String.class);
-      if (csvEntity.getStatusCode().equals(HttpStatus.OK)) {
-        log.info("Loading tariff data file: {}", csv.url);
-        List<Tariff> tariffs = tariffCsvTranslator.translate(csv.countryCode, csvEntity.getBody());
+      log.info("Loading tariff data file: {}", csv.url);
+
+      ResponseExtractor<Void> responseExtractor = response -> {
+        List<Tariff> tariffs = tariffCsvTranslator.translate(
+          csv.getCountryCode(),
+          new InputStreamReader(response.getBody())
+        );
         tariffPersister.persist(tariffs);
-      } else {
-        log.error("Error: Couldn't load tariff data file: {}", csv.url);
-      }
+        return null;
+      };
+
+      restTemplate.execute(csv.getUrl(), HttpMethod.GET, requestCallback, responseExtractor);
     }
   }
 }
