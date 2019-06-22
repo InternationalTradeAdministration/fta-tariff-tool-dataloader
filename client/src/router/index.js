@@ -17,7 +17,7 @@ export default new Router({
       path: '/tariffs',
       name: 'TariffRates',
       component: TariffRates,
-      props: { tariffRatesRepository: new TariffRatesRepository()  }
+      props: { tariffRatesRepository: new TariffRatesRepository() }
     }
   ]
 })

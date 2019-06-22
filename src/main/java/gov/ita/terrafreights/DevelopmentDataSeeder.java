@@ -4,12 +4,12 @@ import gov.ita.terrafreights.tariff.Tariff;
 import gov.ita.terrafreights.tariff.TariffCsvTranslator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 @Slf4j
@@ -35,12 +35,12 @@ public class DevelopmentDataSeeder implements DataSeeder {
 
     for (Csv csv : seedDataProperties.getCsvs()) {
       log.info("Loading sample tariff data file: {}", csv.getUrl());
-      String path = "fixtures/" + csv.getUrl();
-      File file;
+      String path = "/fixtures/" + csv.getUrl();
+      InputStream in = DevelopmentDataSeeder.class.getResourceAsStream(path);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
       String fileString = null;
       try {
-        file = new ClassPathResource(path).getFile();
-        fileString = FileUtils.readFileToString(file, "UTF-8");
+        fileString = IOUtils.toString(reader);
       } catch (IOException e) {
         e.printStackTrace();
       }

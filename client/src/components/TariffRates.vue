@@ -29,7 +29,7 @@ export default {
       tariffs: null,
       page: 0,
       size: 10,
-      country: "KR",
+      countryCode: "KR",
       totalPages: null
     };
   },
@@ -44,7 +44,7 @@ export default {
     },
     async fetchTariffs() {
       this.loading = true;
-      let tariffsResponse = await this.tariffRatesRepository._getTariffs(this.country, this.page, this.size);
+      let tariffsResponse = await this.tariffRatesRepository._getTariffs(this.countryCode, this.page, this.size);
       this.totalPages = tariffsResponse.totalPages;
       this.tariffs = tariffsResponse.tariffs;
       this.loading = false;

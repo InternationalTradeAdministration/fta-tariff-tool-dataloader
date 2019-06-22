@@ -36,9 +36,9 @@ spring:
         hbm2ddl:
           auto: validate
   datasource:
-    url: jdbc:mysql://localhost:3306/terrafreights?serverTimezone=UTC
-    username: service
-    password: password
+    url: ${TERRAFREIGHTS_DB_URL}
+    username: ${TERRAFREIGHTS_DB_USERNAME}
+    password: ${TERRAFREIGHTS_DB_PASSWORD}
 seed:
   csvs: "SG,https://s3.amazonaws.com/tariffs/20190502/Singapore.csv;
         PE,https://s3.amazonaws.com/tariffs/20190502/Peru.csv;

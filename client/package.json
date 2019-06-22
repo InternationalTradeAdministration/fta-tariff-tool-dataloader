@@ -82,7 +82,8 @@
     "ignore": [
       "/build/**/*.js",
       "/test/**/*.js",
-      "/config/**/*.js"
+      "/config/**/*.js",
+      "/dist/**/*.js"
     ]
   }
 }
