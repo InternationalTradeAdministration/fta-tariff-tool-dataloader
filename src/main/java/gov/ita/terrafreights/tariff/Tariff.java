@@ -1,8 +1,11 @@
 package gov.ita.terrafreights.tariff;
 
-import gov.ita.terrafreights.country.Country;
-import gov.ita.terrafreights.product.ProductType;
-import gov.ita.terrafreights.stagingbasket.StagingBasket;
+import gov.ita.terrafreights.tariff.country.Country;
+import gov.ita.terrafreights.tariff.hs6.HS6;
+import gov.ita.terrafreights.tariff.link.Link;
+import gov.ita.terrafreights.tariff.product.ProductType;
+import gov.ita.terrafreights.tariff.rate.Rate;
+import gov.ita.terrafreights.tariff.stagingbasket.StagingBasket;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

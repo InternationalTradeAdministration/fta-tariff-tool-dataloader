@@ -1,4 +1,4 @@
-package gov.ita.terrafreights.tariff;
+package gov.ita.terrafreights.tariff.hs6;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

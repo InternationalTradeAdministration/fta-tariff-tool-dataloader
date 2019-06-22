@@ -1,8 +1,8 @@
 package gov.ita.terrafreights.initializer;
 
-import gov.ita.terrafreights.tariff.Rate;
 import gov.ita.terrafreights.tariff.Tariff;
 import gov.ita.terrafreights.tariff.TariffCsvTranslator;
+import gov.ita.terrafreights.tariff.rate.Rate;
 import org.junit.Before;
 import org.junit.Test;
 

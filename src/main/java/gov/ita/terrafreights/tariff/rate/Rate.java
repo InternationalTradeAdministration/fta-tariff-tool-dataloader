@@ -1,6 +1,5 @@
-package gov.ita.terrafreights.tariff;
+package gov.ita.terrafreights.tariff.rate;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,12 +10,18 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-public class Link {
+public class Rate {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
-  String linkUrl;
-  String linkText;
+  private Long id;
+  private Integer year;
+  private String value;
+
+  public Rate(Integer year, String value) {
+    this.year = year;
+    this.value = value;
+  }
+
 }

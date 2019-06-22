@@ -1,4 +1,4 @@
-package gov.ita.terrafreights.product;
+package gov.ita.terrafreights.tariff.product;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

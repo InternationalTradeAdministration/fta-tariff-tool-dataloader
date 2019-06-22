@@ -1,4 +1,4 @@
-package gov.ita.terrafreights.stagingbasket;
+package gov.ita.terrafreights.tariff.stagingbasket;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,8 +1,11 @@
 package gov.ita.terrafreights.tariff;
 
-import gov.ita.terrafreights.country.Country;
-import gov.ita.terrafreights.product.ProductType;
-import gov.ita.terrafreights.stagingbasket.StagingBasket;
+import gov.ita.terrafreights.tariff.country.Country;
+import gov.ita.terrafreights.tariff.hs6.HS6;
+import gov.ita.terrafreights.tariff.link.Link;
+import gov.ita.terrafreights.tariff.product.ProductType;
+import gov.ita.terrafreights.tariff.rate.Rate;
+import gov.ita.terrafreights.tariff.stagingbasket.StagingBasket;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -80,11 +83,11 @@ public class TariffCsvTranslator {
             }
           }
 
-          if(csvRecord.get("Link_Url") != null)
+          if (csvRecord.get("Link_Url") != null)
             links.add(new Link(null, csvRecord.get("Link_Url"), csvRecord.get("Link_Text")));
-          if(csvRecord.get("Link_Url2") != null)
+          if (csvRecord.get("Link_Url2") != null)
             links.add(new Link(null, csvRecord.get("Link_Url2"), csvRecord.get("Link_Text2")));
-          if(csvRecord.get("Link_Url3") != null)
+          if (csvRecord.get("Link_Url3") != null)
             links.add(new Link(null, csvRecord.get("Link_Url3"), csvRecord.get("Link_Text3")));
 
         } else {

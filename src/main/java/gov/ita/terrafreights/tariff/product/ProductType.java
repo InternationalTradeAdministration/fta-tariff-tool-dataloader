@@ -1,4 +1,4 @@
-package gov.ita.terrafreights.country;
+package gov.ita.terrafreights.tariff.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,10 +13,10 @@ import javax.persistence.Id;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Country {
+public class ProductType {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
-  String code;
-  String name;
+  private Long id;
+  private Long legacyId;
+  private String description;
 }

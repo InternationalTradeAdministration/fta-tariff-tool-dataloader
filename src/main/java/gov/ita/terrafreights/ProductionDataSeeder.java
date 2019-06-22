@@ -2,6 +2,7 @@ package gov.ita.terrafreights;
 
 import gov.ita.terrafreights.tariff.Tariff;
 import gov.ita.terrafreights.tariff.TariffCsvTranslator;
+import gov.ita.terrafreights.tariff.TariffPersister;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;

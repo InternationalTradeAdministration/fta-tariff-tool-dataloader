@@ -1,4 +1,4 @@
-package gov.ita.terrafreights.product;
+package gov.ita.terrafreights.tariff.link;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,10 +13,10 @@ import javax.persistence.Id;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductType {
+public class Link {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  private Long legacyId;
-  private String description;
+  Long id;
+  String linkUrl;
+  String linkText;
 }

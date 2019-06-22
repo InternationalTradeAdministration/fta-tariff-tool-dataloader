@@ -1,12 +1,17 @@
-package gov.ita.terrafreights;
+package gov.ita.terrafreights.tariff;
 
-import gov.ita.terrafreights.country.Country;
-import gov.ita.terrafreights.country.CountryRepository;
-import gov.ita.terrafreights.product.ProductType;
-import gov.ita.terrafreights.product.ProductTypeRepository;
-import gov.ita.terrafreights.stagingbasket.StagingBasket;
-import gov.ita.terrafreights.stagingbasket.StagingBasketRepository;
-import gov.ita.terrafreights.tariff.*;
+import gov.ita.terrafreights.tariff.country.Country;
+import gov.ita.terrafreights.tariff.country.CountryRepository;
+import gov.ita.terrafreights.tariff.hs6.HS6;
+import gov.ita.terrafreights.tariff.hs6.HS6Repository;
+import gov.ita.terrafreights.tariff.link.Link;
+import gov.ita.terrafreights.tariff.link.LinkRepository;
+import gov.ita.terrafreights.tariff.product.ProductType;
+import gov.ita.terrafreights.tariff.product.ProductTypeRepository;
+import gov.ita.terrafreights.tariff.rate.Rate;
+import gov.ita.terrafreights.tariff.rate.RateRepository;
+import gov.ita.terrafreights.tariff.stagingbasket.StagingBasket;
+import gov.ita.terrafreights.tariff.stagingbasket.StagingBasketRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,7 +26,7 @@ public class TariffPersister {
   private final StagingBasketRepository stagingBasketRepository;
   private final RateRepository rateRepository;
   private final CountryRepository countryRepository;
-  private LinkRepository linkRepository;
+  private final LinkRepository linkRepository;
 
   public TariffPersister(TariffRepository tariffRepository,
                          HS6Repository hs6Repository,
@@ -52,11 +57,7 @@ public class TariffPersister {
       setProductType(existingProductTypes, t);
       setStagingBasket(existingStagingBaskets, t);
       setLinks(existingLinks, t);
-
-      //Countries are seeded with flyway migration scripts
-      Country country = existingCountries.get(t.getCountry().getCode());
-      t.setCountry(country);
-
+      t.setCountry(existingCountries.get(t.getCountry().getCode()));
       hs6s.add(t.getHs6());
       rates.addAll(t.getRates());
     }
@@ -68,9 +69,9 @@ public class TariffPersister {
 
   private void setLinks(Map<String, Link> existingLinks, Tariff t) {
     List<Link> links = new ArrayList<>();
-    for(Link tariffLink: t.getLinks()) {
+    for (Link tariffLink : t.getLinks()) {
       Link link = existingLinks.get(tariffLink.getLinkUrl());
-      if(link != null) {
+      if (link != null) {
         links.add(link);
       } else {
         Link persistedLink = linkRepository.save(tariffLink);
@@ -126,6 +127,7 @@ public class TariffPersister {
     return linkRepository
       .findAll()
       .stream()
-      .collect(Collectors.toMap(Link::getLinkUrl, Function.identity()));  }
+      .collect(Collectors.toMap(Link::getLinkUrl, Function.identity()));
+  }
 
 }

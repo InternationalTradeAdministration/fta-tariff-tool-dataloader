@@ -1,4 +1,4 @@
-package gov.ita.terrafreights.stagingbasket;
+package gov.ita.terrafreights.tariff.stagingbasket;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

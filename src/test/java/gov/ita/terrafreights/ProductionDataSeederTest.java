@@ -1,8 +1,9 @@
 package gov.ita.terrafreights;
 
-import gov.ita.terrafreights.country.Country;
 import gov.ita.terrafreights.tariff.Tariff;
 import gov.ita.terrafreights.tariff.TariffCsvTranslator;
+import gov.ita.terrafreights.tariff.TariffPersister;
+import gov.ita.terrafreights.tariff.country.Country;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

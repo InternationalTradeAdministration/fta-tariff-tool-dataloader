@@ -1,11 +1,12 @@
 package gov.ita.terrafreights;
 
-import gov.ita.terrafreights.country.CountryRepository;
-import gov.ita.terrafreights.product.ProductTypeRepository;
-import gov.ita.terrafreights.stagingbasket.StagingBasketRepository;
-import gov.ita.terrafreights.tariff.RateRepository;
 import gov.ita.terrafreights.tariff.Tariff;
 import gov.ita.terrafreights.tariff.TariffRepository;
+import gov.ita.terrafreights.tariff.country.CountryRepository;
+import gov.ita.terrafreights.tariff.link.LinkRepository;
+import gov.ita.terrafreights.tariff.product.ProductTypeRepository;
+import gov.ita.terrafreights.tariff.rate.RateRepository;
+import gov.ita.terrafreights.tariff.stagingbasket.StagingBasketRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class DevelopmentDataSeederTest {
     assertEquals(4, linkRepository.count());
 
     int linkCount = 0;
-    for(Tariff t: tariffRepository.findAll()) {
+    for (Tariff t : tariffRepository.findAll()) {
       linkCount += t.getLinks().size();
     }
     assertEquals(6, linkCount);
@@ -85,7 +86,7 @@ public class DevelopmentDataSeederTest {
   }
 
   private void assertCountry(String countryCode) throws Exception {
-    mockMvc.perform(get("/api/tariffs?countryCode={countryCode}&page=5&size=10&sort=id,desc",countryCode))
+    mockMvc.perform(get("/api/tariffs?countryCode={countryCode}&page=5&size=10&sort=id,desc", countryCode))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.content", hasSize(10)));
   }
