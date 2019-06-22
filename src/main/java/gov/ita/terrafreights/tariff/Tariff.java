@@ -22,14 +22,12 @@ public class Tariff {
   private Long id;
   private Long legacyId;
   private String tariffLine;
-  @Lob
   private String description;
   private String sectorCode;
   private String baseRate;
   private String baseRateAlt;
   private Integer finalYear;
   private Integer tariffRateQuota;
-  @Lob
   private String tariffRateQuotaNotes;
   private Boolean tariffEliminated;
   private String partnerName;
@@ -39,7 +37,6 @@ public class Tariff {
   private String partnerAgreementName;
   private String reporterAgreementName;
   private String quotaName;
-  @Lob
   private String ruleText;
 
   @ManyToOne
