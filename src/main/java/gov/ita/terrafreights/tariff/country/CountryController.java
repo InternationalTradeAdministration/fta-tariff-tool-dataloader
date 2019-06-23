@@ -1,7 +1,6 @@
 package gov.ita.terrafreights.tariff.country;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,5 +16,10 @@ public class CountryController {
   @GetMapping("/api/countries")
   public List<Country> countries() {
     return countryRepository.findAll();
+  }
+
+  @PutMapping("/api/country")
+  public Country save(@RequestBody Country country) {
+    return countryRepository.save(country);
   }
 }
