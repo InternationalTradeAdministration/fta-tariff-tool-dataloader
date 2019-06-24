@@ -6,7 +6,17 @@
       <md-button class="nav-btn" @click="prevPage()" v-bind:disabled="isFirstPage()">Previous</md-button>
       <md-button class="nav-btn" @click="nextPage()" v-bind:disabled="isLastPage()">Next</md-button>
     </div>
-    <span>Country: {{countryCode}}</span>
+    <md-field>
+      <label for="countries">Country</label>
+      <md-select v-model="countryCode">
+        <md-option
+          v-for="country in countries"
+          v-bind:key="country.code"
+          v-bind:value="country.code"
+        >{{country.name}}</md-option>
+      </md-select>
+      <md-button class="md-primary" @click="fetchTariffs()">Filter</md-button>
+    </md-field>
     <md-table v-if="loading==false" v-model="tariffs">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="TL">{{item.tariffLine}}</md-table-cell>
@@ -26,10 +36,14 @@
 export default {
   name: "Tariffs",
   props: {
-    tariffRepository: Object
+    tariffRepository: Object,
+    countryRepository: Object
   },
   async created() {
+    this.loading = true;
+    await this.fetchCountries();
     await this.fetchTariffs();
+    this.loading = false;
   },
   data() {
     return {
@@ -37,9 +51,10 @@ export default {
       error: null,
       tariffs: null,
       page: 0,
-      size: 10,
+      size: 25,
       countryCode: "KR",
-      totalPages: null
+      totalPages: null,
+      countries: null
     };
   },
   methods: {
@@ -58,7 +73,6 @@ export default {
       this.fetchTariffs();
     },
     async fetchTariffs() {
-      this.loading = true;
       let tariffsResponse = await this.tariffRepository._getTariffs(
         this.countryCode,
         this.page,
@@ -66,7 +80,9 @@ export default {
       );
       this.totalPages = tariffsResponse.totalPages;
       this.tariffs = tariffsResponse.tariffs;
-      this.loading = false;
+    },
+    async fetchCountries() {
+      this.countries = await this.countryRepository._getCountries();
     }
   }
 };
