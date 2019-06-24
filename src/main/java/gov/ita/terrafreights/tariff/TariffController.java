@@ -16,7 +16,13 @@ public class TariffController {
   }
 
   @GetMapping("/api/tariffs")
-  public Page<Tariff> tariffs(Pageable pageable, @RequestParam("countryCode") String countryCode) {
-    return tariffRepository.findByCountryCode(countryCode, pageable);
+  public Page<Tariff> tariffs(Pageable pageable,
+                              @RequestParam("countryCode") String countryCode,
+                              @RequestParam("productTypeId") Long productTypeId) {
+
+    if (productTypeId == -1)
+      return tariffRepository.findByCountryCode(countryCode, pageable);
+
+    return tariffRepository.findByCountryCodeAndProductTypeId(countryCode, productTypeId, pageable);
   }
 }
