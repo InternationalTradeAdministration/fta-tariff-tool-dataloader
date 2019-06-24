@@ -53,7 +53,6 @@ create table tariff (
     description varchar(3000) null,
     sector_code varchar(255) null,
     base_rate varchar(255) null,
-    base_rate_alt varchar(255) null,
     final_year int null,
     tariff_rate_quota int null,
     tariff_rate_quota_notes varchar(500),

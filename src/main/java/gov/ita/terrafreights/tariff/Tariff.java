@@ -28,7 +28,6 @@ public class Tariff {
   private String description;
   private String sectorCode;
   private String baseRate;
-  private String baseRateAlt;
   private Integer finalYear;
   private Integer tariffRateQuota;
   private String tariffRateQuotaNotes;

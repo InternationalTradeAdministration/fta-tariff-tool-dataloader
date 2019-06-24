@@ -68,13 +68,13 @@ public class TariffCsvTranslatorTest {
   @Test
   public void translates_tariff_BaseRate_field() {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
-    assertEquals("2.2", tariffs.get(0).getBaseRate());
+    assertEquals("2.8 cents/kg", tariffs.get(0).getBaseRate());
   }
 
   @Test
   public void translates_tariff_BaseRateAlt_field() {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
-    assertEquals("2.8 cents/kg", tariffs.get(0).getBaseRateAlt());
+    assertEquals("8", tariffs.get(1).getBaseRate());
   }
 
   @Test

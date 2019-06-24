@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-export default class TarrifRatesRepository {
+export default class TariffRepository {
   async _getTariffs (countryCode, page, size) {
     let tariffsResponse = await axios.get('/api/tariffs', {
       params: {

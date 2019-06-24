@@ -38,8 +38,6 @@ public class TariffCsvTranslator {
           .tariffLine(csvRecord.get("TL"))
           .description(csvRecord.get("TL_Desc"))
           .sectorCode(csvRecord.get("Sector_Code"))
-          .baseRate(csvRecord.get("Base_Rate"))
-          .baseRateAlt(csvRecord.get("Base_Rate_Alt"))
           .finalYear(intParser(csvRecord.get("Final_Year")))
           .tariffRateQuota(intParser(csvRecord.get("TRQ_Quota")))
           .tariffRateQuotaNotes(csvRecord.get("TRQ_Note"))
@@ -68,6 +66,12 @@ public class TariffCsvTranslator {
             csvRecord.get("ProductType")
           )).build();
 
+
+        String baseRate = csvRecord.get("Base_Rate_Alt") != null ?
+          csvRecord.get("Base_Rate_Alt") :
+          csvRecord.get("Base_Rate");
+        tf.setBaseRate(baseRate);
+
         List<Rate> rates = new ArrayList<>();
         List<Link> links = new ArrayList<>();
         if (countryCode.contains("USMCA")) {
@@ -81,7 +85,7 @@ public class TariffCsvTranslator {
             }
           }
 
-          if (csvRecord.get("Link_Url") != null)
+            if (csvRecord.get("Link_Url") != null)
             links.add(new Link(null, csvRecord.get("Link_Url"), csvRecord.get("Link_Text")));
           if (csvRecord.get("Link_Url2") != null)
             links.add(new Link(null, csvRecord.get("Link_Url2"), csvRecord.get("Link_Text2")));

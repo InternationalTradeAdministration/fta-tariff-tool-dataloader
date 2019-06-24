@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import TariffRates from '@/components/TariffRates'
-import TariffRatesRepository from '../repositories/TariffRatesRepository'
+import Tariffs from '@/components/Tariffs'
+import TariffRepository from '../repositories/TariffRepository'
 
 Vue.use(Router)
 
@@ -15,9 +15,9 @@ export default new Router({
     },
     {
       path: '/tariffs',
-      name: 'TariffRates',
-      component: TariffRates,
-      props: { tariffRatesRepository: new TariffRatesRepository() }
+      name: 'Tariffs',
+      component: Tariffs,
+      props: { tariffRepository: new TariffRepository() }
     }
   ]
 })
