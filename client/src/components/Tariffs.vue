@@ -35,8 +35,8 @@
         <md-button class="md-primary" @click="fetchTariffs()">Filter</md-button>
       </div>
     </div>
-    <md-table v-if="loading==false" v-model="tariffs">
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
+    <md-table v-if="loading==false" v-model="tariffs" @md-selected="onSelect">
+      <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="single">
         <md-table-cell md-label="TL">{{item.tariffLine}}</md-table-cell>
         <md-table-cell md-label="HS6">{{item.hs6.code}}</md-table-cell>
         <md-table-cell md-label="Description">{{item.description}}</md-table-cell>
@@ -152,6 +152,9 @@ export default {
         return page + 1;
       }
       return page;
+    },
+    onSelect(item) {
+      this.$router.push({ name: 'tariff', query: { id: item.id }})
     }
   }
 };
