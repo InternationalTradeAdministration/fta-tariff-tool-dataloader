@@ -19,4 +19,9 @@ public class StagingBasket {
   private Long id;
   private Long legacyId;
   private String description;
+
+  public StagingBasket(Long id, String description) {
+    this.id = id;
+    this.description = description;
+  }
 }

@@ -16,7 +16,7 @@ public class StagingBasketController {
     this.stagingBasketRepository = stagingBasketRepository;
   }
 
-  @GetMapping("/api/staging_baskets")
+  @GetMapping("/api/staging_baskets/all")
   public List<StagingBasket> stagingBaskets() {
     return stagingBasketRepository.findAll();
   }

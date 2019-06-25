@@ -1,7 +1,7 @@
 package gov.ita.terrafreights.tariff;
 
 import gov.ita.terrafreights.tariff.product.ProductType;
-import gov.ita.terrafreights.tariff.product.ProductTypeRepository;
+import gov.ita.terrafreights.tariff.stagingbasket.StagingBasket;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +26,7 @@ public class TariffController {
                               @RequestParam("stagingBasketId") Long stagingBasketId) {
 
 
-    if(productTypeId == -1 && stagingBasketId != -1)
+    if (productTypeId == -1 && stagingBasketId != -1)
       return tariffRepository.findByCountryCodeAndStagingBasketId(countryCode, stagingBasketId, pageable);
 
     if (productTypeId == -1)
@@ -41,5 +41,15 @@ public class TariffController {
   @GetMapping("/api/product_types")
   public List<ProductType> productTypes(@RequestParam("countryCode") String countryCode) {
     return tariffRepository.findAllProductTypesByCountry(countryCode);
+  }
+
+  @GetMapping("/api/staging_baskets")
+  public List<StagingBasket> stagingBaskets(@RequestParam("countryCode") String countryCode,
+                                            @RequestParam("productTypeId") Long productTypeId) {
+    if (productTypeId == -1)
+      return tariffRepository.findAllStagingBasketsByCountry(countryCode);
+
+
+    return tariffRepository.findAllStagingBasketsByCountryAndProductType(countryCode, productTypeId);
   }
 }

@@ -33,8 +33,13 @@ export default class TariffRepository {
     return productTypesResponse.data;
   }
 
-  async _getStagingBaskets() {
-    let stagingBasketsResponse = await axios.get('/api/staging_baskets');
+  async _getStagingBaskets(countryCode, productTypeId) {
+    let stagingBasketsResponse = await axios.get('/api/staging_baskets', {
+      params: {
+        countryCode,
+        productTypeId
+      }
+    });
     return stagingBasketsResponse.data;
   }
 }

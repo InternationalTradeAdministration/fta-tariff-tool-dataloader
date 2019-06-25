@@ -36,7 +36,7 @@
       <div class="md-layout-item">
         <md-field>
           <label for="productTypeId">Product Type</label>
-          <md-select v-model="productTypeId">
+          <md-select v-model="productTypeId" @md-selected="fetchStagingBaskets">
             <md-option
               v-for="productType in productTypes"
               v-bind:key="productType.id"
@@ -45,7 +45,6 @@
           </md-select>
         </md-field>
       </div>
-
       <div class="md-layout-item">
         <md-field>
           <label for="stagingBasketId">Staging Bsk</label>
@@ -58,7 +57,6 @@
           </md-select>
         </md-field>
       </div>
-
       <div class="md-layout-item">
         <md-button class="md-primary" @click="fetchTariffs()">Filter</md-button>
       </div>
@@ -178,7 +176,7 @@ export default {
       this.productTypes = productTypes;
     },
     async fetchStagingBaskets() {
-      let stagingBaskets = await this.tariffRepository._getStagingBaskets();
+      let stagingBaskets = await this.tariffRepository._getStagingBaskets(this.countryCode, this.productTypeId);
       stagingBaskets.push({ id: -1, description: "(All)" });
       stagingBaskets.sort(function(a, b) {
         if (a.description < b.description) {

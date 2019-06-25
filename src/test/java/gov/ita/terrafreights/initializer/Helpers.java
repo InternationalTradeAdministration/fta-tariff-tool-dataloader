@@ -18,7 +18,7 @@ public class Helpers {
       e.printStackTrace();
     }
 
-    if(file != null)
+    if (file != null)
       try {
         return new StringReader(FileUtils.readFileToString(file, "UTF-8"));
       } catch (IOException e) {

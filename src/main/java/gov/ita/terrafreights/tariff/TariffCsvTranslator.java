@@ -85,7 +85,7 @@ public class TariffCsvTranslator {
             }
           }
 
-            if (csvRecord.get("Link_Url") != null)
+          if (csvRecord.get("Link_Url") != null)
             links.add(new Link(null, csvRecord.get("Link_Url"), csvRecord.get("Link_Text")));
           if (csvRecord.get("Link_Url2") != null)
             links.add(new Link(null, csvRecord.get("Link_Url2"), csvRecord.get("Link_Text2")));
