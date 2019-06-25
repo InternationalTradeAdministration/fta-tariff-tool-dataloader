@@ -19,4 +19,9 @@ public class ProductType {
   private Long id;
   private Long legacyId;
   private String description;
+
+  public ProductType(Long id, String description) {
+    this.id = id;
+    this.description = description;
+  }
 }

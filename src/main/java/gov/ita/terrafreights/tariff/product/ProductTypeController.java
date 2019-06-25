@@ -16,7 +16,7 @@ public class ProductTypeController {
     this.productTypeRepository = productTypeRepository;
   }
 
-  @GetMapping("/api/product_types")
+  @GetMapping("/api/product_types/all")
   public List<ProductType> productTypes() {
     return productTypeRepository.findAll();
   }

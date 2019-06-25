@@ -1,10 +1,14 @@
 package gov.ita.terrafreights.tariff;
 
+import gov.ita.terrafreights.tariff.product.ProductType;
+import gov.ita.terrafreights.tariff.product.ProductTypeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class TariffController {
@@ -32,5 +36,10 @@ public class TariffController {
       return tariffRepository.findByCountryCodeAndProductTypeId(countryCode, productTypeId, pageable);
 
     return tariffRepository.findByCountryCodeAndProductTypeIdAndStagingBasketId(countryCode, productTypeId, stagingBasketId, pageable);
+  }
+
+  @GetMapping("/api/product_types")
+  public List<ProductType> productTypes(@RequestParam("countryCode") String countryCode) {
+    return tariffRepository.findAllProductTypesByCountry(countryCode);
   }
 }

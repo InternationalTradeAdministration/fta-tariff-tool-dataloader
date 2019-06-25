@@ -24,7 +24,7 @@
       <div class="md-layout-item">
         <md-field>
           <label for="countries">Country</label>
-          <md-select v-model="countryCode">
+          <md-select v-model="countryCode" @md-selected="fetchProductTypes">
             <md-option
               v-for="country in countries"
               v-bind:key="country.code"
@@ -60,10 +60,10 @@
       </div>
 
       <div class="md-layout-item">
-        <md-button class="md-primary" @click="fetchTariffs()" @keyup.enter.native="onSubmit">Filter</md-button>
+        <md-button class="md-primary" @click="fetchTariffs()">Filter</md-button>
       </div>
     </div>
-    <md-table v-if="loading==false" v-model="tariffs" @md-selected="onSelect">
+    <md-table v-if="loading==false" v-model="tariffs" @md-selected="selectTariff">
       <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="single">
         <md-table-cell md-label="TL">{{item.tariffLine}}</md-table-cell>
         <md-table-cell md-label="HS6">{{item.hs6.code}}</md-table-cell>
@@ -97,8 +97,8 @@ export default {
     await this.fetchCountries();
     this.countryCode = this.countries[0].code;
 
-    await this.fetchStagingBaskets();
     await this.fetchProductTypes();
+    await this.fetchStagingBaskets();
     await this.fetchTariffs();
 
     this.loading = false;
@@ -110,6 +110,7 @@ export default {
       tariffs: null,
       page: 1,
       size: 25,
+      selectedCountry: null,
       countryCode: null,
       productTypeId: -1,
       stagingBasketId: -1,
@@ -129,10 +130,12 @@ export default {
     },
     nextPage() {
       this.page++;
+      this.fetchProductTypes();
       this.fetchTariffs();
     },
     prevPage() {
       this.page--;
+      this.fetchProductTypes();
       this.fetchTariffs();
     },
     async fetchTariffs() {
@@ -159,7 +162,9 @@ export default {
       this.countries = await this.tariffRepository._getCountries();
     },
     async fetchProductTypes() {
-      let productTypes = await this.tariffRepository._getTypes();
+      let productTypes = await this.tariffRepository._getProductTypes(
+        this.countryCode
+      );
       productTypes.push({ id: -1, description: "(All)" });
       productTypes.sort(function(a, b) {
         if (a.description < b.description) {
@@ -202,8 +207,8 @@ export default {
       }
       return this.page;
     },
-    onSelect(item) {
-      this.$router.push({ name: "tariff", query: { id: item.id } });
+    selectTariff(tariff) {
+      this.$router.push({ name: "tariff", query: { id: tariff.id } });
     }
   }
 };
