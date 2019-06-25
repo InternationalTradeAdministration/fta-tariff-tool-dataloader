@@ -18,7 +18,7 @@ export default {
   color: #2c3e50;
   margin-top: 20px;
   margin: auto;
-  width: 80%;
+  width: 90%;
 }
 
 </style>

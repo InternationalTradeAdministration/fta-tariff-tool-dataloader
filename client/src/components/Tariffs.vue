@@ -22,7 +22,7 @@
       <div class="md-layout-item">
         <md-field>
           <label for="productType">Product Type</label>
-          <md-select v-model="productTypeId" placeholder="(All)">
+          <md-select v-model="productTypeId">
             <md-option
               v-for="productType in productTypes"
               v-bind:key="productType.id"
@@ -41,10 +41,15 @@
         <md-table-cell md-label="HS6">{{item.hs6.code}}</md-table-cell>
         <md-table-cell md-label="Description">{{item.description}}</md-table-cell>
         <md-table-cell md-label="Base Rate">{{item.baseRate}}</md-table-cell>
-        <md-table-cell md-label="Start Yr.">{{item.partnerStartYear}}</md-table-cell>
-        <md-table-cell md-label="Final Yr.">{{item.finalYear}}</md-table-cell>
+        <md-table-cell md-label="Start Yr">{{item.partnerStartYear}}</md-table-cell>
+        <md-table-cell md-label="Final Yr">{{item.finalYear}}</md-table-cell>
         <md-table-cell md-label="Sector">{{item.sectorCode}}</md-table-cell>
         <md-table-cell md-label="Staging Bsk">{{item.stagingBasket.description}}</md-table-cell>
+        <md-table-cell
+          v-bind:md-label="year.toString()"
+          v-for="year in tariffRateYears"
+          v-bind:key="year"
+        >{{getRate(item,year)}}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -77,7 +82,8 @@ export default {
       productTypeId: -1,
       totalPages: null,
       countries: null,
-      productTypes: null
+      productTypes: null,
+      tariffRateYears: []
     };
   },
   methods: {
@@ -96,15 +102,24 @@ export default {
       this.fetchTariffs();
     },
     async fetchTariffs() {
-      let tariffsResponse = await this.tariffRepository._getTariffs(
+      let { totalPages, tariffs } = await this.tariffRepository._getTariffs(
         this.countryCode,
         this.productTypeId,
         this.page,
         this.size
       );
-      this.totalPages = tariffsResponse.totalPages;
+      this.totalPages = totalPages;
       if (this.totalPages === 0) this.page = 0;
-      this.tariffs = tariffsResponse.tariffs;
+      this.tariffs = tariffs;
+
+      let years = [];
+      this.tariffs.map(t => {
+        t.rates.map(r => {
+          if (!years.includes(r.year)) years.push(r.year);
+        });
+      });
+
+      this.tariffRateYears = years.sort();
     },
     async fetchCountries() {
       this.countries = await this.countryRepository._getCountries();
@@ -122,6 +137,13 @@ export default {
         return 0;
       });
       this.productTypes = productTypes;
+    },
+    getRate(tariffLine, year) {
+      let rate = "-";
+      if (tariffLine.rates) {
+        let rateForYear = tariffLine.rates.find(r => r.year === year);
+        if (rateForYear) return rateForYear.value;
+      }
     }
   }
 };
