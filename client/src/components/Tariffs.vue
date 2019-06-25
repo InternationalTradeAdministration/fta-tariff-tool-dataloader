@@ -2,10 +2,20 @@
   <div>
     <div v-if="loading" class="loading">Loading...</div>
     <div class="tariff-nav">
-      <div class='page-nav'>
-        Page:
-        <input v-model="page" class="page-input">
-        of {{totalPages}}
+      <div class="page-nav">
+        <div class="size-input">
+          <span>Size:</span>
+          <select v-model="size">
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <div class="page-input">
+          <span>Page:</span>
+          <input v-model="page">
+          of {{totalPages}}
+        </div>
       </div>
       <md-button class="nav-btn" @click="prevPage()" v-bind:disabled="isFirstPage()">Previous</md-button>
       <md-button class="nav-btn" @click="nextPage()" v-bind:disabled="isLastPage()">Next</md-button>
@@ -209,11 +219,17 @@ export default {
   justify-content: flex-end;
 }
 
-.page-input {
+.page-nav {
+  display: flex;
+  margin-top: 12px;
+}
+
+.page-input input {
   width: 30px;
 }
 
-.page-nav {
-  margin-top: 12px;
+.size-input {
+  display: inline-table;
+  margin-right: 10px;
 }
 </style>
