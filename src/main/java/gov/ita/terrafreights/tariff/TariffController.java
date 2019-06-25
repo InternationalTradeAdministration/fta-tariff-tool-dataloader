@@ -22,6 +22,9 @@ public class TariffController {
                               @RequestParam("stagingBasketId") Long stagingBasketId) {
 
 
+    if(productTypeId == -1 && stagingBasketId != -1)
+      return tariffRepository.findByCountryCodeAndStagingBasketId(countryCode, stagingBasketId, pageable);
+
     if (productTypeId == -1)
       return tariffRepository.findByCountryCode(countryCode, pageable);
 

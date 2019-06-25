@@ -2,11 +2,11 @@
   <div>
     <div v-if="loading" class="loading">Loading...</div>
     <div class="tariff-nav">
-      <p>
+      <div class='page-nav'>
         Page:
         <input v-model="page" class="page-input">
         of {{totalPages}}
-      </p>
+      </div>
       <md-button class="nav-btn" @click="prevPage()" v-bind:disabled="isFirstPage()">Previous</md-button>
       <md-button class="nav-btn" @click="nextPage()" v-bind:disabled="isLastPage()">Next</md-button>
     </div>
@@ -211,5 +211,9 @@ export default {
 
 .page-input {
   width: 30px;
+}
+
+.page-nav {
+  margin-top: 12px;
 }
 </style>
