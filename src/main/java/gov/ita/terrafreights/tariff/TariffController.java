@@ -18,11 +18,16 @@ public class TariffController {
   @GetMapping("/api/tariffs")
   public Page<Tariff> tariffs(Pageable pageable,
                               @RequestParam("countryCode") String countryCode,
-                              @RequestParam("productTypeId") Long productTypeId) {
+                              @RequestParam("productTypeId") Long productTypeId,
+                              @RequestParam("stagingBasketId") Long stagingBasketId) {
+
 
     if (productTypeId == -1)
       return tariffRepository.findByCountryCode(countryCode, pageable);
 
-    return tariffRepository.findByCountryCodeAndProductTypeId(countryCode, productTypeId, pageable);
+    if (stagingBasketId == -1)
+      return tariffRepository.findByCountryCodeAndProductTypeId(countryCode, productTypeId, pageable);
+
+    return tariffRepository.findByCountryCodeAndProductTypeIdAndStagingBasketId(countryCode, productTypeId, stagingBasketId, pageable);
   }
 }

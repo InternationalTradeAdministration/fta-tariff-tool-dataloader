@@ -2,7 +2,11 @@
   <div>
     <div v-if="loading" class="loading">Loading...</div>
     <div class="tariff-nav">
-      <p>Page: {{currentPage(page, totalPages)}} of {{totalPages}}</p>
+      <p>
+        Page:
+        <input v-model="page" class="page-input">
+        of {{totalPages}}
+      </p>
       <md-button class="nav-btn" @click="prevPage()" v-bind:disabled="isFirstPage()">Previous</md-button>
       <md-button class="nav-btn" @click="nextPage()" v-bind:disabled="isLastPage()">Next</md-button>
     </div>
@@ -21,7 +25,7 @@
       </div>
       <div class="md-layout-item">
         <md-field>
-          <label for="productType">Product Type</label>
+          <label for="productTypeId">Product Type</label>
           <md-select v-model="productTypeId">
             <md-option
               v-for="productType in productTypes"
@@ -31,8 +35,22 @@
           </md-select>
         </md-field>
       </div>
+
       <div class="md-layout-item">
-        <md-button class="md-primary" @click="fetchTariffs()">Filter</md-button>
+        <md-field>
+          <label for="stagingBasketId">Staging Bsk</label>
+          <md-select v-model="stagingBasketId">
+            <md-option
+              v-for="stagingBasket in stagingBaskets"
+              v-bind:key="stagingBasket.id"
+              v-bind:value="stagingBasket.id"
+            >{{stagingBasket.description}}</md-option>
+          </md-select>
+        </md-field>
+      </div>
+
+      <div class="md-layout-item">
+        <md-button class="md-primary" @click="fetchTariffs()" @keyup.enter.native="onSubmit">Filter</md-button>
       </div>
     </div>
     <md-table v-if="loading==false" v-model="tariffs" @md-selected="onSelect">
@@ -43,8 +61,8 @@
         <md-table-cell md-label="Base Rate">{{item.baseRate}}</md-table-cell>
         <md-table-cell md-label="Start Yr">{{item.partnerStartYear}}</md-table-cell>
         <md-table-cell md-label="Final Yr">{{item.finalYear}}</md-table-cell>
-        <md-table-cell md-label="Sector">{{item.sectorCode}}</md-table-cell>
         <md-table-cell md-label="Staging Bsk">{{item.stagingBasket.description}}</md-table-cell>
+        <md-table-cell md-label="Sector">{{item.sectorCode}}</md-table-cell>
         <md-table-cell
           v-bind:md-label="year.toString()"
           v-for="year in tariffRateYears"
@@ -65,10 +83,14 @@ export default {
   },
   async created() {
     this.loading = true;
+
     await this.fetchCountries();
-    await this.fetchProductTypes();
     this.countryCode = this.countries[0].code;
+
+    await this.fetchStagingBaskets();
+    await this.fetchProductTypes();
     await this.fetchTariffs();
+
     this.loading = false;
   },
   data() {
@@ -76,19 +98,21 @@ export default {
       loading: false,
       error: null,
       tariffs: null,
-      page: 0,
+      page: 1,
       size: 25,
       countryCode: null,
       productTypeId: -1,
+      stagingBasketId: -1,
       totalPages: null,
-      countries: null,
-      productTypes: null,
+      countries: [],
+      productTypes: [],
+      stagingBaskets: [],
       tariffRateYears: []
     };
   },
   methods: {
     isFirstPage() {
-      return this.page === 0;
+      return this.page === 1;
     },
     isLastPage() {
       return this.currentPage(this.page, this.totalPages) === this.totalPages;
@@ -105,6 +129,7 @@ export default {
       let { totalPages, tariffs } = await this.tariffRepository._getTariffs(
         this.countryCode,
         this.productTypeId,
+        this.stagingBasketId,
         this.page,
         this.size
       );
@@ -121,10 +146,10 @@ export default {
       this.tariffRateYears = years.sort();
     },
     async fetchCountries() {
-      this.countries = await this.countryRepository._getCountries();
+      this.countries = await this.tariffRepository._getCountries();
     },
     async fetchProductTypes() {
-      let productTypes = await this.productRepository._getTypes();
+      let productTypes = await this.tariffRepository._getTypes();
       productTypes.push({ id: -1, description: "(All)" });
       productTypes.sort(function(a, b) {
         if (a.description < b.description) {
@@ -137,6 +162,20 @@ export default {
       });
       this.productTypes = productTypes;
     },
+    async fetchStagingBaskets() {
+      let stagingBaskets = await this.tariffRepository._getStagingBaskets();
+      stagingBaskets.push({ id: -1, description: "(All)" });
+      stagingBaskets.sort(function(a, b) {
+        if (a.description < b.description) {
+          return -1;
+        }
+        if (a.description > b.description) {
+          return 1;
+        }
+        return 0;
+      });
+      this.stagingBaskets = stagingBaskets;
+    },
     getRate(tariffLine, year) {
       if (tariffLine.rates) {
         let rateForYear = tariffLine.rates.find(r => r.year === year);
@@ -147,14 +186,14 @@ export default {
         }
       }
     },
-    currentPage(page, totalPages) {
-      if (totalPages > 0) {
-        return page + 1;
+    currentPage() {
+      if (this.totalPages > 0) {
+        return this.page;
       }
-      return page;
+      return this.page;
     },
     onSelect(item) {
-      this.$router.push({ name: 'tariff', query: { id: item.id }})
+      this.$router.push({ name: "tariff", query: { id: item.id } });
     }
   }
 };
@@ -168,5 +207,9 @@ export default {
 .tariff-nav {
   display: flex;
   justify-content: flex-end;
+}
+
+.page-input {
+  width: 30px;
 }
 </style>
