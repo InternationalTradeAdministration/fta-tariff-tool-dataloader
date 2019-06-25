@@ -2,7 +2,7 @@
   <div>
     <div v-if="loading" class="loading">Loading...</div>
     <div class="tariff-nav">
-      <p>Page: {{page + 1}} of {{totalPages}}</p>
+      <p>Page: {{currentPage(page, totalPages)}} of {{totalPages}}</p>
       <md-button class="nav-btn" @click="prevPage()" v-bind:disabled="isFirstPage()">Previous</md-button>
       <md-button class="nav-btn" @click="nextPage()" v-bind:disabled="isLastPage()">Next</md-button>
     </div>
@@ -91,7 +91,7 @@ export default {
       return this.page === 0;
     },
     isLastPage() {
-      return this.page === this.totalPages - 1;
+      return this.currentPage(this.page, this.totalPages) === this.totalPages;
     },
     nextPage() {
       this.page++;
@@ -109,7 +109,6 @@ export default {
         this.size
       );
       this.totalPages = totalPages;
-      if (this.totalPages === 0) this.page = 0;
       this.tariffs = tariffs;
 
       let years = [];
@@ -139,11 +138,20 @@ export default {
       this.productTypes = productTypes;
     },
     getRate(tariffLine, year) {
-      let rate = "-";
       if (tariffLine.rates) {
         let rateForYear = tariffLine.rates.find(r => r.year === year);
-        if (rateForYear) return rateForYear.value;
+        if (rateForYear && rateForYear.value) {
+          return rateForYear.value;
+        } else {
+          return "-";
+        }
       }
+    },
+    currentPage(page, totalPages) {
+      if (totalPages > 0) {
+        return page + 1;
+      }
+      return page;
     }
   }
 };
