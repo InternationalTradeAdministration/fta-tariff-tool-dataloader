@@ -1,30 +1,11 @@
 <template>
   <div>
     <div v-if="loading" class="loading">Loading...</div>
-    <div class="tariff-nav">
-      <div class="page-nav">
-        <div class="size-input">
-          <span>Size:</span>
-          <select v-model="size">
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-        </div>
-        <div class="page-input">
-          <span>Page:</span>
-          <input v-model="page">
-          of {{totalPages}}
-        </div>
-      </div>
-      <md-button class="nav-btn" @click="prevPage()" v-bind:disabled="isFirstPage()">Previous</md-button>
-      <md-button class="nav-btn" @click="nextPage()" v-bind:disabled="isLastPage()">Next</md-button>
-    </div>
     <div class="md-layout md-gutter">
       <div class="md-layout-item">
         <md-field>
           <label for="countries">Country</label>
-          <md-select v-model="countryCode" @md-selected="fetchProductTypes">
+          <md-select v-model="countryCode" @md-selected="onCountryChange">
             <md-option
               v-for="country in countries"
               v-bind:key="country.code"
@@ -36,7 +17,7 @@
       <div class="md-layout-item">
         <md-field>
           <label for="productTypeId">Product Type</label>
-          <md-select v-model="productTypeId" @md-selected="fetchStagingBaskets">
+          <md-select v-model="productTypeId" @md-selected="onProductTypeChange">
             <md-option
               v-for="productType in productTypes"
               v-bind:key="productType.id"
@@ -58,19 +39,45 @@
         </md-field>
       </div>
       <div class="md-layout-item">
-        <md-button class="md-primary" @click="fetchTariffs()">Filter</md-button>
+        <md-button class="md-primary filter-btn" @click="fetchTariffs()">Filter</md-button>
       </div>
     </div>
+    <div class="tariff-nav">
+      <div class="page-nav">
+        <div class="size-input">
+          <span>Size:</span>
+          <select v-model="size" @change="fetchTariffs">
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <div class="page-input">
+          <span>Page:</span>
+          <input v-model="page">
+          of {{totalPages}}
+        </div>
+      </div>
+      <md-button class="nav-btn" @click="prevPage()" v-bind:disabled="isFirstPage()">Previous</md-button>
+      <md-button class="nav-btn" @click="nextPage()" v-bind:disabled="isLastPage()">Next</md-button>
+    </div>
     <md-table v-if="loading==false" v-model="tariffs" @md-selected="selectTariff">
-      <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="single">
-        <md-table-cell md-label="TL">{{item.tariffLine}}</md-table-cell>
+      <md-table-row
+        v-bind:alt="item.description"
+        v-bind:title="item.description"
+        slot="md-table-row"
+        slot-scope="{ item }"
+        md-selectable="single"
+      >
+        <md-table-cell md-label="Tariff Ln">{{item.tariffLine}}</md-table-cell>
         <md-table-cell md-label="HS6">{{item.hs6.code}}</md-table-cell>
-        <md-table-cell md-label="Description">{{item.description}}</md-table-cell>
-        <md-table-cell md-label="Base Rate">{{item.baseRate}}</md-table-cell>
+        <md-table-cell md-label="Base Rt">{{item.baseRate}}</md-table-cell>
         <md-table-cell md-label="Start Yr">{{item.partnerStartYear}}</md-table-cell>
         <md-table-cell md-label="Final Yr">{{item.finalYear}}</md-table-cell>
         <md-table-cell md-label="Staging Bsk">{{item.stagingBasket.description}}</md-table-cell>
+        <md-table-cell md-label="Reporter">{{item.reporterName}}</md-table-cell>
         <md-table-cell md-label="Sector">{{item.sectorCode}}</md-table-cell>
+        <md-table-cell md-label="TRQ">{{item.tariffRateQuota}}</md-table-cell>
         <md-table-cell
           v-bind:md-label="year.toString()"
           v-for="year in tariffRateYears"
@@ -80,6 +87,38 @@
     </md-table>
   </div>
 </template>
+<style>
+.nav-btn {
+  width: 100px;
+}
+
+.tariff-nav {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.page-nav {
+  display: flex;
+  margin-top: 12px;
+}
+
+.page-input input {
+  width: 30px;
+}
+
+.size-input {
+  display: inline-table;
+  margin-right: 10px;
+}
+
+.size-input select {
+  margin-left: 5px;
+}
+
+.filter-btn {
+  margin-top: 15px;
+}
+</style>
 
 <script>
 export default {
@@ -91,14 +130,11 @@ export default {
   },
   async created() {
     this.loading = true;
-
     await this.fetchCountries();
     this.countryCode = this.countries[0].code;
-
     await this.fetchProductTypes();
     await this.fetchStagingBaskets();
     await this.fetchTariffs();
-
     this.loading = false;
   },
   data() {
@@ -164,29 +200,16 @@ export default {
         this.countryCode
       );
       productTypes.push({ id: -1, description: "(All)" });
-      productTypes.sort(function(a, b) {
-        if (a.description < b.description) {
-          return -1;
-        }
-        if (a.description > b.description) {
-          return 1;
-        }
-        return 0;
-      });
+      productTypes.sort(this.orderByDescritpion);
       this.productTypes = productTypes;
     },
     async fetchStagingBaskets() {
-      let stagingBaskets = await this.tariffRepository._getStagingBaskets(this.countryCode, this.productTypeId);
+      let stagingBaskets = await this.tariffRepository._getStagingBaskets(
+        this.countryCode,
+        this.productTypeId
+      );
       stagingBaskets.push({ id: -1, description: "(All)" });
-      stagingBaskets.sort(function(a, b) {
-        if (a.description < b.description) {
-          return -1;
-        }
-        if (a.description > b.description) {
-          return 1;
-        }
-        return 0;
-      });
+      stagingBaskets.sort(this.orderByDescritpion);
       this.stagingBaskets = stagingBaskets;
     },
     getRate(tariffLine, year) {
@@ -207,32 +230,26 @@ export default {
     },
     selectTariff(tariff) {
       this.$router.push({ name: "tariff", query: { id: tariff.id } });
+    },
+    async onCountryChange() {
+      this.productTypeId = -1;
+      this.stagingBasketId = -1;
+      await this.fetchProductTypes();
+      await this.fetchStagingBaskets();
+    },
+    async onProductTypeChange() {
+      this.stagingBasketId = -1;
+      await this.fetchStagingBaskets();
+    },
+    orderByDescritpion(a, b) {
+      if (a.description < b.description) {
+        return -1;
+      }
+      if (a.description > b.description) {
+        return 1;
+      }
+      return 0;
     }
   }
 };
 </script>
-
-<style>
-.nav-btn {
-  width: 100px;
-}
-
-.tariff-nav {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.page-nav {
-  display: flex;
-  margin-top: 12px;
-}
-
-.page-input input {
-  width: 30px;
-}
-
-.size-input {
-  display: inline-table;
-  margin-right: 10px;
-}
-</style>
