@@ -179,7 +179,12 @@ export default {
         });
       });
 
-      this.tariffRateYears = years.sort();
+      var collator = new Intl.Collator(undefined, {
+        numeric: true,
+        sensitivity: "base"
+      });
+
+      this.tariffRateYears = years.sort(collator.compare);
     },
     async fetchCountries() {
       this.countries = await this.tariffRepository._getCountries();
