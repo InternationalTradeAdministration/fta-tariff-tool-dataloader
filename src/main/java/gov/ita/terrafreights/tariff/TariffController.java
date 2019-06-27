@@ -22,9 +22,15 @@ public class TariffController {
   public Page<Tariff> tariffs(Pageable pageable,
                               @RequestParam("countryCode") String countryCode,
                               @RequestParam("stagingBasketId") Long stagingBasketId,
-                              @RequestParam("stagingBasketId") String tariffLine) {
-    if (stagingBasketId != -1)
+                              @RequestParam(value = "tariffLine", defaultValue = "") String tariffLine) {
+    if (stagingBasketId != -1 && tariffLine.equals(""))
       return tariffRepository.findByCountryCodeAndStagingBasketId(countryCode, stagingBasketId, pageable);
+
+    if (stagingBasketId != -1)
+      return tariffRepository.findByCountryCodeAndStagingBasketIdAndTariffLineContaining(countryCode, stagingBasketId, tariffLine, pageable);
+
+    if (!tariffLine.equals(""))
+      return tariffRepository.findByCountryCodeAndTariffLineContaining(countryCode, tariffLine, pageable);
 
     return tariffRepository.findByCountryCode(countryCode, pageable);
   }

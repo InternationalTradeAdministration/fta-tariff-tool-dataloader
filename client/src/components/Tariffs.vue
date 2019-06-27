@@ -27,6 +27,12 @@
         </md-field>
       </div>
       <div class="md-layout-item">
+        <md-field>
+          <label>Tariff Line</label>
+          <md-input v-model="tariffLine"></md-input>
+        </md-field>
+      </div>
+      <div class="md-layout-item">
         <md-button class="md-primary filter-btn" @click="fetchTariffs()">Filter</md-button>
       </div>
     </div>
@@ -68,7 +74,7 @@
         <md-table-cell md-label="Sector">{{item.sectorCode}}</md-table-cell>
         <md-table-cell md-label="TRQ">{{item.tariffRateQuota}}</md-table-cell>
         <md-table-cell md-label="Eliminated">{{item.tariffEliminated}}</md-table-cell>
-        <md-table-cell 
+        <md-table-cell
           v-bind:md-label="year.toString()"
           v-for="year in tariffRateYears"
           v-bind:key="year"
@@ -131,9 +137,9 @@ export default {
       tariffs: null,
       page: 1,
       size: 25,
-      selectedCountry: null,
       countryCode: null,
       stagingBasketId: -1,
+      tariffLine: null,
       totalPages: null,
       countries: [],
       stagingBaskets: [],
@@ -159,6 +165,7 @@ export default {
       let { totalPages, tariffs } = await this.tariffRepository._getTariffs(
         this.countryCode,
         this.stagingBasketId,
+        this.tariffLine,
         this.page,
         this.size
       );

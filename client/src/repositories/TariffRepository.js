@@ -1,11 +1,12 @@
 const axios = require('axios')
 
 export default class TariffRepository {
-  async _getTariffs(countryCode, stagingBasketId, page, size) {
+  async _getTariffs(countryCode, stagingBasketId, tariffLine, page, size) {
     let tariffsResponse = await axios.get('/api/tariffs', {
       params: {
         countryCode,
         stagingBasketId,
+        tariffLine,
         page: page - 1,
         size,
         sort: 'tariffLine,desc'

@@ -15,6 +15,10 @@ public interface TariffRepository extends JpaRepository<Tariff, Long> {
 
   Page<Tariff> findByCountryCodeAndStagingBasketId(String countryCode, Long stagingBasketId, Pageable pageable);
 
+  Page<Tariff> findByCountryCodeAndStagingBasketIdAndTariffLineContaining(String countryCode, Long stagingBasketId, String tariffLine, Pageable pageable);
+
+  Page<Tariff> findByCountryCodeAndTariffLineContaining(String countryCode, String tariffLine, Pageable pageable);
+
   @Query(value = "select distinct new StagingBasket(s.id, s.description) " +
     "from Tariff t " +
     "join StagingBasket s on t.stagingBasket.id = s.id " +
