@@ -64,9 +64,11 @@
         <md-table-cell md-label="Final Yr">{{item.finalYear}}</md-table-cell>
         <md-table-cell md-label="Staging Bsk">{{item.stagingBasket.description}}</md-table-cell>
         <md-table-cell md-label="Reporter">{{item.reporterName}}</md-table-cell>
+        <md-table-cell md-label="Partener">{{item.partnerName}}</md-table-cell>
         <md-table-cell md-label="Sector">{{item.sectorCode}}</md-table-cell>
         <md-table-cell md-label="TRQ">{{item.tariffRateQuota}}</md-table-cell>
-        <md-table-cell
+        <md-table-cell md-label="Eliminated">{{item.tariffEliminated}}</md-table-cell>
+        <md-table-cell 
           v-bind:md-label="year.toString()"
           v-for="year in tariffRateYears"
           v-bind:key="year"

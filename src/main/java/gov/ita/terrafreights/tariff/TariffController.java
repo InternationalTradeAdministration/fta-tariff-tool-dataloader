@@ -21,7 +21,8 @@ public class TariffController {
   @GetMapping("/api/tariffs")
   public Page<Tariff> tariffs(Pageable pageable,
                               @RequestParam("countryCode") String countryCode,
-                              @RequestParam("stagingBasketId") Long stagingBasketId) {
+                              @RequestParam("stagingBasketId") Long stagingBasketId,
+                              @RequestParam("stagingBasketId") String tariffLine) {
     if (stagingBasketId != -1)
       return tariffRepository.findByCountryCodeAndStagingBasketId(countryCode, stagingBasketId, pageable);
 
