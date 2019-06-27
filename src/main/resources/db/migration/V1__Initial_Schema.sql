@@ -15,7 +15,7 @@ insert into country (code, name) values ('SV', 'El Salvador');
 insert into country (code, name) values ('GT', 'Guatemala');
 insert into country (code, name) values ('HN', 'Honduras');
 insert into country (code, name) values ('MX-USMCA', 'Mexico');
-insert into country (code, name) values ('MA', 'Morocco');
+insert into country (code, name) values ('MA', 'Morocco - USMCA');
 insert into country (code, name) values ('NI', 'Nicaragua');
 insert into country (code, name) values ('OM', 'Oman');
 insert into country (code, name) values ('PA', 'Panama');
