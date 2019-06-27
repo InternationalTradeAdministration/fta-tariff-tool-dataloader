@@ -67,32 +67,32 @@ public class DevelopmentDataSeederTest {
 
   @Test
   public void tariff_api_provides_sample_tariff_data_for_KOREA() throws Exception {
-    mockMvc.perform(get("/api/tariffs?countryCode={1}&productTypeId={2}&stagingBasketId={3}&page=1&size=10&sort=id,desc",
-      "KR", 1, 1))
+    mockMvc.perform(get("/api/tariffs?countryCode={1}&stagingBasketId={3}&page=1&size=10&sort=id,desc",
+      "KR", 1))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.content", hasSize(10)));
   }
 
   @Test
   public void tariff_api_provides_sample_tariff_data_for_AUSTRALIA() throws Exception {
-    mockMvc.perform(get("/api/tariffs?countryCode={1}&productTypeId={2}&stagingBasketId={3}&page=1&size=10&sort=id,desc",
-      "AU", 2, 1))
+    mockMvc.perform(get("/api/tariffs?countryCode={1}&stagingBasketId={3}&page=1&size=10&sort=id,desc",
+      "AU", 1))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.content", hasSize(10)));
   }
 
   @Test
   public void tariff_api_provides_sample_tariff_data_for_BAHRAIN() throws Exception {
-    mockMvc.perform(get("/api/tariffs?countryCode={1}&productTypeId={2}&stagingBasketId={3}&page=1&size=10&sort=id,desc",
-      "BH", 1, 1))
+    mockMvc.perform(get("/api/tariffs?countryCode={1}&stagingBasketId={3}&page=1&size=10&sort=id,desc",
+      "BH", 1))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.content", hasSize(10)));
   }
 
   @Test
   public void tariff_api_provides_sample_tariff_data_for_CANADA_USMCA() throws Exception {
-    mockMvc.perform(get("/api/tariffs?countryCode={1}&productTypeId={2}&stagingBasketId={3}&page=1&size=10&sort=id,desc",
-      "CA-USMCA", 2, 1))
+    mockMvc.perform(get("/api/tariffs?countryCode={1}&stagingBasketId={3}&page=1&size=10&sort=id,desc",
+      "CA-USMCA", 1))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.content", hasSize(10)));
   }

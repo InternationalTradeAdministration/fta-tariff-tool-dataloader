@@ -16,18 +16,6 @@
       </div>
       <div class="md-layout-item">
         <md-field>
-          <label for="productTypeId">Product Type</label>
-          <md-select v-model="productTypeId" @md-selected="onProductTypeChange">
-            <md-option
-              v-for="productType in productTypes"
-              v-bind:key="productType.id"
-              v-bind:value="productType.id"
-            >{{productType.description}}</md-option>
-          </md-select>
-        </md-field>
-      </div>
-      <div class="md-layout-item">
-        <md-field>
           <label for="stagingBasketId">Staging Bsk</label>
           <md-select v-model="stagingBasketId">
             <md-option
@@ -124,15 +112,12 @@
 export default {
   name: "Tariffs",
   props: {
-    tariffRepository: Object,
-    countryRepository: Object,
-    productRepository: Object
+    tariffRepository: Object
   },
   async created() {
     this.loading = true;
     await this.fetchCountries();
     this.countryCode = this.countries[0].code;
-    await this.fetchProductTypes();
     await this.fetchStagingBaskets();
     await this.fetchTariffs();
     this.loading = false;
@@ -146,11 +131,9 @@ export default {
       size: 25,
       selectedCountry: null,
       countryCode: null,
-      productTypeId: -1,
       stagingBasketId: -1,
       totalPages: null,
       countries: [],
-      productTypes: [],
       stagingBaskets: [],
       tariffRateYears: []
     };
@@ -164,18 +147,15 @@ export default {
     },
     nextPage() {
       this.page++;
-      this.fetchProductTypes();
       this.fetchTariffs();
     },
     prevPage() {
       this.page--;
-      this.fetchProductTypes();
       this.fetchTariffs();
     },
     async fetchTariffs() {
       let { totalPages, tariffs } = await this.tariffRepository._getTariffs(
         this.countryCode,
-        this.productTypeId,
         this.stagingBasketId,
         this.page,
         this.size
@@ -195,21 +175,20 @@ export default {
     async fetchCountries() {
       this.countries = await this.tariffRepository._getCountries();
     },
-    async fetchProductTypes() {
-      let productTypes = await this.tariffRepository._getProductTypes(
-        this.countryCode
-      );
-      productTypes.push({ id: -1, description: "(All)" });
-      productTypes.sort(this.orderByDescritpion);
-      this.productTypes = productTypes;
-    },
     async fetchStagingBaskets() {
       let stagingBaskets = await this.tariffRepository._getStagingBaskets(
-        this.countryCode,
-        this.productTypeId
+        this.countryCode
       );
       stagingBaskets.push({ id: -1, description: "(All)" });
-      stagingBaskets.sort(this.orderByDescritpion);
+      stagingBaskets.sort((a, b) => {
+        if (a.description < b.description) {
+          return -1;
+        }
+        if (a.description > b.description) {
+          return 1;
+        }
+        return 0;
+      });
       this.stagingBaskets = stagingBaskets;
     },
     getRate(tariffLine, year) {
@@ -232,23 +211,8 @@ export default {
       this.$router.push({ name: "tariff", query: { id: tariff.id } });
     },
     async onCountryChange() {
-      this.productTypeId = -1;
-      this.stagingBasketId = -1;
-      await this.fetchProductTypes();
-      await this.fetchStagingBaskets();
-    },
-    async onProductTypeChange() {
       this.stagingBasketId = -1;
       await this.fetchStagingBaskets();
-    },
-    orderByDescritpion(a, b) {
-      if (a.description < b.description) {
-        return -1;
-      }
-      if (a.description > b.description) {
-        return 1;
-      }
-      return 0;
     }
   }
 };
