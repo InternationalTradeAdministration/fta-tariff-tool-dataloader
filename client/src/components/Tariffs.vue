@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div v-if="loading" class="loading">Loading...</div>
     <div class="md-layout md-gutter">
       <div class="md-layout-item">
         <md-field>
@@ -27,7 +26,7 @@
         </md-field>
       </div>
       <div class="md-layout-item">
-        <md-field>
+        <md-field md-clearable>
           <label>Tariff Line</label>
           <md-input v-model="tariffLine"></md-input>
         </md-field>
@@ -50,10 +49,10 @@
       </div>
     </div>
     <div class="tariff-nav">
-      <div class="page-nav"></div>
       <md-button class="nav-btn" @click="prevPage()" v-bind:disabled="isFirstPage()">Previous</md-button>
       <md-button class="nav-btn" @click="nextPage()" v-bind:disabled="isLastPage()">Next</md-button>
     </div>
+    <div v-if="loading" class="loading">Loading...</div>
     <md-table v-if="loading==false" v-model="tariffs" @md-selected="selectTariff">
       <md-table-row
         v-bind:alt="item.description"
@@ -122,7 +121,7 @@ export default {
   },
   async created() {
     this.loading = true;
-    await this.fetchCountries();
+    this.countries = await this.tariffRepository._getCountries();
     this.countryCode = this.countries[0].code;
     await this.fetchStagingBaskets();
     await this.fetchTariffs();
@@ -184,8 +183,9 @@ export default {
 
       this.tariffRateYears = years.sort(collator.compare);
     },
-    async fetchCountries() {
-      this.countries = await this.tariffRepository._getCountries();
+    async onCountryChange() {
+      this.stagingBasketId = -1;
+      await this.fetchStagingBaskets();
     },
     async fetchStagingBaskets() {
       let stagingBaskets = await this.tariffRepository._getStagingBaskets(
@@ -221,10 +221,6 @@ export default {
     },
     selectTariff(tariff) {
       this.$router.push({ name: "tariff", query: { id: tariff.id } });
-    },
-    async onCountryChange() {
-      this.stagingBasketId = -1;
-      await this.fetchStagingBaskets();
     }
   }
 };

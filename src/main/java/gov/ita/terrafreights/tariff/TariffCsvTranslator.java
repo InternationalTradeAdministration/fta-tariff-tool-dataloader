@@ -46,8 +46,6 @@ public class TariffCsvTranslator {
           .reporterName(csvRecord.get("ReporterName"))
           .partnerStartYear(intParser(csvRecord.get("PartnerStartYear")))
           .reporterStartYear(intParser(csvRecord.get("ReporterStartYear")))
-          .partnerAgreementName(csvRecord.get("PartnerAgreementName"))
-          .reporterAgreementName(csvRecord.get("ReporterAgreementName"))
           .quotaName(csvRecord.get("QuotaName"))
           .ruleText(csvRecord.get("Rule_Text"))
           .country(new Country(null, countryCode, null))

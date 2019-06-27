@@ -133,18 +133,6 @@ public class TariffCsvTranslatorTest {
   }
 
   @Test
-  public void translates_tariff_PartnerAgreementName_field() {
-    tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
-    assertEquals("Korea", tariffs.get(0).getPartnerAgreementName());
-  }
-
-  @Test
-  public void translates_tariff_ReporterAgreementName_field() {
-    tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
-    assertEquals("United States", tariffs.get(0).getReporterAgreementName());
-  }
-
-  @Test
   public void translates_tariff_QuotaName_field() {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("awesome", tariffs.get(0).getQuotaName());

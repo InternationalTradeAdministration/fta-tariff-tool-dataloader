@@ -36,8 +36,6 @@ public class Tariff {
   private String reporterName;
   private Integer partnerStartYear;
   private Integer reporterStartYear;
-  private String partnerAgreementName;
-  private String reporterAgreementName;
   private String quotaName;
   private String ruleText;
 

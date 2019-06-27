@@ -61,8 +61,6 @@ create table tariff (
     reporter_name varchar(255) null,
     partner_start_year int null,
     reporter_start_year int null,
-    partner_agreement_name varchar(255) null,
-    reporter_agreement_name varchar(255) null,
     quota_name varchar(255) null,
     rule_text varchar(5000) null,
     hs6_code varchar(6) not null,

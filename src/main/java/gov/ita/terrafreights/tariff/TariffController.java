@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TariffController {
@@ -33,6 +34,11 @@ public class TariffController {
       return tariffRepository.findByCountryCodeAndTariffLineContaining(countryCode, tariffLine, pageable);
 
     return tariffRepository.findByCountryCode(countryCode, pageable);
+  }
+
+  @GetMapping("/api/tariff")
+  public Optional<Tariff> tariff(@RequestParam("tariffId") Long tariffId) {
+    return tariffRepository.findById(tariffId);
   }
 
   @GetMapping("/api/staging_baskets")
