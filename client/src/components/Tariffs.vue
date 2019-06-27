@@ -32,26 +32,25 @@
           <md-input v-model="tariffLine"></md-input>
         </md-field>
       </div>
+      <div class="md-layout-item size-input">
+        <span>Size:</span>
+        <select v-model="size">
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <div class="md-layout-item page-input">
+        <span>Page:</span>
+        <input v-model="page">
+        of {{totalPages}}
+      </div>
       <div class="md-layout-item">
-        <md-button class="md-primary filter-btn" @click="fetchTariffs()">Filter</md-button>
+        <md-button class="md-primary request-btn" @click="fetchTariffs()">Request</md-button>
       </div>
     </div>
     <div class="tariff-nav">
-      <div class="page-nav">
-        <div class="size-input">
-          <span>Size:</span>
-          <select v-model="size" @change="fetchTariffs">
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-        </div>
-        <div class="page-input">
-          <span>Page:</span>
-          <input v-model="page">
-          of {{totalPages}}
-        </div>
-      </div>
+      <div class="page-nav"></div>
       <md-button class="nav-btn" @click="prevPage()" v-bind:disabled="isFirstPage()">Previous</md-button>
       <md-button class="nav-btn" @click="nextPage()" v-bind:disabled="isLastPage()">Next</md-button>
     </div>
@@ -94,24 +93,23 @@
 }
 
 .page-nav {
-  display: flex;
   margin-top: 12px;
+}
+
+.page-input {
+  margin-top: 24px;
 }
 
 .page-input input {
   width: 30px;
 }
 
-.size-input {
-  display: inline-table;
-  margin-right: 10px;
-}
-
 .size-input select {
+  margin-top: 24px;
   margin-left: 5px;
 }
 
-.filter-btn {
+.request-btn {
   margin-top: 15px;
 }
 </style>
