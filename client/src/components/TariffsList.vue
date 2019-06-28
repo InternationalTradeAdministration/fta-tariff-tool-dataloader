@@ -1,7 +1,11 @@
 <template>
   <div>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    >
     <div class="md-layout md-gutter">
-      <div class="md-layout-item">
+      <div class="md-layout-item md-size-15">
         <md-field>
           <label for="countries">Country</label>
           <md-select v-model="countryCode" @md-selected="onCountryChange">
@@ -25,27 +29,37 @@
           </md-select>
         </md-field>
       </div>
-      <div class="md-layout-item">
+      <div class="md-layout-item md-size-15">
         <md-field md-clearable>
           <label>Tariff Line</label>
           <md-input v-model="tariffLine"></md-input>
         </md-field>
       </div>
-      <div class="md-layout-item size-input">
-        <span>Size:</span>
-        <select v-model="size">
-          <option value="25">25</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
-      </div>
-      <div class="md-layout-item page-input">
-        <span>Page:</span>
-        <input v-model="page">
-        of {{totalPages}}
+      <!-- <div class="md-layout-item size-input">
+       
+      </div>-->
+      <div class="md-layout-item page-nav md-size-30">
+        <div class="size-input">
+          <span>Size:</span>
+          <select v-model="size">
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <div class="page-input">
+          <span>Page:</span>
+          <input v-model="page">
+          of {{totalPages}}
+        </div>
       </div>
       <div class="md-layout-item">
         <md-button class="md-primary request-btn" @click="fetchTariffs()">Request</md-button>
+      </div>
+      <div class="md-layout-item">
+        <md-button class="md-icon-button config-btn" @click="goToConfig()">
+          <md-icon class="fa fa-cog"></md-icon>
+        </md-button>
       </div>
     </div>
     <div class="tariff-nav">
@@ -92,30 +106,34 @@
 }
 
 .page-nav {
-  margin-top: 12px;
+  margin-top: 24px;
 }
 
 .page-input {
-  margin-top: 24px;
+  float: left;
 }
 
 .page-input input {
   width: 30px;
 }
 
-.size-input select {
-  margin-top: 24px;
-  margin-left: 5px;
+.size-input {
+  float: left;
+  margin-right: 10px;
 }
 
 .request-btn {
   margin-top: 15px;
 }
+.config-btn {
+  margin-top: 12px;
+  float: right;
+}
 </style>
 
 <script>
 export default {
-  name: "Tariffs",
+  name: "TariffsList",
   props: {
     tariffRepository: Object
   },
@@ -221,6 +239,9 @@ export default {
     },
     selectTariff(tariff) {
       this.$router.push({ name: "tariff", query: { id: tariff.id } });
+    },
+    goToConfig() {
+      this.$router.push({ name: "config" });
     }
   }
 };

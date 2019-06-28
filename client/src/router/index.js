@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import Tariff from '@/components/Tariff'
-import Tariffs from '@/components/Tariffs'
+import TariffsList from '@/components/TariffsList'
+import Config from '@/components/Config'
 import TariffRepository from '../repositories/TariffRepository'
 
 Vue.use(Router)
@@ -11,13 +11,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
-    {
-      path: '/tariffs',
-      name: 'tariffs',
-      component: Tariffs,
+      name: 'tariffsList',
+      component: TariffsList,
       props: {
         tariffRepository: new TariffRepository()
       }
@@ -29,6 +24,13 @@ export default new Router({
         id: route.query.id,
         tariffRepository: new TariffRepository()
       })
+    }, {
+      path: '/config',
+      name: 'config',
+      component: Config,
+      props: {
+        tariffRepository: new TariffRepository()
+      }
     }
   ]
 })
