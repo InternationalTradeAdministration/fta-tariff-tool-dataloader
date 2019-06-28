@@ -7,14 +7,8 @@
     <div class="md-layout md-gutter">
       <div class="md-layout-item">
         <md-field>
-          <label for="countries">Country</label>
-          <md-select v-model="countryCode">
-            <md-option
-              v-for="country in countries"
-              v-bind:key="country.code"
-              v-bind:value="country.code"
-            >{{country.name}}</md-option>
-          </md-select>
+          <label>HS6</label>
+          <md-input v-model="hs6" v-bind:alt="hsdescription" v-bind:title="hsdescription"></md-input>
         </md-field>
         <md-field>
           <label>Tariff Line</label>
@@ -30,12 +24,7 @@
         </md-field>
       </div>
       <div class="md-layout-item">
-        <md-autocomplete
-          v-model="stagingBasket"
-          :md-options="stagingBaskets"
-          md-layout="box"
-          md-dense
-        >
+        <md-autocomplete v-model="stagingBasket" :md-options="stagingBasketOptions">
           <label>Staging Basket</label>
         </md-autocomplete>
         <md-field>
@@ -50,9 +39,14 @@
           <label>Final Year</label>
           <md-input v-model="finalYear" type="number"></md-input>
         </md-field>
+        <div>
+          <label class="radio-lbl">Eliminated</label>
+          <md-radio v-model="tariffEliminated" :value="true">True</md-radio>
+          <md-radio v-model="tariffEliminated" :value="false">False</md-radio>
+        </div>
       </div>
       <div class="md-layout-item">
-        <md-autocomplete v-model="productType" :md-options="productTypes" md-layout="box" md-dense>
+        <md-autocomplete v-model="productType" :md-options="productTypeOptions">
           <label>Product Types</label>
         </md-autocomplete>
         <md-field>
@@ -94,22 +88,25 @@
   display: flex;
   justify-content: flex-end;
 }
+.radio-lbl {
+  margin-right: 16px;
+}
 </style>
 <script>
 export default {
   name: "Tariff",
   props: {
-    id: String,
+    id: Number,
     tariffRepository: Object
   },
   async created() {
-    this.countries = await this.tariffRepository._getCountries();
+    this.countryOptions = await this.tariffRepository._getCountries();
 
     let stagingBaskets = await this.tariffRepository._getAllStagingBaskets();
-    this.stagingBaskets = stagingBaskets.map(sb => sb.description);
+    this.stagingBasketOptions = stagingBaskets.map(sb => sb.description);
 
     let productTypes = await this.tariffRepository._getAllProductTypes();
-    this.productTypes = productTypes.map(pt => pt.description);
+    this.productTypeOptions = productTypes.map(pt => pt.description);
 
     let tariff = await this.tariffRepository._getTariff(this.id);
     this.tariffLine = tariff.tariffLine;
@@ -128,12 +125,15 @@ export default {
     this.quotaName = tariff.quotaName;
     this.tariffRateQuota = tariff.tariffRateQuota;
     this.tariffRateQuotaNotes = tariff.tariffRateQuotaNotes;
+    this.tariffEliminated = tariff.tariffEliminated;
+    this.hs6 = tariff.hs6.code;
+    this.hsdescription = tariff.hs6.description;
   },
   data() {
     return {
-      countries: [],
-      stagingBaskets: [],
-      productTypes: [],
+      countryOptions: [],
+      stagingBasketOptions: [],
+      productTypeOptions: [],
       tariffLine: null,
       description: null,
       finalYear: null,
@@ -150,6 +150,9 @@ export default {
       tariffRateQuota: null,
       tariffRateQuotaNotes: null,
       quotaName: null,
+      tariffEliminated: null,
+      hs6: null,
+      hsdescription: null
     };
   }
 };

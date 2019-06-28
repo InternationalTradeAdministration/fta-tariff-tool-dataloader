@@ -6,7 +6,7 @@
           <label for="countries">Country</label>
           <md-select v-model="countryCode" @md-selected="onCountryChange">
             <md-option
-              v-for="country in countries"
+              v-for="country in countryOptions"
               v-bind:key="country.code"
               v-bind:value="country.code"
             >{{country.name}}</md-option>
@@ -18,7 +18,7 @@
           <label for="stagingBasketId">Staging Bsk</label>
           <md-select v-model="stagingBasketId">
             <md-option
-              v-for="stagingBasket in stagingBaskets"
+              v-for="stagingBasket in stagingBasketOptions"
               v-bind:key="stagingBasket.id"
               v-bind:value="stagingBasket.id"
             >{{stagingBasket.description}}</md-option>
@@ -121,8 +121,8 @@ export default {
   },
   async created() {
     this.loading = true;
-    this.countries = await this.tariffRepository._getCountries();
-    this.countryCode = this.countries[0].code;
+    this.countryOptions = await this.tariffRepository._getCountries();
+    this.countryCode = this.countryOptions[0].code;
     await this.fetchStagingBaskets();
     await this.fetchTariffs();
     this.loading = false;
@@ -138,8 +138,8 @@ export default {
       stagingBasketId: -1,
       tariffLine: null,
       totalPages: null,
-      countries: [],
-      stagingBaskets: [],
+      countryOptions: [],
+      stagingBasketOptions: [],
       tariffRateYears: []
     };
   },
@@ -201,7 +201,7 @@ export default {
         }
         return 0;
       });
-      this.stagingBaskets = stagingBaskets;
+      this.stagingBasketOptions = stagingBaskets;
     },
     getRate(tariffLine, year) {
       if (tariffLine.rates) {
