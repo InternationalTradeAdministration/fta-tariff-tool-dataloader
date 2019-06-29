@@ -25,4 +25,8 @@ public interface TariffRepository extends JpaRepository<Tariff, Long> {
     "join Country c on t.country.id = c.id " +
     "where c.code = ?1")
   List<StagingBasket> findAllStagingBasketsByCountry(String countryCode);
+
+  @Query(value = "SELECT new gov.ita.terrafreights.tariff.TariffCount(c.code, COUNT(t) as total) " +
+    "FROM Tariff t join Country c on t.country.id = c.id  GROUP BY c.id")
+  List<TariffCount> tariffCountsByCountry();
 }

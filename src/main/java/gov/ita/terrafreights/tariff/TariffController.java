@@ -45,4 +45,9 @@ public class TariffController {
   public List<StagingBasket> stagingBaskets(@RequestParam("countryCode") String countryCode) {
     return tariffRepository.findAllStagingBasketsByCountry(countryCode);
   }
+
+  @GetMapping("/api/tariff_counts_by_country")
+  public List<TariffCount> tariffCountsByCountry() {
+    return tariffRepository.tariffCountsByCountry();
+  }
 }
