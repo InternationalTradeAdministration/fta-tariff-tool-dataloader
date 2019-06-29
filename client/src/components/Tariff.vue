@@ -11,86 +11,152 @@
         <md-button class="md-primary">Save</md-button>
       </div>
     </div>
-    <div class="md-layout md-gutter">
-      <div class="md-layout-item">
-        <md-field>
-          <label>Tariff Line</label>
-          <md-input v-model="tariffLine"></md-input>
-        </md-field>
-        <md-field>
-          <label>HS6</label>
-          <md-input v-model="hs6" v-bind:alt="hsdescription" v-bind:title="hsdescription"></md-input>
-        </md-field>
-        <md-field>
-          <label>Base Rate</label>
-          <md-input v-model="baseRate"></md-input>
-        </md-field>
-        <md-field>
-          <label>Sector Code</label>
-          <md-input v-model="sectorCode"></md-input>
-        </md-field>
-      </div>
-      <div class="md-layout-item">
-        <md-autocomplete v-model="stagingBasket" :md-options="stagingBasketOptions">
-          <label>Staging Basket</label>
-        </md-autocomplete>
-        <md-field>
-          <label>Partner Start Year</label>
-          <md-input v-model="partnerStartYear" type="number"></md-input>
-        </md-field>
-        <md-field>
-          <label>Partner</label>
-          <md-input v-model="partnerName"></md-input>
-        </md-field>
-        <md-field>
-          <label>Final Year</label>
-          <md-input v-model="finalYear" type="number"></md-input>
-        </md-field>
-        <div>
-          <label class="radio-lbl">Eliminated</label>
-          <md-radio v-model="tariffEliminated" :value="true">True</md-radio>
-          <md-radio v-model="tariffEliminated" :value="false">False</md-radio>
+    <div class="tariff-container">
+      <div class="section-a">
+        <div class="md-layout md-gutter">
+          <div class="md-layout-item md-size-15">
+            <md-field>
+              <label>Tariff Line</label>
+              <md-input v-model="tariffLine"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-size-15">
+            <md-field>
+              <label>HS6</label>
+              <md-input v-model="hs6" v-bind:alt="hsdescription" v-bind:title="hsdescription"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-size-30">
+            <md-autocomplete v-model="stagingBasket" :md-options="stagingBasketOptions">
+              <label>Staging Basket</label>
+            </md-autocomplete>
+          </div>
+          <div class="md-layout-item md-size-20">
+            <md-autocomplete v-model="productType" :md-options="productTypeOptions">
+              <label>Product Types</label>
+            </md-autocomplete>
+          </div>
+          <div class="md-layout-item md-size-15">
+            <md-field>
+              <label>Final Year</label>
+              <md-input v-model="finalYear" type="number"></md-input>
+            </md-field>
+          </div>
+        </div>
+        <div class="md-layout md-gutter">
+          <div class="md-layout-item md-size-25">
+            <md-field>
+              <label>Partner</label>
+              <md-input v-model="partnerName"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-size-15">
+            <md-field>
+              <label>Start Year</label>
+              <md-input v-model="partnerStartYear" type="number"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-size-25">
+            <md-field>
+              <label>Reporter</label>
+              <md-input v-model="reporterName"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-size-15">
+            <md-field>
+              <label>Start Year</label>
+              <md-input v-model="reporterStartYear" type="number"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-size-15">
+            <md-field>
+              <label>Sector</label>
+              <md-input v-model="sectorCode"></md-input>
+            </md-field>
+          </div>
+        </div>
+        <div class="md-layout md-gutter">
+          <div class="md-layout-item md-size-25">
+            <md-field>
+              <label>Base Rate</label>
+              <md-input v-model="baseRate"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-size-20">
+            <md-field>
+              <label>Quota Name</label>
+              <md-input v-model="quotaName"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-size-20">
+            <md-field>
+              <label>Tariff Rate Quota</label>
+              <md-input v-model="tariffRateQuota"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-size-35">
+            <label class="radio-lbl">Eliminated</label>
+            <md-radio v-model="tariffEliminated" :value="true">True</md-radio>
+            <md-radio v-model="tariffEliminated" :value="false">False</md-radio>
+          </div>
+        </div>
+        <div class="md-layout md-gutter">
+          <div class="md-layout-item">
+            <md-field>
+              <label>Description</label>
+              <md-textarea v-model="description"></md-textarea>
+            </md-field>
+          </div>
+        </div>
+        <div class="md-layout md-gutter">
+          <div class="md-layout-item">
+            <md-field>
+              <label>Rule Text</label>
+              <md-textarea v-model="ruleText"></md-textarea>
+            </md-field>
+          </div>
+        </div>
+        <div class="md-layout md-gutter">
+          <div class="md-layout-item">
+            <md-field>
+              <label>Tariff Rate Quota Notes</label>
+              <md-textarea v-model="tariffRateQuotaNotes"></md-textarea>
+            </md-field>
+          </div>
         </div>
       </div>
-      <div class="md-layout-item">
-        <md-autocomplete v-model="productType" :md-options="productTypeOptions">
-          <label>Product Types</label>
-        </md-autocomplete>
-        <md-field>
-          <label>Reporter Start Year</label>
-          <md-input v-model="reporterStartYear" type="number"></md-input>
-        </md-field>
-        <md-field>
-          <label>Reporter</label>
-          <md-input v-model="reporterName"></md-input>
-        </md-field>
-        <md-field>
-          <label>Quota Name</label>
-          <md-input v-model="quotaName"></md-input>
-        </md-field>
-        <md-field>
-          <label>Tariff Rate Quota</label>
-          <md-input v-model="tariffRateQuota"></md-input>
-        </md-field>
-      </div>
-      <div class="md-layout-item">
-        <md-field>
-          <label>Description</label>
-          <md-textarea v-model="description"></md-textarea>
-        </md-field>
-        <md-field>
-          <label>Rule Text</label>
-          <md-textarea v-model="ruleText"></md-textarea>
-        </md-field>
-        <md-field>
-          <label>Tariff Rate Quota Notes</label>
-          <md-textarea v-model="tariffRateQuotaNotes"></md-textarea>
-        </md-field>
+      <div class="section-b">
+        <div>
+          <label>Rates</label>
+          <md-list v-for="rate in rates" v-bind:key="rate.id">
+            <li>
+              <input class="rate-year-input" v-bind:value="rate.year" />
+              <input v-bind:value="rate.value" />
+            </li>
+          </md-list>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <style>
+input[type=number] {
+  width: 0px;
+}
+.tariff-container {
+  display: flex;
+}
+.section-a {
+  width: 900px;
+}
+.section-b {
+  margin-left: 25px;
+  width: 325px;
+}
+.rate-year-input {
+  width: 40px;
+  margin-right: 10px;
+}
 .tariff-btns {
   display: flex;
   justify-content: flex-end;
@@ -135,6 +201,7 @@ export default {
     this.tariffEliminated = tariff.tariffEliminated;
     this.hs6 = tariff.hs6.code;
     this.hsdescription = tariff.hs6.description;
+    this.rates = tariff.rates;
   },
   data() {
     return {
@@ -159,7 +226,8 @@ export default {
       quotaName: null,
       tariffEliminated: null,
       hs6: null,
-      hsdescription: null
+      hsdescription: null,
+      rates: []
     };
   },
   methods: {
