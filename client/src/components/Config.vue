@@ -1,7 +1,17 @@
 <template>
-  <div></div>
+  <div>
+    <md-field>
+      <label>Upload</label>
+      <md-file v-model="fileName" @md-change="onFileUpload($event)"></md-file>
+    </md-field>
+    {{fileName}}
+    <br />
+    {{fileContents}}
+  </div>
 </template>
 <script>
+import { readUploadedFileAsText } from "./FileHelper";
+
 export default {
   name: "TariffsList",
   props: {
@@ -13,7 +23,15 @@ export default {
   data() {
     return {
       countryOptions: [],
+      fileName: null,
+      fileContents: null
     };
+  },
+  methods: {
+    async onFileUpload(event) {
+      let fileContents = await readUploadedFileAsText(event[0]);
+      this.fileContents = fileContents;
+    }
   }
-}
+};
 </script>

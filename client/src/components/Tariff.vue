@@ -7,12 +7,12 @@
     <div class="md-layout md-gutter">
       <div class="md-layout-item">
         <md-field>
-          <label>HS6</label>
-          <md-input v-model="hs6" v-bind:alt="hsdescription" v-bind:title="hsdescription"></md-input>
-        </md-field>
-        <md-field>
           <label>Tariff Line</label>
           <md-input v-model="tariffLine"></md-input>
+        </md-field>
+        <md-field>
+          <label>HS6</label>
+          <md-input v-model="hs6" v-bind:alt="hsdescription" v-bind:title="hsdescription"></md-input>
         </md-field>
         <md-field>
           <label>Base Rate</label>
