@@ -1,13 +1,9 @@
 <template>
   <div>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    >
     <div class="md-layout md-gutter">
       <div class="md-layout-item md-size-15">
         <md-field>
-          <label for="countries">Country</label>
+          <label>Country</label>
           <md-select v-model="countryCode" @md-selected="onCountryChange">
             <md-option
               v-for="country in countryOptions"
@@ -19,7 +15,7 @@
       </div>
       <div class="md-layout-item">
         <md-field>
-          <label for="stagingBasketId">Staging Bsk</label>
+          <label>Staging Bsk</label>
           <md-select v-model="stagingBasketId">
             <md-option
               v-for="stagingBasket in stagingBasketOptions"
@@ -35,9 +31,6 @@
           <md-input v-model="tariffLine"></md-input>
         </md-field>
       </div>
-      <!-- <div class="md-layout-item size-input">
-       
-      </div>-->
       <div class="md-layout-item page-nav md-size-30">
         <div class="size-input">
           <span>Size:</span>
@@ -125,6 +118,7 @@
 .request-btn {
   margin-top: 15px;
 }
+
 .config-btn {
   margin-top: 12px;
   float: right;

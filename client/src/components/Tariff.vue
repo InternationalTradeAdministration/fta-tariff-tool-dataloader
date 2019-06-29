@@ -1,8 +1,15 @@
 <template>
   <div>
-    <div class="tariff-btns">
-      <md-button class="md-accent">Delete</md-button>
-      <md-button class="md-primary">Save</md-button>
+    <div class="md-layout md-gutter">
+      <div class="md-layout-item md-size-5">
+        <md-button class="md-icon-button config-btn" @click="goToTariffsList()">
+          <md-icon class="fa fa-angle-double-left"></md-icon>
+        </md-button>
+      </div>
+      <div class="md-layout-item md-size-95 tariff-btns">
+        <md-button class="md-accent">Delete</md-button>
+        <md-button class="md-primary">Save</md-button>
+      </div>
     </div>
     <div class="md-layout md-gutter">
       <div class="md-layout-item">
@@ -154,6 +161,11 @@ export default {
       hs6: null,
       hsdescription: null
     };
+  },
+  methods: {
+    goToTariffsList() {
+      this.$router.push({ name: "tariffsList" });
+    }
   }
 };
 </script>
