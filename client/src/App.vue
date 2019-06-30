@@ -24,4 +24,8 @@ export default {
   margin: auto;
   width: 90%;
 }
+
+.top-btn {
+  margin-top: 8px;
+}
 </style>

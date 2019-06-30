@@ -13,7 +13,7 @@
           </md-select>
         </md-field>
       </div>
-      <div class="md-layout-item">
+      <div class="md-layout-item md-size-20">
         <md-field>
           <label>Staging Bsk</label>
           <md-select v-model="stagingBasketId">
@@ -31,7 +31,7 @@
           <md-input v-model="tariffLine"></md-input>
         </md-field>
       </div>
-      <div class="md-layout-item page-nav md-size-30">
+      <div class="md-layout-item page-nav md-size-35">
         <div class="size-input">
           <span>Size:</span>
           <select v-model="size">
@@ -42,15 +42,15 @@
         </div>
         <div class="page-input">
           <span>Page:</span>
-          <input v-model="page">
+          <input v-model="page" />
           of {{totalPages}}
         </div>
       </div>
-      <div class="md-layout-item">
+      <div class="md-layout-item md-size-10">
         <md-button class="md-primary request-btn" @click="fetchTariffs()">Request</md-button>
       </div>
-      <div class="md-layout-item">
-        <md-button class="md-icon-button config-btn" @click="goToConfig()">
+      <div class="md-layout-item  md-size-5">
+        <md-button class="md-icon-button config-btn top-btn" @click="goToConfig()">
           <md-icon class="fa fa-cog"></md-icon>
         </md-button>
       </div>
@@ -116,11 +116,10 @@
 }
 
 .request-btn {
-  margin-top: 15px;
+  margin-top: 8px;
 }
 
 .config-btn {
-  margin-top: 12px;
   float: right;
 }
 </style>

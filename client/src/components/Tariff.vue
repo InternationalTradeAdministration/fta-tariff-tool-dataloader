@@ -2,7 +2,7 @@
   <div>
     <div class="md-layout md-gutter">
       <div class="md-layout-item md-size-5">
-        <md-button class="md-icon-button config-btn" @click="goToTariffsList()">
+        <md-button class="md-icon-button top-btn" @click="goToTariffsList()">
           <md-icon class="fa fa-angle-double-left"></md-icon>
         </md-button>
       </div>
@@ -127,11 +127,19 @@
       </div>
       <div class="section-b">
         <div>
-          <label>Rates</label>
-          <md-list v-for="rate in rates" v-bind:key="rate.id">
+          <div class="rates-header">
+            <label>Rates</label>
+            <md-button class="md-icon-button" @click="addRate()">
+              <md-icon class="fa fa-plus-circle"></md-icon>
+            </md-button>
+          </div>
+          <md-list v-for="(rate, index) in rates" v-bind:key="rate.id">
             <li>
               <input class="rate-year-input" v-bind:value="rate.year" />
-              <input v-bind:value="rate.value" />
+              <input class="rate-value-input" v-bind:value="rate.value" />
+              <button class="remove-rate" @click="removeRate(index)">
+                <i class="fa fa-times fa-xs"></i>
+              </button>
             </li>
           </md-list>
         </div>
@@ -140,7 +148,11 @@
   </div>
 </template>
 <style>
-input[type=number] {
+.rates-header {
+  display: flex;
+  justify-content: space-between;
+}
+input[type="number"] {
   width: 0px;
 }
 .tariff-container {
@@ -151,11 +163,15 @@ input[type=number] {
 }
 .section-b {
   margin-left: 25px;
-  width: 325px;
+  width: 280px;
 }
 .rate-year-input {
   width: 40px;
-  margin-right: 10px;
+  margin-right: 8px;
+}
+.rate-value-input {
+  width: 175px;
+  margin-right: 8px;
 }
 .tariff-btns {
   display: flex;
@@ -233,6 +249,16 @@ export default {
   methods: {
     goToTariffsList() {
       this.$router.push({ name: "tariffsList" });
+    },
+    addRate() {
+      let rates = [...this.rates];
+      rates.push({ id: null, year: null, value: null });
+      this.rates = rates;
+    },
+    removeRate(index) {
+      let rates = [...this.rates];
+      rates.splice(index, 1);
+      this.rates = rates;
     }
   }
 };

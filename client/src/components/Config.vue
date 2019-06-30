@@ -2,7 +2,7 @@
   <div>
     <div class="md-layout md-gutter">
       <div class="md-layout-item md-size-5">
-        <md-button class="md-icon-button config-btn" @click="goToTariffsList()">
+        <md-button class="md-icon-button top-btn" @click="goToTariffsList()">
           <md-icon class="fa fa-angle-double-left"></md-icon>
         </md-button>
       </div>
@@ -25,17 +25,13 @@
         </md-field>
       </div>
       <div class="md-layout-item md-size-10">
-        <md-button class="md-primary upload-btn" @click="uploadFile()">Upload</md-button>
+        <md-button class="md-primary top-btn" @click="uploadFile()">Upload</md-button>
       </div>
     </div>
     {{fileContents}}
   </div>
 </template>
-<style>
-.upload-btn {
-  margin-top: 15px;
-}
-</style>
+
 <script>
 import { readUploadedFileAsText } from "./FileHelper";
 
