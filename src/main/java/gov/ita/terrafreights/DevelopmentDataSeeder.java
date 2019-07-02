@@ -14,7 +14,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-@Profile("development")
+@Profile("!production")
 public class DevelopmentDataSeeder implements DataSeeder {
 
   private SeedDataProperties seedDataProperties;

@@ -1,4 +1,4 @@
-# Terra Freights
+# ITA Tariff Tool
 A tool that helps maintain Tariff Rates
 
 ## Local Development

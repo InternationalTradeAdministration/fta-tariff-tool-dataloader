@@ -1,4 +1,4 @@
-# terra-freights-client
+# Tariff Tool Client
 
 > A tool that helps maintain Tariff Rates
 

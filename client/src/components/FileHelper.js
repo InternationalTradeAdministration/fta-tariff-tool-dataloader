@@ -1,15 +1,14 @@
+
 export const readUploadedFileAsText = (inputFile) => {
-    const temporaryFileReader = new FileReader();
+  const temporaryFileReader = new window.FileReader()
+  return new Promise((resolve, reject) => {
+    temporaryFileReader.onerror = () => {
+      temporaryFileReader.abort()
+    }
 
-    return new Promise((resolve, reject) => {
-        temporaryFileReader.onerror = () => {
-            temporaryFileReader.abort();
-            reject(new DOMException("Problem parsing input file."));
-        };
-
-        temporaryFileReader.onload = () => {
-            resolve(temporaryFileReader.result);
-        };
-        temporaryFileReader.readAsText(inputFile);
-    });
-};
+    temporaryFileReader.onload = () => {
+      resolve(temporaryFileReader.result)
+    }
+    temporaryFileReader.readAsText(inputFile)
+  })
+}

@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 export default class TariffRepository {
-  async _getTariffs(countryCode, stagingBasketId, tariffLine, page, size) {
+  async _getTariffs (countryCode, stagingBasketId, tariffLine, page, size) {
     let tariffsResponse = await axios.get('/api/tariffs', {
       params: {
         countryCode,
@@ -11,7 +11,7 @@ export default class TariffRepository {
         size,
         sort: 'tariffLine,desc'
       }
-    });
+    })
 
     return {
       totalPages: tariffsResponse.data.totalPages,
@@ -19,38 +19,38 @@ export default class TariffRepository {
     }
   }
 
-  async _getTariff(tariffId) {
+  async _getTariff (tariffId) {
     let tariffResponse = await axios.get('/api/tariff', {
       params: {
         tariffId
       }
-    });
+    })
 
-    return tariffResponse.data;
+    return tariffResponse.data
   }
 
-  async _getCountries() {
-    let countriesResponse = await axios.get('/api/countries');
-    return countriesResponse.data;
+  async _getCountries () {
+    let countriesResponse = await axios.get('/api/countries')
+    return countriesResponse.data
   }
 
-  async _getAllStagingBaskets() {
+  async _getAllStagingBaskets () {
     let stagingBasketsResponse = await axios.get('/api/staging_baskets/all')
-    return stagingBasketsResponse.data;
+    return stagingBasketsResponse.data
   }
 
-  async _getAllProductTypes() {
+  async _getAllProductTypes () {
     let productTypesResponse = await axios.get('/api/product_types/all')
-    return productTypesResponse.data;
+    return productTypesResponse.data
   }
 
-  async _getStagingBaskets(countryCode, productTypeId) {
+  async _getStagingBaskets (countryCode, productTypeId) {
     let stagingBasketsResponse = await axios.get('/api/staging_baskets', {
       params: {
         countryCode,
         productTypeId
       }
-    });
-    return stagingBasketsResponse.data;
+    })
+    return stagingBasketsResponse.data
   }
 }
