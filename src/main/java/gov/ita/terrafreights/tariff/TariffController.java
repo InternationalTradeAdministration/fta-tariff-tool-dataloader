@@ -36,6 +36,11 @@ public class TariffController {
     return tariffRepository.findByCountryCode(countryCode, pageable);
   }
 
+  @GetMapping("/api/tariffs/all")
+  public List<Tariff> tariffs(Pageable pageable, @RequestParam("countryCode") String countryCode) {
+    return tariffRepository.findByCountryCode(countryCode);
+  }
+
   @GetMapping("/api/tariff")
   public Optional<Tariff> tariff(@RequestParam("tariffId") Long tariffId) {
     return tariffRepository.findById(tariffId);

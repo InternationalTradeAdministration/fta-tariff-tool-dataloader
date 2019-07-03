@@ -11,6 +11,8 @@ import java.util.List;
 
 @Repository
 public interface TariffRepository extends JpaRepository<Tariff, Long> {
+  List<Tariff> findByCountryCode(String countryCode);
+
   Page<Tariff> findByCountryCode(String countryCode, Pageable pageable);
 
   Page<Tariff> findByCountryCodeAndStagingBasketId(String countryCode, Long stagingBasketId, Pageable pageable);

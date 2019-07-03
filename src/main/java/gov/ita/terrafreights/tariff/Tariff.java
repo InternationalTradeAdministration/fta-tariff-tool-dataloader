@@ -57,42 +57,6 @@ public class Tariff {
   @OneToMany
   private List<Rate> rates;
 
-  public String getHsPrefix1() {
-    return deriveHsPrefix(1);
-  }
-
-  public String getHsPrefix2() {
-    return deriveHsPrefix(2);
-  }
-
-  public String getHsPrefix3() {
-    return deriveHsPrefix(3);
-  }
-
-  public String getHsPrefix4() {
-    return deriveHsPrefix(4);
-  }
-
-  public String getHsPrefix5() {
-    return deriveHsPrefix(5);
-  }
-
-  public String getHsPrefix6() {
-    return deriveHsPrefix(6);
-  }
-
-  public String getHsPrefix7() {
-    return deriveHsPrefix(7);
-  }
-
-  public String getHsPrefix8() {
-    return deriveHsPrefix(8);
-  }
-
-  public String getHsPrefix9() {
-    return deriveHsPrefix(9);
-  }
-
   private String deriveHsPrefix(int position) {
     if (tariffLine == null || tariffLine.length() < position) return null;
     return tariffLine.substring(0, position);
