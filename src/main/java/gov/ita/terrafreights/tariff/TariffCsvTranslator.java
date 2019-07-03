@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TariffCsvTranslator {
@@ -31,6 +33,8 @@ public class TariffCsvTranslator {
           .withTrim()
           .withNullString("")
       );
+
+      Map<String, Integer> headers = csvParser.getHeaderMap();
 
       for (CSVRecord csvRecord : csvParser) {
         Tariff tf = Tariff.builder()
@@ -64,46 +68,38 @@ public class TariffCsvTranslator {
             csvRecord.get("ProductType")
           )).build();
 
-
         String baseRate = csvRecord.get("Base_Rate_Alt") != null ?
           csvRecord.get("Base_Rate_Alt") :
           csvRecord.get("Base_Rate");
         tf.setBaseRate(baseRate);
 
         List<Rate> rates = new ArrayList<>();
+        Map<Integer, String> tempRates = new HashMap<>();
+        headers.forEach((header, position) -> {
+          if (header.substring(0, 1).equals("Y") || (header.length() > 3 && header.substring(0, 4).equals("Alt_"))) {
+            Integer year = Integer.parseInt(header.replaceAll("[^\\d]", ""));
+            String value = null;
+            String alt = null;
+
+            if (header.contains("_Alt") || header.contains("Alt_")) {
+              alt = csvRecord.get(header);
+            } else {
+              value = csvRecord.get(header);
+            }
+
+            if (value != null && doubleParser(value) != 0) tempRates.put(year, value);
+            if (alt != null) tempRates.put(year, alt);
+          }
+        });
+        tempRates.forEach((year, value) -> rates.add(new Rate(year, value)));
+
         List<Link> links = new ArrayList<>();
-        if (countryCode.contains("USMCA")) {
-          for (int i = 1; i <= 30; i++) {
-            String value = csvRecord.get("YEAR".concat(String.valueOf(i)));
-            String alt = csvRecord.get("YEAR".concat(String.valueOf(i).concat("_Alt")));
-            if (alt != null) {
-              rates.add(new Rate(i, alt));
-            } else if (value != null && doubleParser(value) != 0) {
-              rates.add(new Rate(i, value));
-            }
-          }
-
-          if (csvRecord.get("Link_Url") != null)
-            links.add(new Link(null, csvRecord.get("Link_Url"), csvRecord.get("Link_Text")));
-          if (csvRecord.get("Link_Url2") != null)
-            links.add(new Link(null, csvRecord.get("Link_Url2"), csvRecord.get("Link_Text2")));
-          if (csvRecord.get("Link_Url3") != null)
-            links.add(new Link(null, csvRecord.get("Link_Url3"), csvRecord.get("Link_Text3")));
-
-        } else {
-          for (int i = 2004; i <= 2041; i++) {
-            String value = csvRecord.get("Y".concat(String.valueOf(i)));
-            String alt = csvRecord.get("Alt_".concat(String.valueOf(i)));
-            if (alt != null) {
-              rates.add(new Rate(i, alt));
-            } else if (value != null && doubleParser(value) != 0) {
-              rates.add(new Rate(i, value));
-            }
-          }
-
-          if (csvRecord.get("Link_Url") != null)
-            links.add(new Link(null, csvRecord.get("Link_Url"), csvRecord.get("Link_Text")));
-        }
+        if (headers.containsKey("Link_Url") && csvRecord.get("Link_Url") != null)
+          links.add(new Link(null, csvRecord.get("Link_Url"), csvRecord.get("Link_Text")));
+        if (headers.containsKey("Link_Url2") && csvRecord.get("Link_Url2") != null)
+          links.add(new Link(null, csvRecord.get("Link_Url2"), csvRecord.get("Link_Text2")));
+        if (headers.containsKey("Link_Url3") && csvRecord.get("Link_Url3") != null)
+          links.add(new Link(null, csvRecord.get("Link_Url3"), csvRecord.get("Link_Text3")));
 
         tf.setRates(rates);
         tf.setLinks(links);

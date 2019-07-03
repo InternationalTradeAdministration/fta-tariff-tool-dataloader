@@ -90,7 +90,7 @@ public class DevelopmentDataSeederTest {
   @Test
   public void tariff_api_provides_sample_tariff_data_for_CANADA_USMCA() throws Exception {
     mockMvc.perform(get("/api/tariffs?countryCode={1}&stagingBasketId={2}&page=0&size=10&sort=id,desc",
-      "CA-USMCA", 1))
+      "CA", 1))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.content", hasSize(10)));
   }
