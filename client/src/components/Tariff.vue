@@ -163,14 +163,14 @@ input[type="number"] {
 }
 .section-b {
   margin-left: 25px;
-  width: 280px;
+  width: 310px;
 }
 .rate-year-input {
   width: 40px;
   margin-right: 8px;
 }
 .rate-value-input {
-  width: 175px;
+  width: 210px;
   margin-right: 8px;
 }
 .tariff-btns {
