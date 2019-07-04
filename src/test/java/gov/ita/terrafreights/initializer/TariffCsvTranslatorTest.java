@@ -99,7 +99,7 @@ public class TariffCsvTranslatorTest {
   @Test
   public void translates_tariff_TariffRateQuotaNotes_field() {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
-    assertEquals("For more information, please see the U.S. Department of Agriculture", tariffs.get(0).getTariffRateQuotaNotes());
+    assertEquals("For more information, please see the U.S. Department of Agriculture", tariffs.get(0).getTariffRateQuotaNote());
   }
 
   @Test

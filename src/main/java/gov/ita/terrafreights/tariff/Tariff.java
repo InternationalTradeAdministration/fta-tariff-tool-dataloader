@@ -1,5 +1,6 @@
 package gov.ita.terrafreights.tariff;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.ita.terrafreights.tariff.country.Country;
 import gov.ita.terrafreights.tariff.hs6.HS6;
 import gov.ita.terrafreights.tariff.link.Link;
@@ -12,7 +13,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Entity
@@ -30,7 +33,7 @@ public class Tariff {
   private String baseRate;
   private Integer finalYear;
   private Integer tariffRateQuota;
-  private String tariffRateQuotaNotes;
+  private String tariffRateQuotaNote;
   private Boolean tariffEliminated;
   private String partnerName;
   private String reporterName;
@@ -57,8 +60,10 @@ public class Tariff {
   @OneToMany
   private List<Rate> rates;
 
-  private String deriveHsPrefix(int position) {
-    if (tariffLine == null || tariffLine.length() < position) return null;
-    return tariffLine.substring(0, position);
+  @JsonProperty("annualRates")
+  public Map<String, String> getAnnualRates() {
+    Map<String, String> annualRates = new HashMap<>();
+    rates.forEach(rate -> annualRates.put("Y" + rate.getYear(), rate.getValue()));
+    return annualRates;
   }
 }

@@ -44,7 +44,7 @@ public class TariffCsvTranslator {
           .sectorCode(csvRecord.get("Sector_Code"))
           .finalYear(intParser(csvRecord.get("Final_Year")))
           .tariffRateQuota(intParser(csvRecord.get("TRQ_Quota")))
-          .tariffRateQuotaNotes(csvRecord.get("TRQ_Note"))
+          .tariffRateQuotaNote(csvRecord.get("TRQ_Note"))
           .tariffEliminated(Boolean.parseBoolean(csvRecord.get("Tariff_Eliminated")))
           .partnerName(csvRecord.get("PartnerName"))
           .reporterName(csvRecord.get("ReporterName"))
@@ -68,9 +68,8 @@ public class TariffCsvTranslator {
             csvRecord.get("ProductType")
           )).build();
 
-        String baseRate = csvRecord.get("Base_Rate_Alt") != null ?
-          csvRecord.get("Base_Rate_Alt") :
-          csvRecord.get("Base_Rate");
+        String baseRateAlt = csvRecord.get("Base_Rate_Alt");
+        String baseRate = baseRateAlt != null ? baseRateAlt : csvRecord.get("Base_Rate");
         tf.setBaseRate(baseRate);
 
         List<Rate> rates = new ArrayList<>();

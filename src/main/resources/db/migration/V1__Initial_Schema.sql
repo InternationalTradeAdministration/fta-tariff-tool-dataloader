@@ -55,7 +55,7 @@ create table tariff (
     base_rate varchar(255) null,
     final_year int null,
     tariff_rate_quota int null,
-    tariff_rate_quota_notes varchar(500),
+    tariff_rate_quota_note varchar(500),
     tariff_eliminated bit null,
     partner_name varchar(255) null,
     reporter_name varchar(255) null,
