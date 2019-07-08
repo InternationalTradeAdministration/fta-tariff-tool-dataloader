@@ -28,12 +28,13 @@
         <md-button class="md-primary top-btn" @click="uploadFile()">Upload</md-button>
       </div>
     </div>
-    {{fileContents}}
+    {{fileContentsAsCsv}}
   </div>
 </template>
 
 <script>
-import { readUploadedFileAsText } from "./FileHelper";
+import { readUploadedFileAsArrayBuffer } from "./FileHelper";
+import { read, utils } from "xlsx";
 
 export default {
   name: "TariffsList",
@@ -49,8 +50,7 @@ export default {
       countryCode: null,
       countryOptions: [],
       fileName: null,
-      fileContents: null,
-      fileBlob: null
+      fileContentsAsCsv: null
     };
   },
   methods: {
@@ -58,8 +58,13 @@ export default {
       this.fileBlob = event[0];
     },
     async uploadFile() {
-      let fileContents = await readUploadedFileAsText(this.fileBlob);
-      this.fileContents = fileContents;
+      let fileArrayBuffer = await readUploadedFileAsArrayBuffer(this.fileBlob);
+      let unit8Array = new Uint8Array(fileArrayBuffer);
+      let workbook = read(unit8Array, { type: "array" });
+      let workSheetName = workbook.SheetNames[0];
+      let workSheet = workbook.Sheets[workSheetName];
+      let sheetCsv = utils.sheet_to_csv(workSheet);
+      this.fileContentsAsCsv = sheetCsv;
     },
     goToTariffsList() {
       this.$router.push({ name: "tariffsList" });

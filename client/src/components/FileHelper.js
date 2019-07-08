@@ -1,5 +1,5 @@
 
-export const readUploadedFileAsText = (inputFile) => {
+export const readUploadedFileAsArrayBuffer = (inputFile) => {
   const temporaryFileReader = new window.FileReader()
   return new Promise((resolve, reject) => {
     temporaryFileReader.onerror = () => {
@@ -9,6 +9,7 @@ export const readUploadedFileAsText = (inputFile) => {
     temporaryFileReader.onload = () => {
       resolve(temporaryFileReader.result)
     }
-    temporaryFileReader.readAsText(inputFile)
+    
+    temporaryFileReader.readAsArrayBuffer(inputFile)
   })
 }
