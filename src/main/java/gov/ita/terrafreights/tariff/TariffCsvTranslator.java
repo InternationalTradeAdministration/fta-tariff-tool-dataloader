@@ -94,11 +94,11 @@ public class TariffCsvTranslator {
 
         List<Link> links = new ArrayList<>();
         if (headers.containsKey("Link_Url") && csvRecord.get("Link_Url") != null)
-          links.add(new Link(null, csvRecord.get("Link_Url"), csvRecord.get("Link_Text")));
+          links.add(new Link(csvRecord.get("Link_Url"), csvRecord.get("Link_Text")));
         if (headers.containsKey("Link_Url2") && csvRecord.get("Link_Url2") != null)
-          links.add(new Link(null, csvRecord.get("Link_Url2"), csvRecord.get("Link_Text2")));
+          links.add(new Link(csvRecord.get("Link_Url2"), csvRecord.get("Link_Text2")));
         if (headers.containsKey("Link_Url3") && csvRecord.get("Link_Url3") != null)
-          links.add(new Link(null, csvRecord.get("Link_Url3"), csvRecord.get("Link_Text3")));
+          links.add(new Link(csvRecord.get("Link_Url3"), csvRecord.get("Link_Text3")));
 
         tf.setRates(rates);
         tf.setLinks(links);

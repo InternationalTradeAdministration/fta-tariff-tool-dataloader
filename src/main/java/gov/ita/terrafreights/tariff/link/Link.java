@@ -1,6 +1,5 @@
 package gov.ita.terrafreights.tariff.link;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,6 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 public class Link {
   @Id
@@ -19,4 +17,10 @@ public class Link {
   Long id;
   String linkUrl;
   String linkText;
+
+  public Link(String linkUrl, String linkText) {
+    this.linkUrl = linkUrl;
+    this.linkText = linkText;
+  }
+
 }

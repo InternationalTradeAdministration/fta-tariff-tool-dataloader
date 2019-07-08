@@ -34,12 +34,6 @@ create table product_type (
     description varchar(255)
 );
 
-create table rate (
-  id bigint not null auto_increment primary key,
-  year int not null,
-  value varchar(255) not null
-);
-
 create table staging_basket (
     id bigint not null auto_increment primary key,
     legacy_id bigint not null,
@@ -69,10 +63,18 @@ create table tariff (
     product_type_id bigint not null
 );
 
+create table rate (
+  id bigint not null auto_increment primary key,
+  year int not null,
+  value varchar(255) not null
+);
+
 create table tariff_rates (
     tariff_id bigint,
     rates_id bigint,
-    primary key (tariff_id, rates_id)
+    primary key (tariff_id, rates_id),
+    foreign key (rates_id) references rate(id) on delete cascade,
+    foreign key (tariff_id) references tariff(id) on delete cascade
 );
 
 create table link (
@@ -84,5 +86,7 @@ create table link (
 create table tariff_links (
     tariff_id bigint,
     links_id bigint,
-    primary key (tariff_id, links_id)
+    primary key (tariff_id, links_id),
+    foreign key (links_id) references link(id) on delete cascade,
+    foreign key (tariff_id) references tariff(id) on delete cascade
 );

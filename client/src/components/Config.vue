@@ -29,6 +29,7 @@
       </div>
     </div>
     <div class="error" v-if="errorOccured">{{errorMessage}}</div>
+    <div v-if="uploading">Uploading...</div>
     <div class="file-contents" v-if="!errorOccured">
       <div class="success">{{successMessage}}</div>
       {{fileContentsAsCsv}}
@@ -66,7 +67,8 @@ export default {
       isXlsxFile: true,
       errorOccured: false,
       errorMessage: null,
-      successMessage: null
+      successMessage: null,
+      uploading: false
     };
   },
   methods: {
@@ -80,6 +82,7 @@ export default {
       }
     },
     async uploadFile() {
+      this.uploading = true;
       if (this.isXlsxFile) {
         let fileArrayBuffer = await readUploadedFileAsArrayBuffer(
           this.fileBlob
@@ -90,7 +93,7 @@ export default {
         let workSheet = workbook.Sheets[workSheetName];
         if (this.isValid(workSheet)) {
           let sheetCsv = utils.sheet_to_csv(workSheet);
-          this.tariffRepository._saveTariffs(this.countryCode, sheetCsv);
+          await this.tariffRepository._saveTariffs(this.countryCode, sheetCsv);
           this.fileContentsAsCsv = sheetCsv;
           this.errorOccured = false;
           this.successMessage = this.fileName + " was uploaded successfully!";
@@ -102,6 +105,7 @@ export default {
         this.errorOccured = true;
         this.errorMessage = "That's not a .xlsx file";
       }
+      this.uploading = false;
     },
     isValid(workSheet) {
       if (workSheet["A2"] && workSheet["A2"].v) {

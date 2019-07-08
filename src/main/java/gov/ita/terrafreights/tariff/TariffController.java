@@ -65,7 +65,9 @@ public class TariffController {
   @PutMapping("/api/tariffs/save")
   public void saveTariffs(@RequestParam("countryCode") String countryCode,
                           @RequestBody TariffUpload tariffUpload) {
+    tariffRepository.deleteByCountry(countryCode);
+    tariffRepository.deleteOrphans();
     List<Tariff> tariffs = tariffCsvTranslator.translate(countryCode, new StringReader(tariffUpload.csv));
-    System.out.println(tariffs.size());
+    tariffPersister.persist(tariffs);
   }
 }
