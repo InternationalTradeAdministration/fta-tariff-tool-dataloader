@@ -9,7 +9,7 @@ export const readUploadedFileAsArrayBuffer = (inputFile) => {
     temporaryFileReader.onload = () => {
       resolve(temporaryFileReader.result)
     }
-    
+
     temporaryFileReader.readAsArrayBuffer(inputFile)
   })
 }

@@ -53,4 +53,12 @@ export default class TariffRepository {
     })
     return stagingBasketsResponse.data
   }
+
+  async _saveTariffs (countryCode, csv) {
+    await axios.put('/api/tariffs/save', { csv }, {
+      params: {
+        countryCode
+      }
+    })
+  }
 }

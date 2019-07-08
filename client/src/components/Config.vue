@@ -28,9 +28,21 @@
         <md-button class="md-primary top-btn" @click="uploadFile()">Upload</md-button>
       </div>
     </div>
-    {{fileContentsAsCsv}}
+    <div class="error" v-if="errorOccured">{{errorMessage}}</div>
+    <div class="file-contents" v-if="!errorOccured">
+      <div class="success">{{successMessage}}</div>
+      {{fileContentsAsCsv}}
+    </div>
   </div>
 </template>
+<style>
+.error {
+  color: red;
+}
+.success {
+  color: green;
+}
+</style>
 
 <script>
 import { readUploadedFileAsArrayBuffer } from "./FileHelper";
@@ -50,21 +62,52 @@ export default {
       countryCode: null,
       countryOptions: [],
       fileName: null,
-      fileContentsAsCsv: null
+      fileContentsAsCsv: null,
+      isXlsxFile: true,
+      errorOccured: false,
+      errorMessage: null,
+      successMessage: null
     };
   },
   methods: {
     onFileUpload(event) {
-      this.fileBlob = event[0];
+      if (event[0].name.endsWith(".xlsx")) {
+        this.isXlsxFile = true;
+        this.fileBlob = event[0];
+      } else {
+        this.errorOccured = true;
+        this.isXlsxFile = false;
+      }
     },
     async uploadFile() {
-      let fileArrayBuffer = await readUploadedFileAsArrayBuffer(this.fileBlob);
-      let unit8Array = new Uint8Array(fileArrayBuffer);
-      let workbook = read(unit8Array, { type: "array" });
-      let workSheetName = workbook.SheetNames[0];
-      let workSheet = workbook.Sheets[workSheetName];
-      let sheetCsv = utils.sheet_to_csv(workSheet);
-      this.fileContentsAsCsv = sheetCsv;
+      if (this.isXlsxFile) {
+        let fileArrayBuffer = await readUploadedFileAsArrayBuffer(
+          this.fileBlob
+        );
+        let unit8Array = new Uint8Array(fileArrayBuffer);
+        let workbook = read(unit8Array, { type: "array" });
+        let workSheetName = workbook.SheetNames[0];
+        let workSheet = workbook.Sheets[workSheetName];
+        if (this.isValid(workSheet)) {
+          let sheetCsv = utils.sheet_to_csv(workSheet);
+          this.tariffRepository._saveTariffs(this.countryCode, sheetCsv);
+          this.fileContentsAsCsv = sheetCsv;
+          this.errorOccured = false;
+          this.successMessage = this.fileName + " was uploaded successfully!";
+        } else {
+          this.errorOccured = true;
+          this.errorMessage = "Record 243 is missing TariffLine value";
+        }
+      } else {
+        this.errorOccured = true;
+        this.errorMessage = "That's not a .xlsx file";
+      }
+    },
+    isValid(workSheet) {
+      if (workSheet["A2"] && workSheet["A2"].v) {
+        return true;
+      }
+      return false;
     },
     goToTariffsList() {
       this.$router.push({ name: "tariffsList" });

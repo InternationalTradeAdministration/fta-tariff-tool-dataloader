@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.StringReader;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,10 +13,14 @@ import java.util.Optional;
 public class TariffController {
 
   private final TariffRepository tariffRepository;
+  private TariffCsvTranslator tariffCsvTranslator;
   private final TariffPersister tariffPersister;
 
-  public TariffController(TariffRepository tariffRepository, TariffPersister tariffPersister) {
+  public TariffController(TariffRepository tariffRepository,
+                          TariffCsvTranslator tariffCsvTranslator,
+                          TariffPersister tariffPersister) {
     this.tariffRepository = tariffRepository;
+    this.tariffCsvTranslator = tariffCsvTranslator;
     this.tariffPersister = tariffPersister;
   }
 
@@ -28,7 +33,8 @@ public class TariffController {
       return tariffRepository.findByCountryCodeAndStagingBasketId(countryCode, stagingBasketId, pageable);
 
     if (stagingBasketId != -1)
-      return tariffRepository.findByCountryCodeAndStagingBasketIdAndTariffLineContaining(countryCode, stagingBasketId, tariffLine, pageable);
+      return tariffRepository.findByCountryCodeAndStagingBasketIdAndTariffLineContaining(
+        countryCode, stagingBasketId, tariffLine, pageable);
 
     if (!tariffLine.equals(""))
       return tariffRepository.findByCountryCodeAndTariffLineContaining(countryCode, tariffLine, pageable);
@@ -56,8 +62,10 @@ public class TariffController {
     return tariffRepository.tariffCountsByCountry();
   }
 
-  @PutMapping("/api/tariff/save")
-  public void saveTariffs(@RequestBody List<Tariff> tariffs) {
-    tariffPersister.persist(tariffs);
+  @PutMapping("/api/tariffs/save")
+  public void saveTariffs(@RequestParam("countryCode") String countryCode,
+                          @RequestBody TariffUpload tariffUpload) {
+    List<Tariff> tariffs = tariffCsvTranslator.translate(countryCode, new StringReader(tariffUpload.csv));
+    System.out.println(tariffs.size());
   }
 }
