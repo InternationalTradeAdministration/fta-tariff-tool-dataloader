@@ -26,6 +26,6 @@ export default {
 }
 
 .top-btn {
-  margin-top: 12px;
+  margin-top: 8px;
 }
 </style>

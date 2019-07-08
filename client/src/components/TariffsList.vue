@@ -47,9 +47,9 @@
         </div>
       </div>
       <div class="md-layout-item md-size-10">
-        <md-button class="md-primary request-btn" @click="fetchTariffs()">Request</md-button>
+        <md-button class="md-primary top-btn" @click="fetchTariffs()">Request</md-button>
       </div>
-      <div class="md-layout-item  md-size-5">
+      <div class="md-layout-item md-size-5">
         <md-button class="md-icon-button config-btn top-btn" @click="goToConfig()">
           <md-icon class="fa fa-cog"></md-icon>
         </md-button>
@@ -115,11 +115,8 @@
   margin-right: 10px;
 }
 
-.request-btn {
-  margin-top: 8px;
-}
-
 .config-btn {
+  margin-top: 5px;
   float: right;
 }
 </style>

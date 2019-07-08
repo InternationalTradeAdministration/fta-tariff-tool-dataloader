@@ -60,4 +60,11 @@ public class TariffControllerTest {
       .andExpect(jsonPath("*", hasSize(100)));
   }
 
+  @Test
+  public void tariff_api_provides_counts_by_country() throws Exception {
+    mockMvc.perform(get("/api/tariff/counts_by_country"))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("*", hasSize(4)));
+  }
+
 }

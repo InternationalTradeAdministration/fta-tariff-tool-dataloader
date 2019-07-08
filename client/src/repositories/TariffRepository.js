@@ -45,7 +45,7 @@ export default class TariffRepository {
   }
 
   async _getStagingBaskets (countryCode, productTypeId) {
-    let stagingBasketsResponse = await axios.get('/api/staging_baskets', {
+    let stagingBasketsResponse = await axios.get('/api/tariff/staging_baskets', {
       params: {
         countryCode,
         productTypeId

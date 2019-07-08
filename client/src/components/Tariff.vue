@@ -7,8 +7,8 @@
         </md-button>
       </div>
       <div class="md-layout-item md-size-95 tariff-btns">
-        <md-button class="md-accent">Delete</md-button>
-        <md-button class="md-primary">Save</md-button>
+        <md-button class="md-accent top-btn" disabled>Delete</md-button>
+        <md-button class="md-primary top-btn" disabled>Save</md-button>
       </div>
     </div>
     <div class="tariff-container">
@@ -17,29 +17,34 @@
           <div class="md-layout-item md-size-15">
             <md-field>
               <label>Tariff Line</label>
-              <md-input v-model="tariffLine"></md-input>
+              <md-input v-model="tariffLine" readonly></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-size-15">
             <md-field>
               <label>HS6</label>
-              <md-input v-model="hs6" v-bind:alt="hsdescription" v-bind:title="hsdescription"></md-input>
+              <md-input
+                v-model="hs6"
+                v-bind:alt="hsdescription"
+                v-bind:title="hsdescription"
+                readonly
+              ></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-size-30">
-            <md-autocomplete v-model="stagingBasket" :md-options="stagingBasketOptions">
+            <md-autocomplete v-model="stagingBasket" :md-options="stagingBasketOptions" readonly>
               <label>Staging Basket</label>
             </md-autocomplete>
           </div>
           <div class="md-layout-item md-size-20">
-            <md-autocomplete v-model="productType" :md-options="productTypeOptions">
+            <md-autocomplete v-model="productType" :md-options="productTypeOptions" readonly>
               <label>Product Types</label>
             </md-autocomplete>
           </div>
           <div class="md-layout-item md-size-15">
             <md-field>
               <label>Final Year</label>
-              <md-input v-model="finalYear" type="number"></md-input>
+              <md-input v-model="finalYear" type="number" readonly></md-input>
             </md-field>
           </div>
         </div>
@@ -47,31 +52,31 @@
           <div class="md-layout-item md-size-25">
             <md-field>
               <label>Partner</label>
-              <md-input v-model="partnerName"></md-input>
+              <md-input v-model="partnerName" readonly></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-size-15">
             <md-field>
               <label>Start Year</label>
-              <md-input v-model="partnerStartYear" type="number"></md-input>
+              <md-input v-model="partnerStartYear" type="number" readonly></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-size-25">
             <md-field>
               <label>Reporter</label>
-              <md-input v-model="reporterName"></md-input>
+              <md-input v-model="reporterName" readonly></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-size-15">
             <md-field>
               <label>Start Year</label>
-              <md-input v-model="reporterStartYear" type="number"></md-input>
+              <md-input v-model="reporterStartYear" type="number" readonly></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-size-15">
             <md-field>
               <label>Sector</label>
-              <md-input v-model="sectorCode"></md-input>
+              <md-input v-model="sectorCode" readonly></md-input>
             </md-field>
           </div>
         </div>
@@ -79,19 +84,19 @@
           <div class="md-layout-item md-size-25">
             <md-field>
               <label>Base Rate</label>
-              <md-input v-model="baseRate"></md-input>
+              <md-input v-model="baseRate" readonly></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-size-20">
             <md-field>
               <label>Quota Name</label>
-              <md-input v-model="quotaName"></md-input>
+              <md-input v-model="quotaName" readonly></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-size-20">
             <md-field>
               <label>Tariff Rate Quota</label>
-              <md-input v-model="tariffRateQuota"></md-input>
+              <md-input v-model="tariffRateQuota" readonly></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-size-35">
@@ -104,7 +109,7 @@
           <div class="md-layout-item">
             <md-field>
               <label>Description</label>
-              <md-textarea v-model="description"></md-textarea>
+              <md-textarea v-model="description" readonly></md-textarea>
             </md-field>
           </div>
         </div>
@@ -112,7 +117,7 @@
           <div class="md-layout-item">
             <md-field>
               <label>Rule Text</label>
-              <md-textarea v-model="ruleText"></md-textarea>
+              <md-textarea v-model="ruleText" readonly></md-textarea>
             </md-field>
           </div>
         </div>
@@ -120,7 +125,7 @@
           <div class="md-layout-item">
             <md-field>
               <label>Tariff Rate Quota Notes</label>
-              <md-textarea v-model="tariffRateQuotaNotes"></md-textarea>
+              <md-textarea v-model="tariffRateQuotaNotes" readonly></md-textarea>
             </md-field>
           </div>
         </div>
@@ -128,18 +133,12 @@
       <div class="section-b">
         <div>
           <div class="rates-header">
-            <label>Rates</label>
-            <md-button class="md-icon-button" @click="addRate()">
-              <md-icon class="fa fa-plus-circle"></md-icon>
-            </md-button>
+            <label>Annual Rates</label>
           </div>
-          <md-list v-for="(rate, index) in rates" v-bind:key="rate.id">
+          <md-list v-for="rate in rates" v-bind:key="rate.id">
             <li>
-              <input class="rate-year-input" v-bind:value="rate.year" />
-              <input class="rate-value-input" v-bind:value="rate.value" />
-              <button class="remove-rate" @click="removeRate(index)">
-                <i class="fa fa-times fa-xs"></i>
-              </button>
+              <input class="rate-year-input" v-bind:value="rate.year" readonly />
+              <input class="rate-value-input" v-bind:value="rate.value" readonly />
             </li>
           </md-list>
         </div>
@@ -174,6 +173,7 @@ input[type="number"] {
   margin-right: 8px;
 }
 .tariff-btns {
+  margin-top: 10px;
   display: flex;
   justify-content: flex-end;
 }
@@ -249,16 +249,6 @@ export default {
   methods: {
     goToTariffsList() {
       this.$router.push({ name: "tariffsList" });
-    },
-    addRate() {
-      let rates = [...this.rates];
-      rates.push({ id: null, year: null, value: null });
-      this.rates = rates;
-    },
-    removeRate(index) {
-      let rates = [...this.rates];
-      rates.splice(index, 1);
-      this.rates = rates;
     }
   }
 };
