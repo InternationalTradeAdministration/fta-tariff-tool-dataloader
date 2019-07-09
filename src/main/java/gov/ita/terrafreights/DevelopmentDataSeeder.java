@@ -1,5 +1,6 @@
 package gov.ita.terrafreights;
 
+import gov.ita.terrafreights.tariff.InvalidCsvFileException;
 import gov.ita.terrafreights.tariff.Tariff;
 import gov.ita.terrafreights.tariff.TariffCsvTranslator;
 import gov.ita.terrafreights.tariff.TariffPersister;
@@ -30,7 +31,7 @@ public class DevelopmentDataSeeder implements DataSeeder {
   }
 
   @Override
-  public void seed() {
+  public void seed() throws InvalidCsvFileException {
     log.info("Seeding development database with sample tariff data");
 
     for (Csv csv : seedDataProperties.getCsvs()) {

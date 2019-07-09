@@ -47,6 +47,7 @@
 
 <script>
 import { readUploadedFileAsArrayBuffer } from "./FileHelper";
+import { validate } from "./TariffWorksheetValidator";
 import { read, utils } from "xlsx";
 
 export default {
@@ -83,35 +84,41 @@ export default {
     },
     async uploadFile() {
       this.uploading = true;
-      if (this.isXlsxFile) {
-        let fileArrayBuffer = await readUploadedFileAsArrayBuffer(
-          this.fileBlob
-        );
-        let unit8Array = new Uint8Array(fileArrayBuffer);
-        let workbook = read(unit8Array, { type: "array" });
-        let workSheetName = workbook.SheetNames[0];
-        let workSheet = workbook.Sheets[workSheetName];
-        if (this.isValid(workSheet)) {
-          let sheetCsv = utils.sheet_to_csv(workSheet);
-          await this.tariffRepository._saveTariffs(this.countryCode, sheetCsv);
-          this.fileContentsAsCsv = sheetCsv;
-          this.errorOccured = false;
-          this.successMessage = this.fileName + " was uploaded successfully!";
-        } else {
-          this.errorOccured = true;
-          this.errorMessage = "Record 243 is missing TariffLine value";
-        }
-      } else {
+      if (!this.isXlsxFile) {
         this.errorOccured = true;
         this.errorMessage = "That's not a .xlsx file";
+        this.uploading = false;
+        return;
       }
+
+      let fileArrayBuffer = await readUploadedFileAsArrayBuffer(this.fileBlob);
+      let unit8Array = new Uint8Array(fileArrayBuffer);
+      let workbook = read(unit8Array, { type: "array" });
+      let workSheetName = workbook.SheetNames[0];
+      let workSheet = workbook.Sheets[workSheetName];
+      const validationResults = validate(workSheet);
+      if (!validationResults.valid) {
+        this.errorOccured = true;
+        this.errorMessage = validationResults.message;
+        this.uploading = false;
+        return;
+      }
+
+      let sheetCsv = utils.sheet_to_csv(workSheet);
+      const message = await this.tariffRepository._saveTariffs(
+        this.countryCode,
+        sheetCsv
+      );
+      if (message === "success") {
+        this.fileContentsAsCsv = sheetCsv;
+        this.errorOccured = false;
+        this.successMessage = this.fileName + " was uploaded successfully!";
+      } else {
+        this.errorOccured = true;
+        this.errorMessage = message;
+      }
+
       this.uploading = false;
-    },
-    isValid(workSheet) {
-      if (workSheet["A2"] && workSheet["A2"].v) {
-        return true;
-      }
-      return false;
     },
     goToTariffsList() {
       this.$router.push({ name: "tariffsList" });

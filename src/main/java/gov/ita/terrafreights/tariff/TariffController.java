@@ -63,10 +63,16 @@ public class TariffController {
   }
 
   @PutMapping("/api/tariffs/save")
-  public void saveTariffs(@RequestParam("countryCode") String countryCode,
-                          @RequestBody TariffUpload tariffUpload) {
+  public String saveTariffs(@RequestParam("countryCode") String countryCode,
+                            @RequestBody TariffUpload tariffUpload) {
     tariffRepository.deleteByCountry(countryCode);
-    List<Tariff> tariffs = tariffCsvTranslator.translate(countryCode, new StringReader(tariffUpload.csv));
-    tariffPersister.persist(tariffs);
+    try {
+      List<Tariff> tariffs = tariffCsvTranslator.translate(countryCode, new StringReader(tariffUpload.csv));
+      tariffPersister.persist(tariffs);
+      return "success";
+    } catch (InvalidCsvFileException e) {
+      e.printStackTrace();
+      return e.getMessage();
+    }
   }
 }

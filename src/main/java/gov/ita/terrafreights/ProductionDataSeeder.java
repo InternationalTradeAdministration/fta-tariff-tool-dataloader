@@ -1,5 +1,6 @@
 package gov.ita.terrafreights;
 
+import gov.ita.terrafreights.tariff.InvalidCsvFileException;
 import gov.ita.terrafreights.tariff.Tariff;
 import gov.ita.terrafreights.tariff.TariffCsvTranslator;
 import gov.ita.terrafreights.tariff.TariffPersister;
@@ -46,10 +47,15 @@ public class ProductionDataSeeder implements DataSeeder {
       log.info("Loading tariff data file: {}", csv.url);
 
       ResponseExtractor<Void> responseExtractor = response -> {
-        List<Tariff> tariffs = tariffCsvTranslator.translate(
-          csv.getCountryCode(),
-          new InputStreamReader(response.getBody())
-        );
+        List<Tariff> tariffs = null;
+        try {
+          tariffs = tariffCsvTranslator.translate(
+            csv.getCountryCode(),
+            new InputStreamReader(response.getBody())
+          );
+        } catch (InvalidCsvFileException e) {
+          e.printStackTrace();
+        }
         tariffPersister.persist(tariffs);
         return null;
       };

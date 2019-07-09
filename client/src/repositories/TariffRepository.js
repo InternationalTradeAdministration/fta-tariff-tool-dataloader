@@ -55,10 +55,11 @@ export default class TariffRepository {
   }
 
   async _saveTariffs (countryCode, csv) {
-    await axios.put('/api/tariffs/save', { csv }, {
+    const saveResponse = await axios.put('/api/tariffs/save', { csv }, {
       params: {
         countryCode
       }
     })
+    return saveResponse.data;
   }
 }

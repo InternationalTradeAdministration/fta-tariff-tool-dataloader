@@ -1,5 +1,6 @@
 package gov.ita.terrafreights;
 
+import gov.ita.terrafreights.tariff.InvalidCsvFileException;
 import gov.ita.terrafreights.tariff.TariffRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -23,8 +24,13 @@ public class TerraFreightsInitializer implements ApplicationListener<ContextRefr
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
     printTerraFreightsAsciiArt();
-    if (tariffRepository.count() == 0)
-      dataSeeder.seed();
+    if (tariffRepository.count() == 0) {
+      try {
+        dataSeeder.seed();
+      } catch (InvalidCsvFileException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   private void printTerraFreightsAsciiArt() {

@@ -21,9 +21,10 @@ import java.util.Map;
 @Service
 public class TariffCsvTranslator {
 
-  public List<Tariff> translate(String countryCode, Reader csvReader) {
+  public List<Tariff> translate(String countryCode, Reader csvReader) throws InvalidCsvFileException {
     CSVParser csvParser;
     List<Tariff> tariffs = new ArrayList<>();
+    int i = 1;
 
     try {
       csvParser = new CSVParser(
@@ -104,8 +105,17 @@ public class TariffCsvTranslator {
         tf.setLinks(links);
 
         tariffs.add(tf);
+        i++;
       }
 
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();
+
+      if (e instanceof NumberFormatException) {
+        throw new InvalidCsvFileException("Invalid number format; see record " + i);
+      } else {
+        throw new InvalidCsvFileException(e.getMessage() + "; see record " + i);
+      }
     } catch (IOException e) {
       e.printStackTrace();
     }

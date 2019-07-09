@@ -1,5 +1,6 @@
 package gov.ita.terrafreights.initializer;
 
+import gov.ita.terrafreights.tariff.InvalidCsvFileException;
 import gov.ita.terrafreights.tariff.Tariff;
 import gov.ita.terrafreights.tariff.TariffCsvTranslator;
 import gov.ita.terrafreights.tariff.rate.Rate;
@@ -18,153 +19,153 @@ public class TariffCsvTranslatorTest {
   private TariffCsvTranslator tariffCsvTranslator;
 
   @Before
-  public void set_up() {
+  public void set_up() throws InvalidCsvFileException {
     tariffCsvTranslator = new TariffCsvTranslator();
   }
 
   @Test
-  public void translates_tariff_csv_data() {
+  public void translates_tariff_csv_data() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals(100, tariffs.size());
   }
 
   @Test
-  public void translates_tariff_ID_field() {
+  public void translates_tariff_ID_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals(439058L, tariffs.get(0).getLegacyId(), 0);
   }
 
   @Test
-  public void adds_tariff_country_field() {
+  public void adds_tariff_country_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("KR", tariffs.get(0).getCountry().getCode());
   }
 
   @Test
-  public void translates_tariff_TariffLine_field() {
+  public void translates_tariff_TariffLine_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("01011000", tariffs.get(0).getTariffLine());
   }
 
   @Test
-  public void translates_tariff_Description_field() {
+  public void translates_tariff_Description_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("Live purebred breeding horses and asses", tariffs.get(0).getDescription());
   }
 
   @Test
-  public void translates_tariff_HS6_field() {
+  public void translates_tariff_HS6_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("010110", tariffs.get(0).getHs6().getCode());
     assertEquals("PUREBRED BREEDING ANIMAL", tariffs.get(0).getHs6().getDescription());
   }
 
   @Test
-  public void translates_tariff_SectorCode_field() {
+  public void translates_tariff_SectorCode_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("15", tariffs.get(0).getSectorCode());
   }
 
   @Test
-  public void translates_tariff_BaseRate_field() {
+  public void translates_tariff_BaseRate_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("2.8 cents/kg", tariffs.get(0).getBaseRate());
   }
 
   @Test
-  public void translates_tariff_BaseRateAlt_field() {
+  public void translates_tariff_BaseRateAlt_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("8", tariffs.get(1).getBaseRate());
   }
 
   @Test
-  public void translates_tariff_FinalYear_field() {
+  public void translates_tariff_FinalYear_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals(2012, tariffs.get(0).getFinalYear(), 0);
   }
 
   @Test
-  public void translates_tariff_StagingBasket_field() {
+  public void translates_tariff_StagingBasket_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals(6, tariffs.get(0).getStagingBasket().getLegacyId(), 0);
     assertEquals("Immediate", tariffs.get(0).getStagingBasket().getDescription());
   }
 
   @Test
-  public void translates_tariff_TariffRateQuota_field() {
+  public void translates_tariff_TariffRateQuota_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals(3, tariffs.get(0).getTariffRateQuota(), 0);
   }
 
   @Test
-  public void translates_tariff_TariffRateQuotaNotes_field() {
+  public void translates_tariff_TariffRateQuotaNotes_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("For more information, please see the U.S. Department of Agriculture", tariffs.get(0).getTariffRateQuotaNote());
   }
 
   @Test
-  public void translates_tariff_TariffEliminated_field() {
+  public void translates_tariff_TariffEliminated_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertTrue(tariffs.get(0).getTariffEliminated());
   }
 
   @Test
-  public void translates_tariff_Partner_field() {
+  public void translates_tariff_Partner_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("Korea", tariffs.get(0).getPartnerName());
   }
 
   @Test
-  public void translates_tariff_Reporter_field() {
+  public void translates_tariff_Reporter_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("United States", tariffs.get(0).getReporterName());
   }
 
   @Test
-  public void translates_tariff_PartnerStartYear_field() {
+  public void translates_tariff_PartnerStartYear_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals(2012, tariffs.get(0).getPartnerStartYear(), 0);
   }
 
   @Test
-  public void translates_tariff_ReporterStartYear_field() {
+  public void translates_tariff_ReporterStartYear_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals(2014, tariffs.get(0).getReporterStartYear(), 0);
   }
 
   @Test
-  public void translates_tariff_QuotaName_field() {
+  public void translates_tariff_QuotaName_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("awesome", tariffs.get(0).getQuotaName());
   }
 
   @Test
-  public void translates_tariff_ProductType_field() {
+  public void translates_tariff_ProductType_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals(2, tariffs.get(0).getProductType().getLegacyId(), 0);
     assertEquals("Agricultural", tariffs.get(0).getProductType().getDescription());
   }
 
   @Test
-  public void translates_tariff_RuleText_field() {
+  public void translates_tariff_RuleText_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("A change to heading 01.01 through 01.06 from any other chapter.", tariffs.get(0).getRuleText());
   }
 
   @Test
-  public void translates_tariff_Link_field() {
+  public void translates_tariff_Link_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
     assertEquals("cool", tariffs.get(0).getLinks().get(0).getLinkText());
     assertEquals("http://cool.com", tariffs.get(0).getLinks().get(0).getLinkUrl());
   }
 
   @Test
-  public void translates_tariff_LinkUrl_field() {
+  public void translates_tariff_LinkUrl_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
   }
 
   @Test
-  public void translates_tarrif_line_Rates_values_for_year_2004_to_2041() {
+  public void translates_tarrif_line_Rates_values_for_year_2004_to_2041() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
 
     assertEquals(12, tariffs.get(0).getRates().size(), 0);
@@ -177,7 +178,7 @@ public class TariffCsvTranslatorTest {
   }
 
   @Test
-  public void translates_tarrif_line_Rates_values_for_year_1_to_x() {
+  public void translates_tarrif_line_Rates_values_for_year_1_to_x() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("CA-USMCA", getFileAsReader("canada-usmca.csv"));
     Tariff tariff = tariffs.get(26);
     assertEquals(5, tariff.getRates().size(), 0);
@@ -189,7 +190,7 @@ public class TariffCsvTranslatorTest {
   }
 
   @Test
-  public void translates_tariff_line_Link_Urls_values() {
+  public void translates_tariff_line_Link_Urls_values() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("CA-USMCA", getFileAsReader("canada-usmca.csv"));
     Tariff tariff = tariffs.get(0);
     assertEquals(3, tariff.getLinks().size(), 0);
@@ -199,5 +200,15 @@ public class TariffCsvTranslatorTest {
     assertEquals("http://what.ever", tariff.getLinks().get(1).getLinkUrl());
     assertEquals("plenty links", tariff.getLinks().get(2).getLinkText());
     assertEquals("https://plenty.com", tariff.getLinks().get(2).getLinkUrl());
+  }
+
+  @Test(expected = InvalidCsvFileException.class)
+  public void throws_error_when_missing_required_header_field() throws InvalidCsvFileException {
+    tariffCsvTranslator.translate("KR", getFileAsReader("korea_missing_header.csv"));
+  }
+
+  @Test(expected = InvalidCsvFileException.class)
+  public void throws_error_when_number_field_is_invalid() throws InvalidCsvFileException {
+    tariffCsvTranslator.translate("KR", getFileAsReader("korea_invalid_number.csv"));
   }
 }

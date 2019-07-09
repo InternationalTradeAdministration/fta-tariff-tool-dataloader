@@ -1,5 +1,6 @@
 package gov.ita.terrafreights;
 
+import gov.ita.terrafreights.tariff.InvalidCsvFileException;
 import gov.ita.terrafreights.tariff.TariffRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,14 +23,14 @@ public class TerraFreightsInitializerTest {
   private ContextRefreshedEvent contextRefreshedEvent;
 
   @Test
-  public void database_is_seeded_when_no_tariff_data_exists() {
+  public void database_is_seeded_when_no_tariff_data_exists() throws InvalidCsvFileException {
     TerraFreightsInitializer terraFreightsInitializer = new TerraFreightsInitializer(dataSeeder, tariffRepository);
     terraFreightsInitializer.onApplicationEvent(contextRefreshedEvent);
     verify(dataSeeder, times(1)).seed();
   }
 
   @Test
-  public void database_is_NOT_seeded_when_tariff_data_exists() {
+  public void database_is_NOT_seeded_when_tariff_data_exists() throws InvalidCsvFileException {
     when(tariffRepository.count()).thenReturn(100L);
     TerraFreightsInitializer terraFreightsInitializer = new TerraFreightsInitializer(dataSeeder, tariffRepository);
     terraFreightsInitializer.onApplicationEvent(contextRefreshedEvent);
