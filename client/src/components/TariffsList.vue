@@ -116,7 +116,6 @@
 }
 
 .config-btn {
-  margin-top: 5px;
   float: right;
 }
 </style>

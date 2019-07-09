@@ -173,7 +173,6 @@ input[type="number"] {
   margin-right: 8px;
 }
 .tariff-btns {
-  margin-top: 10px;
   display: flex;
   justify-content: flex-end;
 }
