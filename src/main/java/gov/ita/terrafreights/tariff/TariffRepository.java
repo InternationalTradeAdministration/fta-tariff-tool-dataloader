@@ -42,18 +42,4 @@ public interface TariffRepository extends JpaRepository<Tariff, Long> {
   @Query("delete from Tariff t where t.country.id = (select id from Country c where c.code = ?1)")
   void deleteByCountry(String countryCode);
 
-  @Modifying
-  @Transactional
-  @Query(value = "delete from rate where id not in (select rates_id from tariff_rates);", nativeQuery = true)
-  void deleteOrphanedRates();
-
-  @Modifying
-  @Transactional
-  @Query(value = "delete from link where id not in (select links_id from tariff_links);", nativeQuery = true)
-  void deleteOrphanedLinks();
-
-  default void deleteOrphans() {
-    deleteOrphanedRates();
-    deleteOrphanedLinks();
-  }
 }

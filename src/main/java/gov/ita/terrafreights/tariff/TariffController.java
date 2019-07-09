@@ -66,7 +66,6 @@ public class TariffController {
   public void saveTariffs(@RequestParam("countryCode") String countryCode,
                           @RequestBody TariffUpload tariffUpload) {
     tariffRepository.deleteByCountry(countryCode);
-    tariffRepository.deleteOrphans();
     List<Tariff> tariffs = tariffCsvTranslator.translate(countryCode, new StringReader(tariffUpload.csv));
     tariffPersister.persist(tariffs);
   }

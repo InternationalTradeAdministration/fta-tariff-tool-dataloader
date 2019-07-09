@@ -55,9 +55,11 @@ public class Tariff {
   private ProductType productType;
 
   @OneToMany(fetch = FetchType.EAGER)
+  @JoinColumn(name = "tariff_id")
   private List<Link> links;
 
   @OneToMany
+  @JoinColumn(name = "tariff_id")
   private List<Rate> rates;
 
   @JsonProperty("annualRates")

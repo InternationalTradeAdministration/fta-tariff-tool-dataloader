@@ -65,28 +65,18 @@ create table tariff (
 
 create table rate (
   id bigint not null auto_increment primary key,
+  tariff_id bigint,
   year int not null,
-  value varchar(255) not null
-);
-
-create table tariff_rates (
-    tariff_id bigint,
-    rates_id bigint,
-    primary key (tariff_id, rates_id),
-    foreign key (rates_id) references rate(id) on delete cascade,
-    foreign key (tariff_id) references tariff(id) on delete cascade
-);
+  value varchar(255) not null,
+  unique(tariff_id, year),
+  foreign key (tariff_id) references tariff(id) on delete cascade
+ );
 
 create table link (
   id bigint not null auto_increment primary key,
+  tariff_id bigint,
   link_url varchar(255) not null,
-  link_text varchar(255)
-);
-
-create table tariff_links (
-    tariff_id bigint,
-    links_id bigint,
-    primary key (tariff_id, links_id),
-    foreign key (links_id) references link(id) on delete cascade,
-    foreign key (tariff_id) references tariff(id) on delete cascade
+  link_text varchar(255),
+  unique(tariff_id, link_url),
+  foreign key (tariff_id) references tariff(id) on delete cascade
 );
