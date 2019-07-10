@@ -28,11 +28,14 @@
         <md-button class="md-primary top-btn" @click="uploadFile()">Upload</md-button>
       </div>
     </div>
-    <div class="error" v-if="errorOccured">{{errorMessage}}</div>
+    <div class="error" v-if="errorOccured">
+      <ul>
+        <li v-for="message in errorMessages" v-bind:key="message">{{message}}</li>
+      </ul>
+    </div>
     <div v-if="uploading">Uploading...</div>
     <div class="file-contents" v-if="!errorOccured">
       <div class="success">{{successMessage}}</div>
-      {{fileContentsAsCsv}}
     </div>
   </div>
 </template>
@@ -47,7 +50,7 @@
 
 <script>
 import { readUploadedFileAsArrayBuffer } from "./FileHelper";
-import { validate } from "./TariffWorksheetValidator";
+import { TariffWorksheetValidator } from "./TariffWorksheetValidator";
 import { read, utils } from "xlsx";
 
 export default {
@@ -64,16 +67,17 @@ export default {
       countryCode: null,
       countryOptions: [],
       fileName: null,
-      fileContentsAsCsv: null,
       isXlsxFile: true,
       errorOccured: false,
-      errorMessage: null,
+      errorMessages: [],
       successMessage: null,
-      uploading: false
+      uploading: false,
+      fileBlob: null
     };
   },
   methods: {
     onFileUpload(event) {
+      this.errorMessages = [];
       if (event[0].name.endsWith(".xlsx")) {
         this.isXlsxFile = true;
         this.fileBlob = event[0];
@@ -86,7 +90,14 @@ export default {
       this.uploading = true;
       if (!this.isXlsxFile) {
         this.errorOccured = true;
-        this.errorMessage = "That's not a .xlsx file";
+        this.errorMessages.push("Only .xlsx files may be uploaded.");
+        this.uploading = false;
+        return;
+      }
+
+      if (!this.fileBlob) {
+        this.errorOccured = true;
+        this.errorMessages.push("Please select a .xlsx file to upload.");
         this.uploading = false;
         return;
       }
@@ -96,26 +107,26 @@ export default {
       let workbook = read(unit8Array, { type: "array" });
       let workSheetName = workbook.SheetNames[0];
       let workSheet = workbook.Sheets[workSheetName];
-      const validationResults = validate(workSheet);
+      const tariffWorksheetValidator = new TariffWorksheetValidator(workSheet);
+      const validationResults = tariffWorksheetValidator._validate();
       if (!validationResults.valid) {
         this.errorOccured = true;
-        this.errorMessage = validationResults.message;
+        this.errorMessages = validationResults.errorMessages;
         this.uploading = false;
         return;
       }
 
-      let sheetCsv = utils.sheet_to_csv(workSheet);
+      let csv = utils.sheet_to_csv(workSheet);
       const message = await this.tariffRepository._saveTariffs(
         this.countryCode,
-        sheetCsv
+        csv
       );
       if (message === "success") {
-        this.fileContentsAsCsv = sheetCsv;
         this.errorOccured = false;
         this.successMessage = this.fileName + " was uploaded successfully!";
       } else {
         this.errorOccured = true;
-        this.errorMessage = message;
+        this.errorMessages.push(message);
       }
 
       this.uploading = false;

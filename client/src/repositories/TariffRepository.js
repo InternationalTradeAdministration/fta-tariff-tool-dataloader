@@ -60,6 +60,6 @@ export default class TariffRepository {
         countryCode
       }
     })
-    return saveResponse.data;
+    return saveResponse.data
   }
 }
