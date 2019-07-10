@@ -25,7 +25,7 @@ export default {
   width: 90%;
 }
 
-.top-btn {
-  margin-top: 10px;
+.md-button.top-btn {
+  margin-top: 12px;
 }
 </style>

@@ -50,7 +50,7 @@
         <md-button class="md-primary top-btn" @click="fetchTariffs()">Request</md-button>
       </div>
       <div class="md-layout-item md-size-5">
-        <md-button class="md-icon-button config-btn top-btn" @click="goToConfig()">
+        <md-button class="md-icon-button config-btn" @click="goToConfig()">
           <md-icon class="fa fa-cog"></md-icon>
         </md-button>
       </div>

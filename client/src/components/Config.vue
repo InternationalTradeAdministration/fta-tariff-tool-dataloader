@@ -2,7 +2,7 @@
   <div>
     <div class="md-layout md-gutter">
       <div class="md-layout-item md-size-5">
-        <md-button class="md-icon-button top-btn" @click="goToTariffsList()">
+        <md-button class="md-icon-button" @click="goToTariffsList()">
           <md-icon class="fa fa-angle-double-left"></md-icon>
         </md-button>
       </div>
@@ -78,6 +78,7 @@ export default {
   methods: {
     onFileUpload(event) {
       this.errorMessages = [];
+      this.successMessage = null;
       if (event[0].name.endsWith(".xlsx")) {
         this.isXlsxFile = true;
         this.fileBlob = event[0];
@@ -87,6 +88,7 @@ export default {
       }
     },
     async uploadFile() {
+      this.successMessage = null;
       this.uploading = true;
       if (!this.isXlsxFile) {
         this.errorOccured = true;
@@ -103,8 +105,7 @@ export default {
       }
 
       let fileArrayBuffer = await readUploadedFileAsArrayBuffer(this.fileBlob);
-      let unit8Array = new Uint8Array(fileArrayBuffer);
-      let workbook = read(unit8Array, { type: "array" });
+      let workbook = read(new Uint8Array(fileArrayBuffer), { type: "array" });
       let workSheetName = workbook.SheetNames[0];
       let workSheet = workbook.Sheets[workSheetName];
       const tariffWorksheetValidator = new TariffWorksheetValidator(workSheet);
