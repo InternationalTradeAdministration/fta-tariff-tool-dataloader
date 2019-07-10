@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TariffCount {
   String countryCode;
-  Long tariffCount;
+  Long count;
 }
