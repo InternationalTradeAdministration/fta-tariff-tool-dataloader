@@ -30,13 +30,11 @@ create table hs6 (
 
 create table product_type (
     id bigint not null auto_increment primary key,
-    legacy_id bigint not null,
     description varchar(255)
 );
 
 create table staging_basket (
     id bigint not null auto_increment primary key,
-    legacy_id bigint not null,
     description varchar(255)
 );
 

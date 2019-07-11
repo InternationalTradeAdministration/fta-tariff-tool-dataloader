@@ -60,12 +60,10 @@ public class TariffCsvTranslator {
           ))
           .stagingBasket(new StagingBasket(
             null,
-            Long.parseLong(csvRecord.get("StagingBasketId")),
             csvRecord.get("StagingBasket")
           ))
           .productType(new ProductType(
             null,
-            Long.parseLong(csvRecord.get("Product_Type")),
             csvRecord.get("ProductType")
           )).build();
 

@@ -87,7 +87,6 @@ public class TariffCsvTranslatorTest {
   @Test
   public void translates_StagingBasket_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
-    assertEquals(6, tariffs.get(0).getStagingBasket().getLegacyId(), 0);
     assertEquals("Immediate", tariffs.get(0).getStagingBasket().getDescription());
   }
 
@@ -142,7 +141,6 @@ public class TariffCsvTranslatorTest {
   @Test
   public void translates_ProductType_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
-    assertEquals(2, tariffs.get(0).getProductType().getLegacyId(), 0);
     assertEquals("Agricultural", tariffs.get(0).getProductType().getDescription());
   }
 
