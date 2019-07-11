@@ -45,9 +45,10 @@ Steps to run this application on you local for development purposes
     - https://s3.amazonaws.com/tariffs/20190502/Chile.csv
  - When the application initially starts, it will seed the database with tariff data; this only happens once.
  - A MySql database must exist on the network; populate connection parameters in the following environment variables:
-    - TERRAFREIGHTS_DB_URL: Database Connection URL
-    - TERRAFREIGHTS_DB_USERNAME: Username with permissions to execute DDL and DML sql statements
-    - TERRAFREIGHTS_DB_PASSWORD: Password
+    - TARIFFTOOL_DB_URL: Database Connection URL
+    - TARIFFTOOL_DB_USERNAME: Username with permissions to execute DDL and DML sql statements
+    - TARIFFTOOL_DB_PASSWORD: Password
+ - Azure AD is configured for authentication; users must be part of the EDSP group to alter tariff rates.
  - `java -jar build/libs/terra-freights-0.0.1-SNAPSHOT.jar --spring.profiles.active=production`
  - See `./production-run.sh` for further guidance
  

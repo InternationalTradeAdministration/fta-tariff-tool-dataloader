@@ -24,6 +24,7 @@ seed:
          CA,canada-usmca.csv"
 terrafreights:
   version: 1.0.0
+
 ---
 
 spring:
@@ -38,9 +39,20 @@ spring:
         jdbc:
           batch_size: 1000
   datasource:
-    url: ${TERRAFREIGHTS_DB_URL}
-    username: ${TERRAFREIGHTS_DB_USERNAME}
-    password: ${TERRAFREIGHTS_DB_PASSWORD}
+    url: ${TARIFFTOOL_DB_URL}
+    username: ${TARIFFTOOL_DB_USERNAME}
+    password: ${TARIFFTOOL_DB_PASSWORD}
+  security:
+    oauth2:
+      client:
+        registration:
+          azure:
+            client-id: b6c6f905-01c8-417e-a94a-785608a53cd7
+            client-secret: 55-Irl*+npB]NyWtx6xOauaQv6UX=_zy
+azure:
+  activedirectory:
+    tenant-id: 787661a1-5142-41c0-bcc5-c2c9080781e5
+    active-directory-groups: EDSP
 seed:
   csvs: "SG,https://s3.amazonaws.com/tariffs/20190502/Singapore.csv;
         PE,https://s3.amazonaws.com/tariffs/20190502/Peru.csv;

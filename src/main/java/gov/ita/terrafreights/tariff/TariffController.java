@@ -3,6 +3,7 @@ package gov.ita.terrafreights.tariff;
 import gov.ita.terrafreights.tariff.stagingbasket.StagingBasket;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.StringReader;
@@ -62,6 +63,7 @@ public class TariffController {
     return tariffRepository.tariffCountsByCountry();
   }
 
+  @PreAuthorize("hasRole('ROLE_EDSP')")
   @PutMapping("/api/tariffs/save")
   public String saveTariffs(@RequestParam("countryCode") String countryCode,
                             @RequestBody TariffUpload tariffUpload) {
