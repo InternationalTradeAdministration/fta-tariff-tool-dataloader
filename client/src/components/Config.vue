@@ -21,7 +21,7 @@
       <div class="md-layout-item">
         <md-field>
           <label>Upload .xlsx</label>
-          <md-file v-model="fileName" @md-change="onFileUpload($event)"></md-file>
+          <md-file v-model="fileName" @md-change="onFileSelection($event)"></md-file>
         </md-field>
       </div>
       <div class="md-layout-item md-size-10">
@@ -34,8 +34,11 @@
       </ul>
     </div>
     <div v-if="uploading">Uploading...</div>
-    <div class="file-contents" v-if="!errorOccured">
-      <div class="success">{{successMessage}}</div>
+    <div v-if="uploadSuccessful" class="success">
+      <p>
+        {{this.fileName}} was uploaded successfully! Visit
+        <a href="https://api.govwizely.com" target="_blank">https://api.govwizely.com</a> to view updated Tariff Rates
+      </p>
     </div>
   </div>
 </template>
@@ -70,15 +73,15 @@ export default {
       isXlsxFile: true,
       errorOccured: false,
       errorMessages: [],
-      successMessage: null,
+      uploadSuccessful: false,
       uploading: false,
       fileBlob: null
     };
   },
   methods: {
-    onFileUpload(event) {
+    onFileSelection(event) {
       this.errorMessages = [];
-      this.successMessage = null;
+      this.uploadSuccessful = false;
       if (event[0].name.endsWith(".xlsx")) {
         this.isXlsxFile = true;
         this.fileBlob = event[0];
@@ -88,11 +91,11 @@ export default {
       }
     },
     async uploadFile() {
-      this.successMessage = null;
       this.uploading = true;
       if (!this.isXlsxFile) {
         this.errorOccured = true;
         this.errorMessages.push("Only .xlsx files may be uploaded.");
+        this.uploadSuccessful = false;
         this.uploading = false;
         return;
       }
@@ -100,6 +103,7 @@ export default {
       if (!this.fileBlob) {
         this.errorOccured = true;
         this.errorMessages.push("Please select a .xlsx file to upload.");
+        this.uploadSuccessful = false;
         this.uploading = false;
         return;
       }
@@ -113,6 +117,7 @@ export default {
       if (!validationResults.valid) {
         this.errorOccured = true;
         this.errorMessages = validationResults.errorMessages;
+        this.uploadSuccessful = false;
         this.uploading = false;
         return;
       }
@@ -122,11 +127,14 @@ export default {
         this.countryCode,
         csv
       );
-      if (message === "success") {
+
+      console.log(message);
+      if (message == "success") {
+        this.uploadSuccessful = true;
         this.errorOccured = false;
-        this.successMessage = this.fileName + " was uploaded successfully! Visit https://api.govwizely.com to view updated Tariff Rates";
       } else {
         this.errorOccured = true;
+        this.uploadSuccessful = false;
         this.errorMessages.push(message);
       }
 
