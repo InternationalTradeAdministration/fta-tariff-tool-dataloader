@@ -25,7 +25,8 @@ insert into country (code, name, endpointme_freshen_url) values ('KR', 'South Ko
 insert into country (code, name) values ('SG', 'Singapore');
 
 create table hs6 (
-    code varchar(6) not null primary key,
+    id bigint not null auto_increment primary key,
+    code varchar(6) not null,
     description varchar(255) null
 );
 
@@ -56,7 +57,7 @@ create table tariff (
     reporter_start_year int null,
     quota_name varchar(255) null,
     rule_text varchar(5000) null,
-    hs6_code varchar(6) not null,
+    hs6_id bigint not null,
     country_id bigint not null,
     staging_basket_id bigint not null,
     product_type_id bigint not null

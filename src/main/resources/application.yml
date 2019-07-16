@@ -2,7 +2,7 @@ spring:
   profiles:
     active: development
   jpa:
-    show-sql: false
+    show-sql: true
     format_sql: true
     properties:
       hibernate:

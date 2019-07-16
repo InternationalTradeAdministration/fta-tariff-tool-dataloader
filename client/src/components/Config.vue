@@ -35,10 +35,7 @@
     </div>
     <div v-if="uploading">Uploading...</div>
     <div v-if="uploadSuccessful" class="success">
-      <p>
-        {{this.fileName}} was uploaded successfully! Visit
-        <a href="https://api.govwizely.com" target="_blank">https://api.govwizely.com</a> to view updated Tariff Rates
-      </p>
+      <p>{{this.fileName}} was uploaded successfully!</p>
     </div>
   </div>
 </template>

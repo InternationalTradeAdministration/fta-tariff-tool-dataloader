@@ -216,7 +216,9 @@ export default {
     this.tariffEliminated = tariff.tariffEliminated;
     this.hs6 = tariff.hs6.code;
     this.hsdescription = tariff.hs6.description;
-    this.rates = tariff.rates;
+    this.rates = tariff.rates.sort((a, b) => {
+      return a.year - b.year;
+    });
   },
   data() {
     return {

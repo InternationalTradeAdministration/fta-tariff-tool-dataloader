@@ -45,27 +45,36 @@ public class TariffPersister {
   }
 
   public void persist(List<Tariff> tariffs) {
+    Map<String, HS6> existingHS6s = getExistingHS6s();
     Map<String, ProductType> existingProductTypes = getExistingProductTypes();
     Map<String, StagingBasket> existingStagingBaskets = getExistingStagingBaskets();
     Map<String, Country> existingCountries = getExistingCountries();
 
-    Set<HS6> hs6s = new HashSet<>();
     List<Rate> rates = new ArrayList<>();
     List<Link> links = new ArrayList<>();
 
     for (Tariff t : tariffs) {
+      setHS6(existingHS6s, t);
       setProductType(existingProductTypes, t);
       setStagingBasket(existingStagingBaskets, t);
       t.setCountry(existingCountries.get(t.getCountry().getCode()));
-      hs6s.add(t.getHs6());
       rates.addAll(t.getRates());
       links.addAll(t.getLinks());
     }
 
-    hs6Repository.saveAll(hs6s);
     rateRepository.saveAll(rates);
     linkRepository.saveAll(links);
     tariffRepository.saveAll(tariffs);
+  }
+
+  private void setHS6(Map<String, HS6> existingHS6s, Tariff t) {
+    HS6 hs6 = existingHS6s.get(t.getHs6().getCode());
+    if (hs6 != null) {
+      t.setHs6(hs6);
+    } else {
+      HS6 persistedHs6 = hs6Repository.save(t.getHs6());
+      existingHS6s.put(persistedHs6.getCode(), persistedHs6);
+    }
   }
 
   private void setStagingBasket(Map<String, StagingBasket> existingStagingBaskets, Tariff t) {
@@ -86,6 +95,13 @@ public class TariffPersister {
       ProductType persistedProductType = productTypeRepository.save(t.getProductType());
       existingProductTypes.put(persistedProductType.getDescription(), persistedProductType);
     }
+  }
+
+  private Map<String, HS6> getExistingHS6s() {
+    return hs6Repository
+      .findAll()
+      .stream()
+      .collect(Collectors.toMap(HS6::getCode, Function.identity()));
   }
 
   private Map<String, Country> getExistingCountries() {
