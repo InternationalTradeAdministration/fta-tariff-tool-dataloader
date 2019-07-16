@@ -124,7 +124,7 @@ export default {
       );
       if (message === "success") {
         this.errorOccured = false;
-        this.successMessage = this.fileName + " was uploaded successfully!";
+        this.successMessage = this.fileName + " was uploaded successfully! Visit https://api.govwizely.com to view updated Tariff Rates";
       } else {
         this.errorOccured = true;
         this.errorMessages.push(message);

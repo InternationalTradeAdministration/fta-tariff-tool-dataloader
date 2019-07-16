@@ -19,4 +19,9 @@ public class Country {
   Long id;
   String code;
   String name;
+  String endpointmeFreshenUrl;
+
+  public Country(String code) {
+    this.code = code;
+  }
 }

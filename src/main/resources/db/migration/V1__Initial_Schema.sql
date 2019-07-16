@@ -1,12 +1,13 @@
 create table country (
     id bigint not null auto_increment primary key,
     code varchar(25) not null,
-    name varchar(100) not null
+    name varchar(100) not null,
+    endpointme_freshen_url varchar(1000) null
 );
 
-insert into country (code, name) values ('AU', 'Australia');
-insert into country (code, name) values ('BH', 'Bahrain');
-insert into country (code, name) values ('CA', 'Canada USMCA');
+insert into country (code, name, endpointme_freshen_url) values ('AU', 'Australia','https://api.govwizely.com/v1/australia_tariff_rates/freshen.json?api_key=1cCV-1ddALkUhGpWa2L-aYit');
+insert into country (code, name, endpointme_freshen_url) values ('BH', 'Bahrain', 'https://api.govwizely.com/v1/bahrain_tariff_rates/freshen.json?api_key=1cCV-1ddALkUhGpWa2L-aYit');
+insert into country (code, name, endpointme_freshen_url) values ('CA', 'Canada USMCA','https://api.govwizely.com/v1/canada_tariff_rates/freshen.json?api_key=1cCV-1ddALkUhGpWa2L-aYit');
 insert into country (code, name) values ('CL', 'Chile');
 insert into country (code, name) values ('CO', 'Colombia');
 insert into country (code, name) values ('CR', 'Costa Rica');
@@ -20,7 +21,7 @@ insert into country (code, name) values ('NI', 'Nicaragua');
 insert into country (code, name) values ('OM', 'Oman');
 insert into country (code, name) values ('PA', 'Panama');
 insert into country (code, name) values ('PE', 'Peru');
-insert into country (code, name) values ('KR', 'South Korea');
+insert into country (code, name, endpointme_freshen_url) values ('KR', 'South Korea','https://api.govwizely.com/v1/south_korea_tariff_rates/freshen.json?api_key=1cCV-1ddALkUhGpWa2L-aYit');
 insert into country (code, name) values ('SG', 'Singapore');
 
 create table hs6 (

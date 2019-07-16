@@ -53,7 +53,7 @@ public class TariffCsvTranslator {
           .reporterStartYear(intParser(csvRecord.get("ReporterStartYear")))
           .quotaName(csvRecord.get("QuotaName"))
           .ruleText(csvRecord.get("Rule_Text"))
-          .country(new Country(null, countryCode, null))
+          .country(new Country(countryCode))
           .hs6(new HS6(
             csvRecord.get("HS6"),
             csvRecord.get("HS6_Desc")

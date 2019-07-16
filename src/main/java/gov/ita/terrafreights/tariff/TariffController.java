@@ -1,10 +1,14 @@
 package gov.ita.terrafreights.tariff;
 
+import gov.ita.terrafreights.tariff.country.Country;
+import gov.ita.terrafreights.tariff.country.CountryRepository;
 import gov.ita.terrafreights.tariff.stagingbasket.StagingBasket;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.StringReader;
 import java.util.List;
@@ -16,13 +20,19 @@ public class TariffController {
   private final TariffRepository tariffRepository;
   private TariffCsvTranslator tariffCsvTranslator;
   private final TariffPersister tariffPersister;
+  private CountryRepository countryRepository;
+  private RestTemplate restTemplate;
 
   public TariffController(TariffRepository tariffRepository,
                           TariffCsvTranslator tariffCsvTranslator,
-                          TariffPersister tariffPersister) {
+                          TariffPersister tariffPersister,
+                          CountryRepository countryRepository,
+                          RestTemplate restTemplate) {
     this.tariffRepository = tariffRepository;
     this.tariffCsvTranslator = tariffCsvTranslator;
     this.tariffPersister = tariffPersister;
+    this.countryRepository = countryRepository;
+    this.restTemplate = restTemplate;
   }
 
   @GetMapping("/api/tariffs")
@@ -71,6 +81,8 @@ public class TariffController {
     try {
       List<Tariff> tariffs = tariffCsvTranslator.translate(countryCode, new StringReader(tariffUpload.csv));
       tariffPersister.persist(tariffs);
+      Country country = countryRepository.findByCode(countryCode);
+      restTemplate.getForEntity(country.getEndpointmeFreshenUrl(), EndPointMeResponse.class);
       return "success";
     } catch (InvalidCsvFileException e) {
       e.printStackTrace();
