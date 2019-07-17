@@ -8,6 +8,7 @@ HELP.md
 /client/dist/
 /src/main/resources/public/
 /client/test/unit/coverage/
+/docker/*.jar
 
 ### STS ###
 .apt_generated
