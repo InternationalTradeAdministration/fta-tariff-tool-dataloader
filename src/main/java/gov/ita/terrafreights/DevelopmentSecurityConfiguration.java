@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @EnableWebSecurity
-@Profile("!production")
+@Profile("development")
 public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Autowired

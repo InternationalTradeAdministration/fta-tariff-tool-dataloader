@@ -10,7 +10,7 @@ Steps to run this application on you local for development purposes
  - NPM (`cd client` then `npm install`)
 
 **Backend** 
- - `gradle bootRun`, http://localhost:8080
+ - `gradle bootRun `, http://localhost:8080
 
 **Frontend** `cd client && npm start`, http://localhost:8081
 
