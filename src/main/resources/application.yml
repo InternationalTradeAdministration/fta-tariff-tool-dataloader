@@ -17,49 +17,6 @@ spring:
     url: jdbc:h2:mem:terrafreights;MODE=MySQL
     username: SA
     password:
-seed:
-  csvs: "KR,korea.csv;
-         AU,australia.csv;
-         BH,bahrain.csv;
-         CA,canada-usmca.csv"
-terrafreights:
-  version: 1.0.0
----
-spring:
-  profiles:
-    active: staging
-  jpa:
-    show-sql: false
-    format_sql: true
-    properties:
-      hibernate:
-        hbm2ddl:
-          auto: validate
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      mode: MySQL
-  datasource:
-    url: jdbc:h2:mem:terrafreights;MODE=MySQL
-    username: SA
-    password:
-  security:
-    oauth2:
-      client:
-        registration:
-          azure:
-            client-id: b6c6f905-01c8-417e-a94a-785608a53cd7
-            client-secret: 55-Irl*+npB]NyWtx6xOauaQv6UX=_zy
-azure:
-  activedirectory:
-    tenant-id: 787661a1-5142-41c0-bcc5-c2c9080781e5
-    active-directory-groups: EDSP
-seed:
-  csvs: "KR,korea.csv;
-         AU,australia.csv;
-         BH,bahrain.csv;
-         CA,canada-usmca.csv"
 terrafreights:
   version: 1.0.0
 ---
@@ -85,28 +42,11 @@ spring:
           azure:
             client-id: b6c6f905-01c8-417e-a94a-785608a53cd7
             client-secret: 55-Irl*+npB]NyWtx6xOauaQv6UX=_zy
+system_metadata:
+  countries_url: "https://tarifftoolaccount.blob.core.windows.net/tariff-rates/countries.json"
 azure:
   activedirectory:
     tenant-id: 787661a1-5142-41c0-bcc5-c2c9080781e5
     active-directory-groups: EDSP
-seed:
-  csvs: "SG,https://s3.amazonaws.com/tariffs/20190502/Singapore.csv;
-        PE,https://s3.amazonaws.com/tariffs/20190502/Peru.csv;
-        PA,https://s3.amazonaws.com/tariffs/20190502/Panama.csv;
-        OM,https://s3.amazonaws.com/tariffs/20190502/Oman.csv;
-        NI,https://s3.amazonaws.com/tariffs/20190502/Nicaragua.csv;
-        MA,https://s3.amazonaws.com/tariffs/20190502/Morocco.csv;
-        MX,https://tariffs.s3.amazonaws.com/20190617/Mexico+USMCA.csv;
-        HN,https://s3.amazonaws.com/tariffs/20190502/Honduras.csv;
-        GT,https://s3.amazonaws.com/tariffs/20190502/Guatemala.csv;
-        SV,https://s3.amazonaws.com/tariffs/20190502/El+Salvador.csv;
-        DO,https://s3.amazonaws.com/tariffs/20190502/Dominican+Republic.csv;
-        CR,https://s3.amazonaws.com/tariffs/20190502/Costa+Rica.csv;
-        CO,https://s3.amazonaws.com/tariffs/20190502/Colombia.csv;
-        KR,https://s3.amazonaws.com/tariffs/20190430/Korea.csv;
-        AU,https://s3.amazonaws.com/tariffs/20190502/Australia.csv;
-        BH,https://s3.amazonaws.com/tariffs/20190502/Bahrain.csv;
-        CA,https://tariffs.s3.amazonaws.com/20190617/Canada+USMCA.csv;
-        CL,https://s3.amazonaws.com/tariffs/20190502/Chile.csv"
 terrafreights:
   version: 1.0.0

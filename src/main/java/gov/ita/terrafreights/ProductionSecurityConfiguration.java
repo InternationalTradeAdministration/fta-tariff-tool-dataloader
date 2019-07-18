@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Profile({"production","staging"})
+@Profile("production")
 public class ProductionSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Autowired

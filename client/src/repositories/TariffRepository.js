@@ -1,7 +1,6 @@
 const axios = require('axios')
 
 export default class TariffRepository {
-  
   async _getCountries () {
     let countriesResponse = await axios.get('/api/countries')
     return countriesResponse.data
