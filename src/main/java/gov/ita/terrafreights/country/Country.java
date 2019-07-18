@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class Country {
   String countryCode;
   String countryName;
-  String elasticFreshenUrl;
 }

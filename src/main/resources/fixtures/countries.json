@@ -1,0 +1,76 @@
+{
+  "countries": [
+    {
+      "countryCode": "AU",
+      "countryName": "Australia"
+    },
+    {
+      "countryCode": "BH",
+      "countryName": "Bahrain"
+    },
+    {
+      "countryCode": "CA",
+      "countryName": "Canada USMCA"
+    },
+    {
+      "countryCode": "CL",
+      "countryName": "Chile"
+    },
+    {
+      "countryCode": "CO",
+      "countryName": "Columbia"
+    },
+    {
+      "countryCode": "CR",
+      "countryName": "Costa Rica"
+    },
+    {
+      "countryCode": "DO",
+      "countryName": "Dominican Republic"
+    },
+    {
+      "countryCode": "SV",
+      "countryName": "El Salvador"
+    },
+    {
+      "countryCode": "GT",
+      "countryName": "Guatemala"
+    },
+    {
+      "countryCode": "HN",
+      "countryName": "Honduras"
+    },
+    {
+      "countryCode": "MX",
+      "countryName": "Mexico USMCA"
+    },
+    {
+      "countryCode": "MA",
+      "countryName": "Morocco"
+    },
+    {
+      "countryCode": "NI",
+      "countryName": "Nicaragua"
+    },
+    {
+      "countryCode": "OM",
+      "countryName": "Oman"
+    },
+    {
+      "countryCode": "PA",
+      "countryName": "Panama"
+    },
+    {
+      "countryCode": "PE",
+      "countryName": "Peru"
+    },
+    {
+      "countryCode": "KR",
+      "countryName": "South Korea"
+    },
+    {
+      "countryCode": "SG",
+      "countryName": "Singapore"
+    }
+  ]
+}

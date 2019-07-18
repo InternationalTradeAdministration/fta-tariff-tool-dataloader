@@ -1,40 +1,11 @@
 spring:
   profiles:
     active: development
-  jpa:
-    show-sql: false
-    format_sql: true
-    properties:
-      hibernate:
-        hbm2ddl:
-          auto: validate
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      mode: MySQL
-  datasource:
-    url: jdbc:h2:mem:terrafreights;MODE=MySQL
-    username: SA
-    password:
 terrafreights:
   version: 1.0.0
 ---
 spring:
   profiles: production
-  jpa:
-    show-sql: false
-    format_sql: true
-    properties:
-      hibernate:
-        hbm2ddl:
-          auto: validate
-        jdbc:
-          batch_size: 1000
-  datasource:
-    url: ${TARIFFTOOL_DB_URL}
-    username: ${TARIFFTOOL_DB_USERNAME}
-    password: ${TARIFFTOOL_DB_PASSWORD}
   security:
     oauth2:
       client:
@@ -42,11 +13,12 @@ spring:
           azure:
             client-id: b6c6f905-01c8-417e-a94a-785608a53cd7
             client-secret: 55-Irl*+npB]NyWtx6xOauaQv6UX=_zy
-system_metadata:
-  countries_url: "https://tarifftoolaccount.blob.core.windows.net/tariff-rates/countries.json"
 azure:
   activedirectory:
     tenant-id: 787661a1-5142-41c0-bcc5-c2c9080781e5
     active-directory-groups: EDSP
 terrafreights:
   version: 1.0.0
+  azure-storage-account: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT}
+  azure-storage-account-key: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY}
+  azure-storage-container: ${TARIFFTOOL_AZURE_STORAGE_CONTAINER}

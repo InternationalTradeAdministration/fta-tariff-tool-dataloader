@@ -1,28 +1,32 @@
 package gov.ita.terrafreights.tariff;
 
-import org.springframework.data.domain.Pageable;
+import gov.ita.terrafreights.AuthenticationFacade;
+import gov.ita.terrafreights.Storage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+
+@Slf4j
 @RestController
 public class TariffController {
 
-  private final RestTemplate restTemplate;
+  private Storage storage;
+  private AuthenticationFacade authenticationFacade;
 
-  public TariffController(RestTemplate restTemplate) {
-    this.restTemplate = restTemplate;
-  }
-
-  @GetMapping("/api/tariffs/all")
-  public String tariffs(Pageable pageable, @RequestParam("countryCode") String countryCode) {
-    return "future csv string";
+  public TariffController(Storage storage, AuthenticationFacade authenticationFacade) {
+    this.storage = storage;
+    this.authenticationFacade = authenticationFacade;
   }
 
   @PreAuthorize("hasRole('ROLE_EDSP')")
   @PutMapping("/api/tariffs/save")
   public String saveTariffs(@RequestParam("countryCode") String countryCode,
                             @RequestBody TariffUpload tariffUpload) {
-      return "success";
+    String timestampedFileName = String.format("%s-%s.csv", countryCode, LocalDateTime.now().toString());
+    log.info("Creating file {}", timestampedFileName);
+    storage.save(timestampedFileName, tariffUpload.csv, "text/csv", authenticationFacade.getUserName());
+    return "success";
   }
 }

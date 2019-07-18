@@ -11,9 +11,16 @@ public class TerraFreightsInitializer implements ApplicationListener<ContextRefr
   @Value("${terrafreights.version}")
   private String version;
 
+  private StorageInitializer storageInitializer;
+
+  public TerraFreightsInitializer(StorageInitializer storageInitializer) {
+    this.storageInitializer = storageInitializer;
+  }
+
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
     printTerraFreightsAsciiArt();
+    storageInitializer.init();
   }
 
   private void printTerraFreightsAsciiArt() {

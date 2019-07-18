@@ -1,7 +1,6 @@
 plugins {
 	id 'org.springframework.boot' version '2.1.6.RELEASE'
 	id 'java'
-	id 'org.flywaydb.flyway' version '5.2.4'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -15,7 +14,6 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-oauth2-client'
@@ -24,18 +22,11 @@ dependencies {
 	implementation 'com.nimbusds:oauth2-oidc-sdk:5.64.4' // Adal4j 1.6.x requires 5.64 - spring boot / security depends on 6.x by default
 	implementation 'org.projectlombok:lombok:1.18.8'
 	annotationProcessor 'org.projectlombok:lombok:1.18.8'
-	implementation 'com.h2database:h2'
+	implementation 'com.microsoft.azure:azure-storage-blob:11.0.1'
+	implementation 'com.microsoft.rest.v2:client-runtime:2.1.1'
 	implementation 'commons-io:commons-io:2.4'
 	implementation 'org.apache.commons:commons-csv:1.5'
-	implementation 'org.flywaydb:flyway-core'
-	compile 'mysql:mysql-connector-java'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-flyway {
-	url = 'jdbc:mysql://localhost:3306/terrafreights?serverTimezone=UTC'
-	user = 'service'
-	password = 'password'
 }
 
 task buildJarAndCopyToDocker(dependsOn: build) {
