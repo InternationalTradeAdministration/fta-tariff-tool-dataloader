@@ -2,6 +2,7 @@ package gov.ita.terrafreights.storage;
 
 import gov.ita.terrafreights.country.Country;
 import gov.ita.terrafreights.tariff.TariffBlobMetadata;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -16,5 +17,6 @@ public interface Storage {
 
   List<TariffBlobMetadata> getBlobsMetadata(String prefix);
 
-  String getBlobsListUrl();
+  ResponseEntity<byte[]> getLatestBlobByCountry(String prefix);
+
 }

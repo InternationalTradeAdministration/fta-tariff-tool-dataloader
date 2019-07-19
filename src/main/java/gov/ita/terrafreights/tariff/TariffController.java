@@ -3,6 +3,7 @@ package gov.ita.terrafreights.tariff;
 import gov.ita.terrafreights.security.AuthenticationFacade;
 import gov.ita.terrafreights.storage.Storage;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +23,13 @@ public class TariffController {
   }
 
   @GetMapping(value = "/api/tariffs", produces = "application/json")
-  public List<TariffBlobMetadata> getLatestTariffsForCountry(@RequestParam("countryCode") String countryCode) {
+  public List<TariffBlobMetadata> getTariffUploadLogByCountry(@RequestParam("countryCode") String countryCode) {
     return storage.getBlobsMetadata(countryCode + "-");
   }
 
-  @GetMapping("/api/tariffs/url")
-  public String getTariffsListUrl() {
-    return storage.getBlobsListUrl();
+  @GetMapping(value = "/api/tariff/download", produces = "text/csv")
+  public ResponseEntity<byte[]> downloadLatestTariffsByCountry(@RequestParam("countryCode") String countryCode) {
+    return storage.getLatestBlobByCountry(countryCode + "-");
   }
 
   @PreAuthorize("hasRole('ROLE_EDSP')")
