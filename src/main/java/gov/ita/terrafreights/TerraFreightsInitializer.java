@@ -1,5 +1,6 @@
 package gov.ita.terrafreights;
 
+import gov.ita.terrafreights.storage.StorageInitializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

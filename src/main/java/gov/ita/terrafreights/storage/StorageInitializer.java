@@ -1,4 +1,4 @@
-package gov.ita.terrafreights;
+package gov.ita.terrafreights.storage;
 
 public interface StorageInitializer {
   void init();

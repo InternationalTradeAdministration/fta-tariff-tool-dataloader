@@ -1,4 +1,4 @@
-package gov.ita.terrafreights;
+package gov.ita.terrafreights.security;
 
 public interface AuthenticationFacade {
   String getUserName();

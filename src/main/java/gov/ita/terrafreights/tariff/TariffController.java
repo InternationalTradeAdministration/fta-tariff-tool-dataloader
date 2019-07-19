@@ -1,14 +1,13 @@
 package gov.ita.terrafreights.tariff;
 
-import gov.ita.terrafreights.AuthenticationFacade;
-import gov.ita.terrafreights.Storage;
+import gov.ita.terrafreights.security.AuthenticationFacade;
+import gov.ita.terrafreights.storage.Storage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Map;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -23,10 +22,13 @@ public class TariffController {
   }
 
   @GetMapping("/api/tariffs")
-  public Object getLatestTariffsForCountry(@RequestParam("countryCode") String countryCode) {
-    Map<String, LocalDateTime> blobsWithPrefix = storage.getBlobsWithPrefix(countryCode + "-");
-    String latestTariffsBlobName = blobsWithPrefix.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
-    return storage.buildUrlForBlob(latestTariffsBlobName);
+  public List<TariffBlobMetadata> getLatestTariffsForCountry(@RequestParam("countryCode") String countryCode) {
+    return storage.getBlobsMetadata(countryCode + "-");
+  }
+
+  @GetMapping("/api/tariffs/url")
+  public String getTariffsListUrl() {
+    return storage.getBlobsListUrl();
   }
 
   @PreAuthorize("hasRole('ROLE_EDSP')")

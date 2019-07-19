@@ -1,16 +1,15 @@
-package gov.ita.terrafreights;
+package gov.ita.terrafreights.storage;
 
 import gov.ita.terrafreights.country.Country;
+import gov.ita.terrafreights.tariff.TariffBlobMetadata;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 public interface Storage {
   void save(String fileName, String fileContent, String contentType, String user);
   boolean containerExists();
   void createContainer();
   List<Country> getCountries();
-  Map<String, LocalDateTime> getBlobsWithPrefix(String prefix);
-  String buildUrlForBlob(String blobName);
+  List<TariffBlobMetadata> getBlobsMetadata(String prefix);
+  String getBlobsListUrl();
 }

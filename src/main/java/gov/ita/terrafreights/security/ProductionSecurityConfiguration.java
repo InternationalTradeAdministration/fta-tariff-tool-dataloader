@@ -1,4 +1,4 @@
-package gov.ita.terrafreights;
+package gov.ita.terrafreights.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;

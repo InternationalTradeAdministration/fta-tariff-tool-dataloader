@@ -1,4 +1,4 @@
-package gov.ita.terrafreights;
+package gov.ita.terrafreights.storage;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;

@@ -1,14 +1,15 @@
-package gov.ita.terrafreights;
+package gov.ita.terrafreights.storage;
 
 import com.microsoft.azure.storage.blob.*;
 import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
-import com.microsoft.azure.storage.blob.models.BlobItem;
 import com.microsoft.azure.storage.blob.models.ContainerItem;
 import com.microsoft.azure.storage.blob.models.PublicAccessType;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.util.FlowableUtil;
+import gov.ita.terrafreights.TerraFreightsInitializer;
 import gov.ita.terrafreights.country.Country;
 import gov.ita.terrafreights.country.CountryList;
+import gov.ita.terrafreights.tariff.TariffBlobMetadata;
 import io.reactivex.Flowable;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
-import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -109,16 +109,35 @@ public class ProductionStorage implements Storage {
   }
 
   @Override
-  public Map<String, LocalDateTime> getBlobsWithPrefix(String prefix) {
+  public List<TariffBlobMetadata> getBlobsMetadata(String prefix) {
     ListBlobsOptions listBlobsOptions = new ListBlobsOptions();
     listBlobsOptions.withPrefix(prefix);
-    return makeContainerUrl()
-      .listBlobsFlatSegment(null, listBlobsOptions, null).blockingGet().body().segment().blobItems()
-      .stream().collect(Collectors.toMap(BlobItem::name, x -> x.properties().lastModified().toLocalDateTime()));
+    BlobListDetails details = new BlobListDetails();
+    details.withMetadata(true);
+    listBlobsOptions.withDetails(details);
+    List<TariffBlobMetadata> meta = makeContainerUrl()
+      .listBlobsFlatSegment(null, listBlobsOptions, null).blockingGet().body().segment()
+      .blobItems()
+      .stream().map(
+        x -> new TariffBlobMetadata(
+          buildUrlForBlob(x.name()),
+          x.metadata().get("uploaded_by"),
+          x.properties().lastModified().toLocalDateTime()
+        ))
+      .collect(Collectors.toList());
+
+    String latestBloUrl = meta.stream().max(Comparator.comparing(TariffBlobMetadata::getUploadedAt)).get().getUrl();
+    return meta.stream().peek(x -> {
+      if (x.getUrl().equals(latestBloUrl)) x.setLatestUpload(true);
+    }).collect(Collectors.toList());
   }
 
   @Override
-  public String buildUrlForBlob(String blobName) {
+  public String getBlobsListUrl() {
+    return String.format("https://%s.blob.core.windows.net/%s?restype=container&comp=list",accountName,containerName);
+  }
+
+  private String buildUrlForBlob(String blobName) {
     return String.format("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName);
   }
 

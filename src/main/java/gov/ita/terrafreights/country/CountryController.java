@@ -1,6 +1,6 @@
 package gov.ita.terrafreights.country;
 
-import gov.ita.terrafreights.Storage;
+import gov.ita.terrafreights.storage.Storage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

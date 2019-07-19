@@ -1,4 +1,4 @@
-package gov.ita.terrafreights;
+package gov.ita.terrafreights.storage;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
