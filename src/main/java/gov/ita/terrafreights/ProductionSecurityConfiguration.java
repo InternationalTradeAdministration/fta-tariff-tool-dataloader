@@ -32,6 +32,6 @@ public class ProductionSecurityConfiguration extends WebSecurityConfigurerAdapte
 
   @Override
   public void configure(WebSecurity web) throws Exception {
-    web.ignoring().antMatchers("/api/tariffs/all");
+    web.ignoring().antMatchers("/api/tariffs");
   }
 }

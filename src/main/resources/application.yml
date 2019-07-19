@@ -11,8 +11,8 @@ spring:
       client:
         registration:
           azure:
-            client-id: b6c6f905-01c8-417e-a94a-785608a53cd7
-            client-secret: 55-Irl*+npB]NyWtx6xOauaQv6UX=_zy
+            client-id: ${TARIFFTOOL_AZURE_OAUTH_CLIENT_ID}
+            client-secret: ${TARIFFTOOL_AZURE_OAUTH_CLIENT_SECRET}
 azure:
   activedirectory:
     tenant-id: 787661a1-5142-41c0-bcc5-c2c9080781e5

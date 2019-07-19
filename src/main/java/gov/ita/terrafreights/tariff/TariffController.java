@@ -7,6 +7,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -18,6 +20,13 @@ public class TariffController {
   public TariffController(Storage storage, AuthenticationFacade authenticationFacade) {
     this.storage = storage;
     this.authenticationFacade = authenticationFacade;
+  }
+
+  @GetMapping("/api/tariffs")
+  public Object getLatestTariffsForCountry(@RequestParam("countryCode") String countryCode) {
+    Map<String, LocalDateTime> blobsWithPrefix = storage.getBlobsWithPrefix(countryCode + "-");
+    String latestTariffsBlobName = blobsWithPrefix.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
+    return storage.buildUrlForBlob(latestTariffsBlobName);
   }
 
   @PreAuthorize("hasRole('ROLE_EDSP')")
