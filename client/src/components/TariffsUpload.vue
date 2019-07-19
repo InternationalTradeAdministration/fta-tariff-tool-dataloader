@@ -1,11 +1,6 @@
 <template>
   <div>
     <div class="md-layout md-gutter">
-      <div class="md-layout-item md-size-5">
-        <md-button class="md-icon-button" @click="goToTariffsList()">
-          <md-icon class="fa fa-angle-double-left"></md-icon>
-        </md-button>
-      </div>
       <div class="md-layout-item md-size-15">
         <md-field>
           <label>Country</label>
@@ -26,6 +21,12 @@
       </div>
       <div class="md-layout-item md-size-10">
         <md-button class="md-primary top-btn" @click="uploadFile()">Upload</md-button>
+      </div>
+      <div class="md-layout-item md-size-10">
+        <md-button class="md-secondary top-btn" v-bind:href="'/api/tariff/log?countryCode='+countryCode" target="_blank">Log</md-button>
+      </div>
+      <div class="md-layout-item md-size-10">
+        <md-button class="md-secondary top-btn" v-bind:href="'/api/tariff/download?countryCode='+countryCode" download>Download</md-button>
       </div>
     </div>
     <div class="error" v-if="errorOccured">
@@ -54,7 +55,7 @@ import { TariffWorksheetValidator } from "./TariffWorksheetValidator";
 import { read, utils } from "xlsx";
 
 export default {
-  name: "TariffsList",
+  name: "TariffsUpload",
   props: {
     tariffRepository: Object
   },
@@ -89,6 +90,7 @@ export default {
     },
     async uploadFile() {
       this.uploading = true;
+      this.errorMessages = [];
       if (!this.isXlsxFile) {
         this.errorOccured = true;
         this.errorMessages.push("Only .xlsx files may be uploaded.");
@@ -125,7 +127,6 @@ export default {
         csv
       );
 
-      console.log(message);
       if (message == "success") {
         this.uploadSuccessful = true;
         this.errorOccured = false;
@@ -137,8 +138,12 @@ export default {
 
       this.uploading = false;
     },
-    goToTariffsList() {
-      this.$router.push({ name: "tariffsList" });
+    viewLog() {
+      //"/api/tariff/log?countryCode=" + this.countryCode;
+    },
+    downloadFile() {
+      // console.log("there");
+      // this.$router.push("/api/tariff/download?countryCode=" + this.countryCode);
     }
   }
 };

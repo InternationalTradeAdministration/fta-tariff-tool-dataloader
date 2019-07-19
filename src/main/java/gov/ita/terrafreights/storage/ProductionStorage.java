@@ -15,7 +15,6 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,7 +25,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -122,6 +120,7 @@ public class ProductionStorage implements Storage {
       .blobItems()
       .stream().map(
         x -> new TariffBlobMetadata(
+          x.name(),
           buildUrlForBlob(x.name()),
           x.metadata().get("uploaded_by"),
           x.properties().lastModified().toLocalDateTime()
@@ -132,18 +131,6 @@ public class ProductionStorage implements Storage {
     return meta.stream().peek(x -> {
       if (x.getUrl().equals(latestBloUrl)) x.setLatestUpload(true);
     }).collect(Collectors.toList());
-  }
-
-  @Override
-  public ResponseEntity<byte[]> getLatestBlobByCountry(String prefix) {
-    List<TariffBlobMetadata> blobsMetadata = getBlobsMetadata(prefix);
-    TariffBlobMetadata latest = blobsMetadata.stream().filter(TariffBlobMetadata::isLatestUpload).findFirst().get();
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
-    HttpEntity<String> entity = new HttpEntity<>(headers);
-
-    return restTemplate.exchange(latest.getUrl(), HttpMethod.GET, entity, byte[].class);
   }
 
   private String buildUrlForBlob(String blobName) {

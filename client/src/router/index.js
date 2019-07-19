@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Config from '@/components/Config'
+import Config from '@/components/TariffsUpload'
 import TariffRepository from '../repositories/TariffRepository'
 
 Vue.use(Router)
@@ -9,7 +9,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'config',
+      name: 'TariffsUpload',
       component: Config,
       props: {
         tariffRepository: new TariffRepository()
