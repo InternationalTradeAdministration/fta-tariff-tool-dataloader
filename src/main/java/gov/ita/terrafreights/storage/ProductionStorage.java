@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-@Profile("production")
+@Profile({"production", "staging"})
 public class ProductionStorage implements Storage {
 
   @Autowired
@@ -134,7 +134,7 @@ public class ProductionStorage implements Storage {
 
   @Override
   public String getBlobsListUrl() {
-    return String.format("https://%s.blob.core.windows.net/%s?restype=container&comp=list",accountName,containerName);
+    return String.format("https://%s.blob.core.windows.net/%s?restype=container&comp=list", accountName, containerName);
   }
 
   private String buildUrlForBlob(String blobName) {

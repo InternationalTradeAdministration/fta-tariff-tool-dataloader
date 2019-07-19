@@ -21,7 +21,7 @@ public class TariffController {
     this.authenticationFacade = authenticationFacade;
   }
 
-  @GetMapping("/api/tariffs")
+  @GetMapping(value = "/api/tariffs", produces = "application/json")
   public List<TariffBlobMetadata> getLatestTariffsForCountry(@RequestParam("countryCode") String countryCode) {
     return storage.getBlobsMetadata(countryCode + "-");
   }

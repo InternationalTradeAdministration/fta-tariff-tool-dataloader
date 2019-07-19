@@ -3,7 +3,7 @@ package gov.ita.terrafreights.security;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-@Profile("development")
+@Profile({"development", "staging"})
 @Service
 public class DevelopmentAuthenticationFacade implements AuthenticationFacade {
   @Override

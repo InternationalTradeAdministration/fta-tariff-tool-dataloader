@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@Profile("production")
+@Profile({"production", "staging"})
 public class ProductionStorageInitializer implements StorageInitializer {
 
   private Storage storage;
