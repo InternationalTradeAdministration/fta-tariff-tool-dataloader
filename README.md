@@ -1,5 +1,33 @@
 # ITA Tariff Tool
-A tool that helps maintain Tariff Rates
+A tool that helps validate and maintain a record of Tariff Rates for consumption by other users or systems.
+The last file that is uploaded and passes validation will be the data referenced when the system is queried.
+
+##Validation
+Currently file validation ensures that the first record of the excel file has the appropriate headers:
+
+- ID
+- TL
+- TL_Desc
+- Sector_Code
+- Final_Year
+- TRQ_Quota
+- TRQ_Note
+- Tariff_Eliminated
+- PartnerName
+- ReporterName
+- PartnerStartYear
+- ReporterStartYear
+- QuotaName
+- Rule_Text
+- HS6
+- HS6_Desc
+- StagingBasket
+- ProductType
+- Base_Rate_Alt
+- Base_Rate
+- Link_Url
+- Link_Text
+
 
 ## Local Development
 Steps to run this application on you local for development purposes
