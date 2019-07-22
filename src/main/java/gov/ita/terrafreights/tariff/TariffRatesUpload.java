@@ -3,6 +3,6 @@ package gov.ita.terrafreights.tariff;
 import lombok.Data;
 
 @Data
-public class TariffUpload {
+public class TariffRatesUpload {
   String csv;
 }

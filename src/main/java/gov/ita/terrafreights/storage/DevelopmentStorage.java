@@ -1,7 +1,7 @@
 package gov.ita.terrafreights.storage;
 
 import gov.ita.terrafreights.country.Country;
-import gov.ita.terrafreights.tariff.TariffBlobMetadata;
+import gov.ita.terrafreights.tariff.TariffRatesMetadata;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +38,9 @@ public class DevelopmentStorage implements Storage {
   }
 
   @Override
-  public List<TariffBlobMetadata> getBlobsMetadata(String prefix) {
+  public List<TariffRatesMetadata> getBlobsMetadata(String prefix) {
     if (prefix.equals("AU-")) {
-      List<TariffBlobMetadata> blobsList = new ArrayList<>();
+      List<TariffRatesMetadata> blobsList = new ArrayList<>();
       String sampleBaseUrl = "https://tarifftoolaccount.blob.core.windows.net/tariff-rates/";
       blobsList.add(buildMeta(sampleBaseUrl, "AU-2019-07-18T18:30:13.863.csv"));
       blobsList.add(buildMeta(sampleBaseUrl, "AU-2019-07-17T18:30:13.863.csv"));
@@ -54,8 +54,8 @@ public class DevelopmentStorage implements Storage {
     return Collections.emptyList();
   }
 
-  private TariffBlobMetadata buildMeta(String sampleBaseUrl, String fileName) {
-    return new TariffBlobMetadata(
+  private TariffRatesMetadata buildMeta(String sampleBaseUrl, String fileName) {
+    return new TariffRatesMetadata(
       fileName,
       sampleBaseUrl + fileName,
       "TestUser@trade.gov",

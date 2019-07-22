@@ -1,7 +1,7 @@
 package gov.ita.terrafreights.storage;
 
 import gov.ita.terrafreights.country.Country;
-import gov.ita.terrafreights.tariff.TariffBlobMetadata;
+import gov.ita.terrafreights.tariff.TariffRatesMetadata;
 
 import java.util.List;
 
@@ -14,6 +14,6 @@ public interface Storage {
 
   List<Country> getCountries();
 
-  List<TariffBlobMetadata> getBlobsMetadata(String prefix);
+  List<TariffRatesMetadata> getBlobsMetadata(String prefix);
 
 }

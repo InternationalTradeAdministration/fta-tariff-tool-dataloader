@@ -28,16 +28,15 @@ public class TariffController {
   }
 
   @GetMapping(value = "/api/tariff/log", produces = "application/json")
-  public List<TariffBlobMetadata> getTariffUploadLogByCountry(@RequestParam("countryCode") String countryCode) {
+  public List<TariffRatesMetadata> getTariffUploadLogByCountry(@RequestParam("countryCode") String countryCode) {
     return storage.getBlobsMetadata(countryCode + "-");
   }
 
   @GetMapping(value = "/api/tariff/download", produces = "text/csv")
   public ResponseEntity<byte[]> downloadLatestTariffsByCountry(@RequestParam("countryCode") String countryCode,
                                                                HttpServletResponse response) {
-
-    List<TariffBlobMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + "-");
-    TariffBlobMetadata latest = blobsMetadata.stream().filter(TariffBlobMetadata::isLatestUpload).findFirst().get();
+    List<TariffRatesMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + "-");
+    TariffRatesMetadata latest = blobsMetadata.stream().filter(TariffRatesMetadata::isLatestUpload).findFirst().get();
     response.setHeader("Content-Disposition", "attachment; filename=" + latest.getName());
 
     HttpHeaders headers = new HttpHeaders();
@@ -50,10 +49,10 @@ public class TariffController {
   @PreAuthorize("hasRole('ROLE_EDSP')")
   @PutMapping("/api/tariffs/save")
   public String saveTariffs(@RequestParam("countryCode") String countryCode,
-                            @RequestBody TariffUpload tariffUpload) {
+                            @RequestBody TariffRatesUpload tariffRatesUpload) {
     String timestampedFileName = String.format("%s-%s.csv", countryCode, LocalDateTime.now().toString());
     log.info("Creating file {}", timestampedFileName);
-    storage.save(timestampedFileName, tariffUpload.csv, "text/csv", authenticationFacade.getUserName());
+    storage.save(timestampedFileName, tariffRatesUpload.csv, "text/csv", authenticationFacade.getUserName());
     return "success";
   }
 }

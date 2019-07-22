@@ -9,8 +9,9 @@ import com.microsoft.rest.v2.util.FlowableUtil;
 import gov.ita.terrafreights.TerraFreightsInitializer;
 import gov.ita.terrafreights.country.Country;
 import gov.ita.terrafreights.country.CountryList;
-import gov.ita.terrafreights.tariff.TariffBlobMetadata;
+import gov.ita.terrafreights.tariff.TariffRatesMetadata;
 import io.reactivex.Flowable;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Profile({"production", "staging"})
 public class ProductionStorage implements Storage {
@@ -109,17 +111,17 @@ public class ProductionStorage implements Storage {
   }
 
   @Override
-  public List<TariffBlobMetadata> getBlobsMetadata(String prefix) {
+  public List<TariffRatesMetadata> getBlobsMetadata(String prefix) {
     ListBlobsOptions listBlobsOptions = new ListBlobsOptions();
     listBlobsOptions.withPrefix(prefix);
     BlobListDetails details = new BlobListDetails();
     details.withMetadata(true);
     listBlobsOptions.withDetails(details);
-    List<TariffBlobMetadata> meta = makeContainerUrl()
+    List<TariffRatesMetadata> meta = makeContainerUrl()
       .listBlobsFlatSegment(null, listBlobsOptions, null).blockingGet().body().segment()
       .blobItems()
       .stream().map(
-        x -> new TariffBlobMetadata(
+        x -> new TariffRatesMetadata(
           x.name(),
           buildUrlForBlob(x.name()),
           x.metadata().get("uploaded_by"),
@@ -127,7 +129,7 @@ public class ProductionStorage implements Storage {
         ))
       .collect(Collectors.toList());
 
-    String latestBloUrl = meta.stream().max(Comparator.comparing(TariffBlobMetadata::getUploadedAt)).get().getUrl();
+    String latestBloUrl = meta.stream().max(Comparator.comparing(TariffRatesMetadata::getUploadedAt)).get().getUrl();
     return meta.stream().peek(x -> {
       if (x.getUrl().equals(latestBloUrl)) x.setLatestUpload(true);
     }).collect(Collectors.toList());

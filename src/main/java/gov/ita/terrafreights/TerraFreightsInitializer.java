@@ -1,27 +1,32 @@
 package gov.ita.terrafreights;
 
-import gov.ita.terrafreights.storage.StorageInitializer;
+import gov.ita.terrafreights.storage.Storage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class TerraFreightsInitializer implements ApplicationListener<ContextRefreshedEvent> {
 
   @Value("${terrafreights.version}")
   private String version;
 
-  private StorageInitializer storageInitializer;
+  private Storage storage;
 
-  public TerraFreightsInitializer(StorageInitializer storageInitializer) {
-    this.storageInitializer = storageInitializer;
+  public TerraFreightsInitializer(Storage storage) {
+    this.storage = storage;
   }
 
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
     printTerraFreightsAsciiArt();
-    storageInitializer.init();
+    if (!storage.containerExists()) {
+      log.info("Initializing storage");
+      storage.createContainer();
+    }
   }
 
   private void printTerraFreightsAsciiArt() {
@@ -33,7 +38,7 @@ public class TerraFreightsInitializer implements ApplicationListener<ContextRefr
     System.out.println("    |_|\\___|_|  |_|  \\__,_|_|  |_|  \\___|_|\\__, |_| |_|\\__|___/ ");
     System.out.println("                                           __/ |                     ");
     System.out.println("                                          |___/                      ");
-    System.out.println("-- TerraFreights v" + version + " --                                 ");
+    System.out.println("-- TariffTool v" + version + " --                                 ");
     System.out.println("                                                                     ");
   }
 
