@@ -2,7 +2,7 @@
 A tool that helps validate and maintain a record of Tariff Rates for consumption by other users or systems.
 The last file that is uploaded and passes validation will be the data referenced when the system is queried.
 
-##Validation
+## Validation
 Currently file validation ensures that the first record of the excel file has the appropriate headers:
 
 - ID

@@ -1,15 +1,11 @@
 spring:
   profiles:
     active: development
-terrafreights:
-  version: 1.0.0
-
 ---
 spring:
   profiles:
     active: staging
 terrafreights:
-  version: 1.0.0
   azure-storage-account: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT}
   azure-storage-account-key: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY}
   azure-storage-container: ${TARIFFTOOL_AZURE_STORAGE_CONTAINER}
@@ -28,7 +24,6 @@ azure:
     tenant-id: ${TARIFFTOOL_AZURE_OAUTH_TENANT_ID}
     active-directory-groups: EDSP
 terrafreights:
-  version: 1.0.0
   azure-storage-account: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT}
   azure-storage-account-key: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY}
   azure-storage-container: ${TARIFFTOOL_AZURE_STORAGE_CONTAINER}
