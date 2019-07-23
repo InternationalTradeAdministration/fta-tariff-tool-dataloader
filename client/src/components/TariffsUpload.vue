@@ -7,9 +7,9 @@
           <md-select v-model="countryCode">
             <md-option
               v-for="country in countryOptions"
-              v-bind:key="country.countryCode"
-              v-bind:value="country.countryCode"
-            >{{country.countryName}}</md-option>
+              v-bind:key="country.code"
+              v-bind:value="country.code"
+            >{{country.name}}</md-option>
           </md-select>
         </md-field>
       </div>
@@ -97,7 +97,7 @@ export default {
   },
   async created() {
     this.countryOptions = await this.tariffRepository._getCountries();
-    this.countryCode = this.countryOptions[0].countryCode;
+    this.countryCode = this.countryOptions[0].code;
   },
   data() {
     return {

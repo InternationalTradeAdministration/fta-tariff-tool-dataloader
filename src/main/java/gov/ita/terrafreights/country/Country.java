@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Country {
-  String countryCode;
-  String countryName;
+  String code;
+  String name;
+  boolean visible;
 }

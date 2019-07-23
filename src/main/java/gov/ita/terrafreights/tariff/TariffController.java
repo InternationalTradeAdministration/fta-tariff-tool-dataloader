@@ -28,12 +28,12 @@ public class TariffController {
   }
 
   @GetMapping(value = "/api/tariff/log", produces = "application/json")
-  public List<TariffRatesMetadata> getTariffUploadLogByCountry(@RequestParam("countryCode") String countryCode) {
+  public List<TariffRatesMetadata> getTariffUploadLogByCountry(@RequestParam("code") String countryCode) {
     return storage.getBlobsMetadata(countryCode + "-");
   }
 
   @GetMapping(value = "/api/tariff/download", produces = "text/csv")
-  public ResponseEntity<byte[]> downloadLatestTariffsByCountry(@RequestParam("countryCode") String countryCode,
+  public ResponseEntity<byte[]> downloadLatestTariffsByCountry(@RequestParam("code") String countryCode,
                                                                HttpServletResponse response) {
     List<TariffRatesMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + "-");
     TariffRatesMetadata latest = blobsMetadata.stream().filter(TariffRatesMetadata::isLatestUpload).findFirst().get();
@@ -48,7 +48,7 @@ public class TariffController {
 
   @PreAuthorize("hasRole('ROLE_EDSP')")
   @PutMapping("/api/tariffs/save")
-  public String saveTariffs(@RequestParam("countryCode") String countryCode,
+  public String saveTariffs(@RequestParam("code") String countryCode,
                             @RequestBody TariffRatesUpload tariffRatesUpload) {
     String timestampedFileName = String.format("%s-%s.csv", countryCode, LocalDateTime.now().toString());
     log.info("Creating file {}", timestampedFileName);
