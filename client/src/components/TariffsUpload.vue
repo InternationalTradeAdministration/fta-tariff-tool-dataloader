@@ -1,6 +1,11 @@
 <template>
   <div>
     <div class="md-layout md-gutter">
+      <div class="md-layout-item md-size-5">
+        <md-button class="md-icon-button config-btn" @click="goToConfig()">
+          <md-icon class="fa fa-cog"></md-icon>
+        </md-button>
+      </div>
       <div class="md-layout-item md-size-15">
         <md-field>
           <label>Country</label>
@@ -97,6 +102,7 @@ export default {
   },
   async created() {
     this.countryOptions = await this.tariffRepository._getCountries();
+    this.countryOptions = this.countryOptions.filter(c => c.visible);
     this.countryCode = this.countryOptions[0].code;
   },
   data() {
@@ -174,12 +180,8 @@ export default {
 
       this.uploading = false;
     },
-    viewLog() {
-      //"/api/tariff/log?countryCode=" + this.countryCode;
-    },
-    downloadFile() {
-      // console.log("there");
-      // this.$router.push("/api/tariff/download?countryCode=" + this.countryCode);
+    goToConfig() {
+      this.$router.push({ name: "Config" });
     }
   }
 };

@@ -14,4 +14,8 @@ export default class TariffRepository {
     })
     return saveResponse.data
   }
+
+  async _saveCountries (countries) {
+    await axios.post('/api/countries/save', countries)
+  }
 }

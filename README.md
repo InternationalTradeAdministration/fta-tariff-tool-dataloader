@@ -27,6 +27,13 @@ Currently file validation ensures that the first record of the excel file has th
 - Base_Rate
 - Link_Url
 - Link_Text
+- Rate fields are either:
+    - Y####: A numeric rate
+    - Alt_####: A rate containing characters other than numeric
+    
+    or
+    - Year_##: A numeric rate
+    - Year_##_Alt: A rate containing characters other than numeric
 
 
 ## Local Development
