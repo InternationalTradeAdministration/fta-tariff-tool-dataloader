@@ -1,33 +1,21 @@
-import { utils } from 'xlsx'
 
-export class TariffWorksheetValidator {
-  constructor (sheet) {
-    this.sheet = sheet
+export class TariffHeadersValidator {
+  constructor(headers) {
+    this.headers = headers
   }
 
-  _validate () {
+  _validate() {
     let valid = true
-    let headers = []
     let errorMessages = []
-    let nullHeaderCount = 0
 
-    var range = utils.decode_range(this.sheet['!ref'])
-    for (var colNum = range.s.c; colNum < range.e.c; colNum++) {
-      const cell = this.sheet[utils.encode_cell({ r: 0, c: colNum })]
-      if (!cell) {
-        nullHeaderCount++
-        continue
-      }
-      headers.push(cell.v)
-    }
-
-    if (nullHeaderCount > 0) {
+    if (this.headers.indexOf(null) != -1) {
       valid = false
       errorMessages.push('There are null headers, please remove them and try again.')
+      return { valid, errorMessages }
     }
 
     let headerCounts = {}
-    headers.forEach(header => { headerCounts[header] = (headerCounts[header] || 0) + 1 })
+    this.headers.forEach(header => { headerCounts[header] = (headerCounts[header] || 0) + 1 })
     let duplicateHeaders = Object.keys(headerCounts).filter(x => headerCounts[x] > 1)
     if (duplicateHeaders.length > 0) {
       valid = false
@@ -35,8 +23,9 @@ export class TariffWorksheetValidator {
     }
 
     let requiredHeaderExistance = {}
-    this.requiredHeaders().forEach(reqHeader => { requiredHeaderExistance[reqHeader] = headers.includes(reqHeader) })
-    let missingHeaders = Object.keys(requiredHeaderExistance).filter(x => requiredHeaderExistance[x] === false)
+    this.requiredHeaders().forEach(reqHeader => { requiredHeaderExistance[reqHeader] = this.headers.indexOf
+      (reqHeader) })
+    let missingHeaders = Object.keys(requiredHeaderExistance).filter(x => requiredHeaderExistance[x] === -1)
     if (missingHeaders.length > 0) {
       valid = false
       missingHeaders.forEach(header => {
@@ -44,16 +33,16 @@ export class TariffWorksheetValidator {
       })
     }
 
-    let rateFields = headers.filter(header => { if (header.match('^Y') || header.match('^Alt_')) { return header } })
+    let rateFields = this.headers.filter(header => { if (header.match('^Y') || header.match('^Alt_')) { return header } })
     if (rateFields.length === 0) {
       valid = false
-      missingHeaders.push('No headers meet the minimum requirements to be a rate field. (ex. Alt_2002, Y2004, Year_1, Year_1_Alt)')
+      errorMessages.push('No headers meet the minimum requirements to be a rate field. (ex. Alt_2002, Y2004, Year_1, Year_1_Alt)')
     }
 
     return { valid, errorMessages }
   }
 
-  requiredHeaders () {
+  requiredHeaders() {
     return [
       'ID',
       'TL',

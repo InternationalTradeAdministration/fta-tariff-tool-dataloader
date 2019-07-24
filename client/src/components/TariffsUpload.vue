@@ -20,7 +20,7 @@
       </div>
       <div class="md-layout-item md-size-40">
         <md-field>
-          <label>Upload .xlsx</label>
+          <label>Upload .xlsx or .csv</label>
           <md-file v-model="fileName" @md-change="onFileSelection($event)"></md-file>
         </md-field>
       </div>
@@ -102,7 +102,7 @@
 
 <script>
 import { readUploadedFileAsArrayBuffer } from "./FileHelper";
-import { TariffWorksheetValidator } from "./TariffWorksheetValidator";
+import { TariffHeadersValidator } from "./TariffHeadersValidator";
 import { read, utils } from "xlsx";
 
 export default {
@@ -122,7 +122,7 @@ export default {
       countryCode: null,
       countryOptions: [],
       fileName: null,
-      isXlsxFile: true,
+      fileType: null,
       errorOccured: false,
       errorMessages: [],
       uploadSuccessful: false,
@@ -135,20 +135,24 @@ export default {
     onFileSelection(event) {
       this.errorMessages = [];
       this.uploadSuccessful = false;
+      this.fileType = null;
       if (event[0].name.endsWith(".xlsx")) {
-        this.isXlsxFile = true;
+        this.fileType = "xlsx";
+        this.fileBlob = event[0];
+      } else if (event[0].name.endsWith(".csv")) {
+        this.fileType = "csv";
         this.fileBlob = event[0];
       } else {
+        this.fileType = null;
         this.errorOccured = true;
-        this.isXlsxFile = false;
       }
     },
     async uploadFile() {
       this.uploading = true;
       this.errorMessages = [];
-      if (!this.isXlsxFile) {
+      if (!this.fileType) {
         this.errorOccured = true;
-        this.errorMessages.push("Only .xlsx files may be uploaded.");
+        this.errorMessages.push("Only .xlsx and .csv files may be uploaded.");
         this.uploadSuccessful = false;
         this.uploading = false;
         return;
@@ -156,27 +160,57 @@ export default {
 
       if (!this.fileBlob) {
         this.errorOccured = true;
-        this.errorMessages.push("Please select a .xlsx file to upload.");
+        this.errorMessages.push(
+          "Please select a .xlsx or .csv file to upload."
+        );
         this.uploadSuccessful = false;
         this.uploading = false;
         return;
       }
 
+      let csv = null;
+      var headers = [];
       let fileArrayBuffer = await readUploadedFileAsArrayBuffer(this.fileBlob);
-      let workbook = read(new Uint8Array(fileArrayBuffer), { type: "array" });
-      let workSheetName = workbook.SheetNames[0];
-      let workSheet = workbook.Sheets[workSheetName];
-      const tariffWorksheetValidator = new TariffWorksheetValidator(workSheet);
-      const validationResults = tariffWorksheetValidator._validate();
-      if (!validationResults.valid) {
-        this.errorOccured = true;
-        this.errorMessages = validationResults.errorMessages;
-        this.uploadSuccessful = false;
-        this.uploading = false;
-        return;
+      if (this.fileType === "xlsx") {
+        let workbook = read(new Uint8Array(fileArrayBuffer), { type: "array" });
+        let workSheetName = workbook.SheetNames[0];
+        let workSheet = workbook.Sheets[workSheetName];
+        var range = utils.decode_range(workSheet["!ref"]);
+        for (var colNum = range.s.c; colNum < range.e.c; colNum++) {
+          const cell = workSheet[utils.encode_cell({ r: 0, c: colNum })];
+          if (!cell) {
+            nullHeaderCount++;
+            continue;
+          }
+          headers.push(cell.v);
+        }
+
+        const tariffWorksheetValidator = new TariffWorksheetValidator(headers);
+        const validationResults = tariffWorksheetValidator._validate();
+        if (!validationResults.valid) {
+          this.errorOccured = true;
+          this.errorMessages = validationResults.errorMessages;
+          this.uploadSuccessful = false;
+          this.uploading = false;
+          return;
+        }
+        csv = utils.sheet_to_csv(workSheet);
       }
 
-      let csv = utils.sheet_to_csv(workSheet);
+      if (this.fileType === "csv") {
+        csv = new TextDecoder("utf-8").decode(new Uint8Array(fileArrayBuffer));
+        headers = csv.substring(0,csv.indexOf('\n')).split(",");
+        const tariffWorksheetValidator = new TariffWorksheetValidator(headers);
+        const validationResults = tariffWorksheetValidator._validate();
+        if (!validationResults.valid) {
+          this.errorOccured = true;
+          this.errorMessages = validationResults.errorMessages;
+          this.uploadSuccessful = false;
+          this.uploading = false;
+          return;
+        }
+      }
+
       const message = await this.tariffRepository._saveTariffs(
         this.countryCode,
         csv

@@ -16,6 +16,10 @@ public class DevelopmentStorage implements Storage {
 
   @Override
   public void save(String fileName, String fileContent, String contentType, String user) {
+    System.out.println(user);
+    System.out.println(fileName);
+    System.out.println(contentType);
+    System.out.println(fileContent);
   }
 
   @Override
