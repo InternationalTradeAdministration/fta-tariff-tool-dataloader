@@ -40,6 +40,9 @@ public class TariffControllerTest {
   @Mock
   private HttpServletResponse response;
 
+  @Mock
+  private TariffCsvTranslator tariffCsvTranslator;
+
   private TariffController tariffController;
 
   @Captor
@@ -50,7 +53,7 @@ public class TariffControllerTest {
     TariffRatesMetadata cool = new TariffRatesMetadata("cool", "cool.com", null, null);
     cool.setLatestUpload(true);
     when(storage.getBlobsMetadata("AU-")).thenReturn(Collections.singletonList(cool));
-    tariffController = new TariffController(storage, authenticationFacade, restTemplate);
+    tariffController = new TariffController(storage, authenticationFacade, restTemplate, tariffCsvTranslator);
   }
 
   @Test
@@ -63,7 +66,7 @@ public class TariffControllerTest {
 
   @Test
   public void downloads_latest_tariffs_by_country() {
-    tariffController.downloadLatestTariffsByCountry("AU", response);
+    tariffController.downloadLatestTariffsCsvByCountry("AU", response);
 
     verify(storage).getBlobsMetadata("AU-");
     verify(restTemplate).exchange(eq("cool.com"), eq(HttpMethod.GET), acHttpEntity.capture(), eq(byte[].class));

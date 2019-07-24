@@ -27,6 +27,10 @@ Currently file validation ensures that the first record of the excel file has th
 - Base_Rate
 - Link_Url
 - Link_Text
+- Link_Url2 (optional - not validated)
+- Link_Text2 (optional - not validated)
+- Link_Url3 (optional - not validated)
+- Link_Text3 (optional - not validated)
 - Rate fields are either:
     - Y####: A numeric rate
     - Alt_####: A rate containing characters other than numeric
@@ -34,7 +38,6 @@ Currently file validation ensures that the first record of the excel file has th
     or
     - Year_##: A numeric rate
     - Year_##_Alt: A rate containing characters other than numeric
-
 
 ## Local Development
 Steps to run this application on you local for development purposes

@@ -39,11 +39,20 @@
       <div class="md-layout-item md-size-10">
         <md-button
           class="md-secondary top-btn"
-          v-bind:href="'/api/tariff/download?countryCode='+countryCode"
-          v-bind:alt="'/api/tariff/download?countryCode='+countryCode"
-          v-bind:title="'/api/tariff/download?countryCode='+countryCode"
+          v-bind:href="'/api/tariff/download/csv?countryCode='+countryCode"
+          v-bind:alt="'/api/tariff/download/csv?countryCode='+countryCode"
+          v-bind:title="'/api/tariff/download/csv?countryCode='+countryCode"
           download
-        >Download</md-button>
+        >CSV</md-button>
+      </div>
+      <div class="md-layout-item md-size-10">
+        <md-button
+          class="md-secondary top-btn"
+          v-bind:href="'/api/tariff/download/json?countryCode='+countryCode"
+          v-bind:alt="'/api/tariff/download/json?countryCode='+countryCode"
+          v-bind:title="'/api/tariff/download/json?countryCode='+countryCode"
+          download
+        >JSON</md-button>
       </div>
       <div class="md-layout-item md-size-5">
         <a
