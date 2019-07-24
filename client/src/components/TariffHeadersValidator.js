@@ -1,14 +1,14 @@
 
 export class TariffHeadersValidator {
-  constructor(headers) {
+  constructor (headers) {
     this.headers = headers
   }
 
-  _validate() {
+  _validate () {
     let valid = true
     let errorMessages = []
 
-    if (this.headers.indexOf(null) != -1) {
+    if (this.headers.indexOf(null) !== -1) {
       valid = false
       errorMessages.push('There are null headers, please remove them and try again.')
       return { valid, errorMessages }
@@ -23,8 +23,9 @@ export class TariffHeadersValidator {
     }
 
     let requiredHeaderExistance = {}
-    this.requiredHeaders().forEach(reqHeader => { requiredHeaderExistance[reqHeader] = this.headers.indexOf
-      (reqHeader) })
+    this.requiredHeaders().forEach(reqHeader => {
+      requiredHeaderExistance[reqHeader] = this.headers.indexOf(reqHeader)
+    })
     let missingHeaders = Object.keys(requiredHeaderExistance).filter(x => requiredHeaderExistance[x] === -1)
     if (missingHeaders.length > 0) {
       valid = false
@@ -42,7 +43,7 @@ export class TariffHeadersValidator {
     return { valid, errorMessages }
   }
 
-  requiredHeaders() {
+  requiredHeaders () {
     return [
       'ID',
       'TL',
