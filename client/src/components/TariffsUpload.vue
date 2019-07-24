@@ -76,6 +76,7 @@
     <div v-if="uploadSuccessful" class="success">
       <p>{{this.fileName}} was uploaded successfully!</p>
     </div>
+    <div v-if="loading">loading...</div>
   </div>
 </template>
 <style>
@@ -101,9 +102,11 @@ export default {
     tariffRepository: Object
   },
   async created() {
+    this.loading = true;
     this.countryOptions = await this.tariffRepository._getCountries();
     this.countryOptions = this.countryOptions.filter(c => c.visible);
     this.countryCode = this.countryOptions[0].code;
+    this.loading = false;
   },
   data() {
     return {
@@ -115,7 +118,8 @@ export default {
       errorMessages: [],
       uploadSuccessful: false,
       uploading: false,
-      fileBlob: null
+      fileBlob: null,
+      loading: true
     };
   },
   methods: {

@@ -6,9 +6,6 @@
           <md-icon class="fa fa-angle-double-left"></md-icon>
         </md-button>
       </div>
-      <div class="md-layout-item md-size-90">
-        <md-button class="md-primary top-btn" @click="saveCountries()">Save</md-button>
-      </div>
     </div>
     <div class="md-layout md-gutter">
       <md-list>
@@ -31,6 +28,7 @@
         </li>
       </md-list>
     </div>
+    <div v-if="loading">loading...</div>
   </div>
 </template>
 <style>
@@ -51,19 +49,20 @@ export default {
     tariffRepository: Object
   },
   async created() {
+    this.loading = true;
     this.countries = await this.tariffRepository._getCountries();
+    this.loading = false;
   },
   data() {
     return {
-      countries: []
+      countries: [],
+      loading: true
     };
   },
   methods: {
-    goToTariffUpload() {
-      this.$router.push({ name: "TariffsUpload" });
-    },
-    async saveCountries() {
+    async goToTariffUpload() {
       await this.tariffRepository._saveCountries(this.countries);
+      this.$router.push({ name: "TariffsUpload" });
     }
   }
 };
