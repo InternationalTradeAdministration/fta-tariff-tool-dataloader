@@ -1,4 +1,4 @@
-# ITA Tariff Tool
+# FTA Tariff Tool Dataloader
 A tool that helps validate and maintain a record of Tariff Rates for consumption by other users or systems.
 The last file that is uploaded and passes validation will be the data referenced when the system is queried.
 

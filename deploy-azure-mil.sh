@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 cd docker
 sudo az acr login --name milltarifftool
-sudo docker build -t milltarifftool.azurecr.io/ita-tariff-tool .
-sudo docker push milltarifftool.azurecr.io/ita-tariff-tool
+sudo docker build -t milltarifftool.azurecr.io/fta-tariff-tool-dataloader .
+sudo docker push milltarifftool.azurecr.io/fta-tariff-tool-dataloader
 sudo az container delete --resource-group mill-tariff-tool-resources --name milltarifftool --yes
 sudo az container create --resource-group mill-tariff-tool-resources --name milltarifftool \
-    --image milltarifftool.azurecr.io/ita-tariff-tool:latest --dns-name-label ita-tariff-tool-demo --ports 8080 \
+    --image milltarifftool.azurecr.io/fta-tariff-tool-dataloader:latest --dns-name-label ita-tariff-tool-demo --ports 8080 \
     --location eastus --registry-username milltarifftool --registry-password $TARIFFTOOL_AZURE_CONTAINER_KEY \
     --environment-variables 'TARIFFTOOL_AZURE_STORAGE_ACCOUNT'=$TARIFFTOOL_AZURE_STORAGE_ACCOUNT \
     'TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY'=$TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY \

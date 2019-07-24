@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 cd docker
 sudo az acr login --name itatarifftool
-sudo docker build -t itatarifftool.azurecr.io/ita-tariff-tool .
-sudo docker push itatarifftool.azurecr.io/ita-tariff-tool
+sudo docker build -t itatarifftool.azurecr.io/fta-tariff-tool-dataloader .
+sudo docker push itatarifftool.azurecr.io/fta-tariff-tool-dataloader
 sudo az container delete --resource-group ita-tariff-tool-resources --name itatarifftool --yes
 sudo az container create --resource-group ita-tariff-tool-resources --name itatarifftool \
-    --image itatarifftool.azurecr.io/ita-tariff-tool:latest --dns-name-label ita-tariff-tool-demo --ports 8080 \
+    --image itatarifftool.azurecr.io/fta-tariff-tool-dataloader:latest --dns-name-label fta-tariff-tool-dataloader --ports 8080 \
     --location westus --registry-username itatarifftool \
     --environment-variables 'TARIFFTOOL_AZURE_STORAGE_ACCOUNT'=$TARIFFTOOL_AZURE_STORAGE_ACCOUNT \
     'TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY'=$TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY \

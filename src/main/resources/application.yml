@@ -5,7 +5,7 @@ spring:
 spring:
   profiles:
     active: staging
-terrafreights:
+tarifftooldataloader:
   azure-storage-account: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT}
   azure-storage-account-key: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY}
   azure-storage-container: ${TARIFFTOOL_AZURE_STORAGE_CONTAINER}
@@ -23,7 +23,7 @@ azure:
   activedirectory:
     tenant-id: ${TARIFFTOOL_AZURE_OAUTH_TENANT_ID}
     active-directory-groups: EDSP
-terrafreights:
+tarifftooldataloader:
   azure-storage-account: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT}
   azure-storage-account-key: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY}
   azure-storage-container: ${TARIFFTOOL_AZURE_STORAGE_CONTAINER}
