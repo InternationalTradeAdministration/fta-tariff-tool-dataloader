@@ -18,25 +18,25 @@
           </md-select>
         </md-field>
       </div>
-      <div class="md-layout-item">
+      <div class="md-layout-item md-size-40">
         <md-field>
           <label>Upload .xlsx</label>
           <md-file v-model="fileName" @md-change="onFileSelection($event)"></md-file>
         </md-field>
       </div>
-      <div class="md-layout-item md-size-10">
-        <md-button class="md-primary top-btn" @click="uploadFile()">Upload</md-button>
+      <div class="md-layout-item md-size-6">
+        <md-button class="md-primary md-raised top-btn" @click="uploadFile()">Upload</md-button>
       </div>
-      <div class="md-layout-item md-size-10">
+      <div class="md-layout-item md-size-6">
         <md-button
-          class="md-secondary top-btn"
+          class="md-secondary md-raised top-btn"
           v-bind:href="'/api/tariff/log?countryCode='+countryCode"
           target="_blank"
           v-bind:alt="'/api/tariff/log?countryCode='+countryCode"
           v-bind:title="'/api/tariff/log?countryCode='+countryCode"
         >Log</md-button>
       </div>
-      <div class="md-layout-item md-size-10">
+      <div class="md-layout-item md-size-6">
         <md-button
           class="md-secondary top-btn"
           v-bind:href="'/api/tariff/download/csv?countryCode='+countryCode"
@@ -45,7 +45,7 @@
           download
         >CSV</md-button>
       </div>
-      <div class="md-layout-item md-size-10">
+      <div class="md-layout-item md-size-6">
         <md-button
           class="md-secondary top-btn"
           v-bind:href="'/api/tariff/download/json?countryCode='+countryCode"
@@ -54,7 +54,7 @@
           download
         >JSON</md-button>
       </div>
-      <div class="md-layout-item md-size-5">
+      <div class="md-layout-item md-size-6">
         <a
           href="https://github.com/InternationalTradeAdministration/ita-tariff-tool"
           alt="Git Hub Link"
