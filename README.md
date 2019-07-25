@@ -31,13 +31,13 @@ Currently file validation ensures that the first record of the excel file has th
 - Link_Text2 (optional - not validated)
 - Link_Url3 (optional - not validated)
 - Link_Text3 (optional - not validated)
-- Rate fields are either:
-    - Y####: A numeric rate
-    - Alt_####: A rate containing characters other than numeric
+- Rate fields naming conventions may be either:
+    - Y<year> (ex: Y2008)
+    - Alt_<year> (ex: Alt_2008)
     
     or
-    - Year_##: A numeric rate
-    - Year_##_Alt: A rate containing characters other than numeric
+    - Year_<year> (ex: Year_2008)
+    - Year_<year>_Alt (ex: Year_2008_Alt)
 
 ## Local Development
 Steps to run this application on you local for development purposes
