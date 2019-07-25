@@ -37,7 +37,6 @@ public class CountryController {
     storage.save(
       "countries.json",
       objectMapper.writeValueAsString(countryList),
-      "application/json",
       authenticationFacade.getUserName());
   }
 

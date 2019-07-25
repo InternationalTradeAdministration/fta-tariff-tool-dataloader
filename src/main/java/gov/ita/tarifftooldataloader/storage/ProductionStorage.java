@@ -49,11 +49,11 @@ public class ProductionStorage implements Storage {
   private String containerName;
 
   @Override
-  public void save(String fileName, String fileContent, String contentType, String user) {
+  public void save(String fileName, String fileContent, String user) {
     ContainerURL containerURL = makeContainerUrl();
     BlockBlobURL blobURL = containerURL.createBlockBlobURL(fileName);
     blobURL.upload(Flowable.just(ByteBuffer.wrap(fileContent.getBytes())), fileContent.getBytes().length,
-      makeHeader(contentType), makeMetaData(user), null, null)
+      makeHeader(fileName), makeMetaData(user), null, null)
       .flatMap(blobsDownloadResponse ->
         blobURL.download())
       .flatMap(blobsDownloadResponse ->
@@ -87,7 +87,7 @@ public class ProductionStorage implements Storage {
         .create(makeMetaData(accountName), PublicAccessType.BLOB, null)
         .flatMap(containerCreateResponse ->
           blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.getBytes().length,
-            makeHeader("application/json"), makeMetaData(accountName), null, null)
+            makeHeader("countries.json"), makeMetaData(accountName), null, null)
         )
         .flatMap(blobsDownloadResponse ->
           blobURL.download())
@@ -163,7 +163,14 @@ public class ProductionStorage implements Storage {
     return metadata;
   }
 
-  private BlobHTTPHeaders makeHeader(String contentType) {
+  private BlobHTTPHeaders makeHeader(String fileName) {
+    String contentType;
+
+    if(fileName.contains(".csv"))
+      contentType = "text/csv";
+    else
+      contentType = "application/json";
+
     BlobHTTPHeaders headers = new BlobHTTPHeaders();
     headers.withBlobContentType(contentType);
     return headers;

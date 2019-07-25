@@ -6,7 +6,7 @@ import gov.ita.tarifftooldataloader.tariff.TariffRatesMetadata;
 import java.util.List;
 
 public interface Storage {
-  void save(String fileName, String fileContent, String contentType, String user);
+  void save(String fileName, String fileContent, String user);
 
   boolean containerExists();
 

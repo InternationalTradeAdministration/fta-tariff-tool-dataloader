@@ -79,7 +79,7 @@ public class TariffController {
 
     String timestampedFileName = String.format("%s-%s.csv", countryCode, LocalDateTime.now().toString());
     log.info("Creating file {}", timestampedFileName);
-    storage.save(timestampedFileName, tariffRatesUpload.csv, "text/csv", authenticationFacade.getUserName());
+    storage.save(timestampedFileName, tariffRatesUpload.csv, authenticationFacade.getUserName());
     return "success";
   }
 }
