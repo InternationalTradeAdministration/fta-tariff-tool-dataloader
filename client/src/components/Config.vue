@@ -1,9 +1,6 @@
 <template>
   <div>
-    <md-toolbar class="md-primary" md-elevation="1">
-      <h3 class="md-title" style="flex: 1">FTA Tariff Tool Dataloader</h3>
-      <git-hub />
-    </md-toolbar>
+    <tariff-toolbar />
     <div class="md-layout md-gutter">
       <div class="md-layout-item md-size-5">
         <md-button class="md-icon-button" @click="goToTariffUpload()">
@@ -44,7 +41,7 @@
 }
 </style>
 <script>
-import GitHub from "./GitHub";
+import TariffHeader from "./TariffHeader";
 
 export default {
   name: "Config",
@@ -52,7 +49,7 @@ export default {
     tariffRepository: Object
   },
   components: {
-    "git-hub": GitHub
+    "tariff-toolbar": TariffHeader
   },
   async created() {
     this.loading = true;

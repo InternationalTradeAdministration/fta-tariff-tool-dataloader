@@ -57,6 +57,11 @@ public class DevelopmentStorage implements Storage {
     return Collections.emptyList();
   }
 
+  @Override
+  public LocalDateTime getLastModifiedAt() {
+    return LocalDateTime.now();
+  }
+
   private TariffRatesMetadata buildMeta(String sampleBaseUrl, String fileName) {
     return new TariffRatesMetadata(
       fileName,

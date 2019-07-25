@@ -26,9 +26,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -135,6 +137,14 @@ public class ProductionStorage implements Storage {
     }).collect(Collectors.toList());
   }
 
+  @Override
+  public LocalDateTime getLastModifiedAt() {
+    List<TariffRatesMetadata> blobsMetadata = getBlobsMetadata(null);
+    return blobsMetadata.stream()
+      .max(Comparator.comparing(TariffRatesMetadata::getUploadedAt))
+      .map(TariffRatesMetadata::getUploadedAt).orElse(null);
+  }
+
   private String buildUrlForBlob(String blobName) {
     return String.format("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName);
   }
@@ -166,7 +176,7 @@ public class ProductionStorage implements Storage {
   private BlobHTTPHeaders makeHeader(String fileName) {
     String contentType;
 
-    if(fileName.contains(".csv"))
+    if (fileName.contains(".csv"))
       contentType = "text/csv";
     else
       contentType = "application/json";
