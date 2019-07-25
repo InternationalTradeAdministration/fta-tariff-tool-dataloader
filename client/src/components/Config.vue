@@ -1,16 +1,18 @@
 <template>
   <div>
+    <md-toolbar class="md-primary" md-elevation="1">
+      <h3 class="md-title" style="flex: 1">FTA Tariff Tool Dataloader</h3>
+      <git-hub />
+    </md-toolbar>
     <div class="md-layout md-gutter">
-      <div class="md-layout-item md-size-10">
+      <div class="md-layout-item md-size-5">
         <md-button class="md-icon-button" @click="goToTariffUpload()">
           <md-icon class="fa fa-angle-double-left"></md-icon>
         </md-button>
       </div>
-    </div>
-    <div class="md-layout md-gutter">
       <md-list>
         <li v-for="country in countries" v-bind:key="country.code" v-bind:value="country.code">
-           <div class="layout-item country-code">
+          <div class="layout-item country-code">
             <md-field>
               <label>Code</label>
               <md-input v-model="country.code" disabled></md-input>
@@ -22,13 +24,13 @@
               <md-input v-model="country.name"></md-input>
             </md-field>
           </div>
-          <div class="layout-item ">
+          <div class="layout-item">
             <md-switch v-model="country.visible"></md-switch>
           </div>
         </li>
       </md-list>
+      <div v-if="loading">loading...</div>
     </div>
-    <div v-if="loading">loading...</div>
   </div>
 </template>
 <style>
@@ -40,13 +42,17 @@
   padding-left: 20px;
   width: 50px;
 }
-
 </style>
 <script>
+import GitHub from "./GitHub";
+
 export default {
   name: "Config",
   props: {
     tariffRepository: Object
+  },
+  components: {
+    "git-hub": GitHub
   },
   async created() {
     this.loading = true;
