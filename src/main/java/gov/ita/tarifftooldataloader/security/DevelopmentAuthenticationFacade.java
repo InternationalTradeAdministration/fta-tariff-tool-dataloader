@@ -3,8 +3,8 @@ package gov.ita.tarifftooldataloader.security;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-@Profile({"development", "staging"})
 @Service
+@Profile({"development", "staging"})
 public class DevelopmentAuthenticationFacade implements AuthenticationFacade {
 
   @Override
@@ -13,3 +13,4 @@ public class DevelopmentAuthenticationFacade implements AuthenticationFacade {
   }
 
 }
+

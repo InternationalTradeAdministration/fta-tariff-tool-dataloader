@@ -15,7 +15,7 @@ public class TariffCsvTranslatorTest {
   private TariffCsvTranslator tariffCsvTranslator;
 
   @Before
-  public void set_up() throws InvalidCsvFileException {
+  public void set_up() {
     tariffCsvTranslator = new TariffCsvTranslator();
   }
 
@@ -65,13 +65,13 @@ public class TariffCsvTranslatorTest {
   @Test
   public void translates_BaseRate_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
-    assertEquals("2.8 cents/kg", tariffs.get(0).getBaseRate());
+    assertEquals(2.2, tariffs.get(0).getBaseRate(), 0);
   }
 
   @Test
   public void translates_BaseRateAlt_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
-    assertEquals("8", tariffs.get(1).getBaseRate());
+    assertEquals("2.8 cents/kg", tariffs.get(0).getBaseRateAlt());
   }
 
   @Test
@@ -162,25 +162,33 @@ public class TariffCsvTranslatorTest {
   public void translates_line_Rates_values_for_year_2004_to_2041() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
 
-    assertEquals(12, tariffs.get(0).getRates().size(), 0);
+    assertEquals(7, tariffs.get(0).getRates().size(), 0);
 
     Rate rate2004 = tariffs.get(0).getRates().stream().filter(r -> r.getYear().equals(2004)).findFirst().get();
-    assertEquals("$0.724/kg + 10.4%", rate2004.getValue());
+    assertEquals(2, rate2004.getValue(), 0);
 
     Rate rate2011 = tariffs.get(0).getRates().stream().filter(r -> r.getYear().equals(2011)).findFirst().get();
-    assertEquals("4.4", rate2011.getValue());
+    assertEquals(4.4, rate2011.getValue(), 0);
   }
 
   @Test
   public void translates_line_Rates_values_from_year_1_to_x() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("CA-USMCA", getFileAsReader("canada-usmca.csv"));
-    Tariff tariff = tariffs.get(26);
-    assertEquals(5, tariff.getRates().size(), 0);
-    Rate rate2004 = tariff.getRates().stream().filter(r -> r.getYear().equals(1)).findFirst().get();
-    assertEquals("249% but not less than $3.78/kg", rate2004.getValue());
+    Tariff tariff = tariffs.get(0);
+    assertEquals(2, tariff.getRates().size(), 0);
+    assertEquals(2, tariff.getRateAlts().size(), 0);
 
-    Rate rate2011 = tariff.getRates().stream().filter(r -> r.getYear().equals(3)).findFirst().get();
-    assertEquals("249% but not less than $3.78/kg", rate2011.getValue());
+    Rate year1rate = tariff.getRates().stream().filter(r -> r.getYear().equals(1)).findFirst().get();
+    assertEquals(100, year1rate.getValue(), 0);
+
+    RateAlt year1rateAlt = tariff.getRateAlts().stream().filter(r -> r.getYear().equals(1)).findFirst().get();
+    assertEquals("$100 per kilo", year1rateAlt.getValue());
+
+    Rate year2rate = tariff.getRates().stream().filter(r -> r.getYear().equals(2)).findFirst().get();
+    assertEquals(50, year2rate.getValue(), 0);
+
+    RateAlt year2rateAlt = tariff.getRateAlts().stream().filter(r -> r.getYear().equals(2)).findFirst().get();
+    assertEquals("$50 per kilo", year2rateAlt.getValue());
   }
 
   @Test

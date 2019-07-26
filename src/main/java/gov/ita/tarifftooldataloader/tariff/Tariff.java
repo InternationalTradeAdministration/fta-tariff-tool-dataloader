@@ -19,7 +19,8 @@ public class Tariff {
   private String tariffLine;
   private String description;
   private String sectorCode;
-  private String baseRate;
+  private Double baseRate;
+  private String baseRateAlt;
   private Integer finalYear;
   private Integer tariffRateQuota;
   private String tariffRateQuotaNote;
@@ -37,11 +38,19 @@ public class Tariff {
   private String productType;
   private List<Link> links;
   private List<Rate> rates;
+  private List<RateAlt> rateAlts;
 
   @JsonProperty("annualRates")
-  public Map<String, String> getAnnualRates() {
-    Map<String, String> annualRates = new HashMap<>();
+  public Map<String, Double> getAnnualRates() {
+    Map<String, Double> annualRates = new HashMap<>();
     rates.forEach(rate -> annualRates.put("Y" + rate.getYear(), rate.getValue()));
     return annualRates;
+  }
+
+  @JsonProperty("annualRateAlts")
+  public Map<String, String> getAnnualRateAlts() {
+    Map<String, String> annualRateAlts = new HashMap<>();
+    rateAlts.forEach(rate -> annualRateAlts.put("Y" + rate.getYear(), rate.getValue()));
+    return annualRateAlts;
   }
 }

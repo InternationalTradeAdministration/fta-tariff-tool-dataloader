@@ -5,39 +5,39 @@ The last file that is uploaded and passes validation will be the data referenced
 ## Validation
 Currently file validation ensures that the first record of the excel file has the appropriate headers:
 
-- ID
-- TL
-- TL_Desc
-- Sector_Code
-- Final_Year
-- TRQ_Quota
-- TRQ_Note
-- Tariff_Eliminated
-- PartnerName
-- ReporterName
-- PartnerStartYear
-- ReporterStartYear
-- QuotaName
-- Rule_Text
-- HS6
-- HS6_Desc
-- StagingBasket
-- ProductType
-- Base_Rate_Alt
-- Base_Rate
-- Link_Url
-- Link_Text
-- Link_Url2 (optional - not validated)
-- Link_Text2 (optional - not validated)
-- Link_Url3 (optional - not validated)
-- Link_Text3 (optional - not validated)
+- ```ID``` - value must be numeric
+- ```TL```
+- ```TL_Desc```
+- ```Sector_Code```
+- ```Final_Year``` - value must be numeric
+- ```TRQ_Quota```
+- ```TRQ_Note```
+- ```Tariff_Eliminated```
+- ```PartnerName```
+- ```ReporterName```
+- ```PartnerStartYear``` - value must be numeric
+- ```ReporterStartYear``` - value must be numeric
+- ```QuotaName```
+- ```Rule_Text```
+- ```HS6```
+- ```HS6_Desc```
+- ```StagingBasket```
+- ```ProductType```
+- ```Base_Rate``` value must be numeric
+- ```Base_Rate_Alt```
+- ```Link_Url```
+- ```Link_Text```
+- ```Link_Url2``` (optional - not validated)
+- ```Link_Text2``` (optional - not validated)
+- ```Link_Url3``` (optional - not validated)
+- ```Link_Text3``` (optional - not validated)
 - Rate fields naming conventions may be either:
-    - Y<year> (ex: Y2008)
-    - Alt_<year> (ex: Alt_2008)
+    - ```Y<year>``` (ex: Y2008) value must be numeric
+    - ```Alt_<year>``` (ex: Alt_2008) (numeric)
     
     or
-    - Year_<year> (ex: Year_2008)
-    - Year_<year>_Alt (ex: Year_2008_Alt)
+    - ```Year_<year>``` (ex: Year_2008) value must be numeric
+    - ```Yea_<year>_Alt``` (ex: Year_2008_Alt)
 
 ## Local Development
 Steps to run this application on you local for development purposes

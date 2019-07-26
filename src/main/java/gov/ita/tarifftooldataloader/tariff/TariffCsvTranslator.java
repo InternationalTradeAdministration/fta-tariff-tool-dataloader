@@ -56,31 +56,29 @@ public class TariffCsvTranslator {
           .hs6Description(csvRecord.get("HS6_Desc"))
           .stagingBasket(csvRecord.get("StagingBasket"))
           .productType(csvRecord.get("ProductType"))
+          .baseRate(doubleParser(csvRecord.get("Base_Rate")))
+          .baseRateAlt(csvRecord.get("Base_Rate_Alt"))
           .build();
 
-        String baseRateAlt = csvRecord.get("Base_Rate_Alt");
-        String baseRate = baseRateAlt != null ? baseRateAlt : csvRecord.get("Base_Rate");
-        tf.setBaseRate(baseRate);
-
         List<Rate> rates = new ArrayList<>();
-        Map<Integer, String> tempRates = new HashMap<>();
         headers.forEach((header, position) -> {
-          if (header.substring(0, 1).equals("Y") || (header.length() > 3 && header.substring(0, 4).equals("Alt_"))) {
+          if (header.substring(0, 1).equals("Y") && !header.contains("Alt")) {
             Integer year = Integer.parseInt(header.replaceAll("[^\\d]", ""));
-            String value = null;
-            String alt = null;
-
-            if (header.contains("_Alt") || header.contains("Alt_")) {
-              alt = csvRecord.get(header);
-            } else {
-              value = csvRecord.get(header);
-            }
-
-            if (value != null && doubleParser(value) != 0) tempRates.put(year, value);
-            if (alt != null) tempRates.put(year, alt);
+            Double value = doubleParser(csvRecord.get(header));
+            if (value != null && value != 0) rates.add(new Rate(year, value));
           }
         });
-        tempRates.forEach((year, value) -> rates.add(new Rate(year, value)));
+        tf.setRates(rates);
+
+        List<RateAlt> rateAlts = new ArrayList<>();
+        headers.forEach((header, position) -> {
+          if (header.substring(0, 1).equals("Y") && header.contains("Alt")) {
+            Integer year = Integer.parseInt(header.replaceAll("[^\\d]", ""));
+            String value = csvRecord.get(header);
+            if (value != null) rateAlts.add(new RateAlt(year, value));
+          }
+        });
+        tf.setRateAlts(rateAlts);
 
         List<Link> links = new ArrayList<>();
         if (headers.containsKey("Link_Url") && csvRecord.get("Link_Url") != null)
@@ -89,8 +87,6 @@ public class TariffCsvTranslator {
           links.add(new Link(csvRecord.get("Link_Url2"), csvRecord.get("Link_Text2")));
         if (headers.containsKey("Link_Url3") && csvRecord.get("Link_Url3") != null)
           links.add(new Link(csvRecord.get("Link_Url3"), csvRecord.get("Link_Text3")));
-
-        tf.setRates(rates);
         tf.setLinks(links);
 
         tariffs.add(tf);

@@ -5,12 +5,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Rate {
+public class RateAlt {
 
   private Integer year;
-  private Double value;
+  private String value;
 
-  public Rate(Integer year, Double value) {
+  public RateAlt(Integer year, String value) {
     this.year = year;
     this.value = value;
   }
