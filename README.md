@@ -3,6 +3,10 @@ A tool that helps validate and maintain a record of Tariff Rates for consumption
 The last file that is uploaded and passes validation will be the data referenced when the system is queried.
 
 ## Validation
+Some assumptions are made about the CSV format of the file:
+  - Columns headers are in the first row
+  - Columns are separated with a comma (,)
+  
 Currently file validation ensures that the first record of the excel file has the appropriate headers:
 
 - ```ID``` - value must be numeric
