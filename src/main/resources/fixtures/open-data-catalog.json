@@ -1,0 +1,35 @@
+{
+  "conformsTo": "https://project-open-data.cio.gov/v1.1/schema",
+  "dataset": [
+    {
+      "accessLevel": "public",
+      "bureauCode": [
+        "006:00"
+      ],
+      "contactPoint": {
+        "fn": "Jessica Huang",
+        "hasEmail": "mailto:Jessica.Huang@trade.gov"
+      },
+      "description": "Application that allows searching for FTA information based on an HS code.",
+      "distribution": [
+        {
+          "accessURL": "https://beta.trade.gov/fta/tariff-rates-search"
+        }
+      ],
+      "identifier": "DOC-4911",
+      "keyword": [
+        "tariff",
+        "rates",
+        "hs code",
+        "fta"
+      ],
+      "programCode": [
+        "006:036"
+      ],
+      "publisher": {
+        "name": "Federal Transit Administration"
+      },
+      "title": "FTA Tariff Tool"
+    }
+  ]
+}

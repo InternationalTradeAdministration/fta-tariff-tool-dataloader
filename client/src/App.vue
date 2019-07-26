@@ -14,7 +14,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 #container {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -29,8 +29,11 @@ export default {
   margin-top: 14px;
 }
 
-.md-toolbar.md-theme-default.md-primary {
-  background-color: #3e4853;
-}
+@import "~vue-material/dist/theme/engine"; // Import the theme engine
+@include md-register-theme("default", (
+  primary: #3e4853, // The primary color of your brand
+));
+
+@import "~vue-material/dist/theme/all"; // Apply the theme
 
 </style>

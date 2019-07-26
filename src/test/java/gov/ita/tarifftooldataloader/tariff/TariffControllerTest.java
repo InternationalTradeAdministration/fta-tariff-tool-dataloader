@@ -81,7 +81,7 @@ public class TariffControllerTest {
     tariffRatesUpload.setCsv("some csv");
     String message = tariffController.saveTariffs("AU", tariffRatesUpload);
 
-    verify(storage).save(anyString(),eq("some csv"), eq("TestUser@trade.gov"));
+    verify(storage).save(anyString(), eq("some csv"), eq("TestUser@trade.gov"));
     assertEquals("success", message);
   }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -25,9 +26,10 @@ public class CountryController {
   @Autowired
   private AuthenticationFacade authenticationFacade;
 
-  @GetMapping("/api/countries")
-  public List<Country> countries() {
-    return storage.getCountries();
+  @GetMapping(value = "/api/countries", produces = "application/json")
+  public List<Country> countries() throws IOException {
+    String countriesListJson = storage.getBlobAsString("countries.json");
+    return objectMapper.readValue(countriesListJson, CountryList.class).getCountries();
   }
 
   @PreAuthorize("hasRole('ROLE_EDSP')")

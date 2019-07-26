@@ -1,6 +1,5 @@
 package gov.ita.tarifftooldataloader.storage;
 
-import gov.ita.tarifftooldataloader.country.Country;
 import gov.ita.tarifftooldataloader.tariff.TariffRatesMetadata;
 
 import java.time.LocalDateTime;
@@ -13,7 +12,7 @@ public interface Storage {
 
   void createContainer();
 
-  List<Country> getCountries();
+  String getBlobAsString(String blobName);
 
   List<TariffRatesMetadata> getBlobsMetadata(String prefix);
 

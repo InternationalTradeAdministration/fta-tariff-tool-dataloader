@@ -1,10 +1,13 @@
 package gov.ita.tarifftooldataloader.storage;
 
-import gov.ita.tarifftooldataloader.country.Country;
 import gov.ita.tarifftooldataloader.tariff.TariffRatesMetadata;
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,12 +35,11 @@ public class DevelopmentStorage implements Storage {
   }
 
   @Override
-  public List<Country> getCountries() {
-    List<Country> countries = new ArrayList<>();
-    countries.add(Country.builder().visible(true).code("AU").name("Australia").build());
-    countries.add(Country.builder().visible(true).code("BH").name("Bahrain").build());
-    countries.add(Country.builder().visible(true).code("CA").name("Canada USMCA").build());
-    return countries;
+  public String getBlobAsString(String blobName) {
+    if (blobName.equals("countries.json"))
+      return getResourceAsString("/fixtures/countries.json");
+    else
+      return getResourceAsString("/fixtures/open-data-catalog.json");
   }
 
   @Override
@@ -70,4 +72,14 @@ public class DevelopmentStorage implements Storage {
       LocalDateTime.now());
   }
 
+  private String getResourceAsString(String resource) {
+    InputStream inputStream = DevelopmentStorage.class.getResourceAsStream(resource);
+    try {
+      return IOUtils.toString(new InputStreamReader(inputStream));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return null;
+  }
 }
