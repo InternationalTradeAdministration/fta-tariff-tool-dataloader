@@ -27,10 +27,9 @@ Currently file validation ensures that the first record of the excel file has th
 - ```Base_Rate_Alt```
 - ```Link_Url```
 - ```Link_Text```
-- ```Link_Url2``` (optional - not validated)
-- ```Link_Text2``` (optional - not validated)
-- ```Link_Url3``` (optional - not validated)
-- ```Link_Text3``` (optional - not validated)
+- Additional link fields may be added with the following naming convention:
+    - ```Link_Url<position>``` (ex: Link_Url5) (optional - not validated)
+    - ```Link_Text<position>``` (ex: Link_Text5) (optional - not validated)
 - Rate fields naming conventions may be either:
     - ```Y<year>``` (ex: Y2008) value must be numeric
     - ```Alt_<year>``` (ex: Alt_2008) (numeric)
