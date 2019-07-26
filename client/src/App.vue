@@ -26,6 +26,11 @@ export default {
 }
 
 .md-button.top-btn {
-  margin-top: 12px;
+  margin-top: 14px;
 }
+
+.md-toolbar.md-theme-default.md-primary {
+  background-color: #3e4853;
+}
+
 </style>
