@@ -3,11 +3,7 @@ A tool that helps validate and maintain a record of Tariff Rates for consumption
 The last file that is uploaded and passes validation will be the data referenced when the system is queried.
 
 ## Validation
-Some assumptions are made about the CSV format of the file:
-  - Columns headers are in the first row
-  - Columns are separated with a comma (,)
-  
-Currently file validation ensures that the first record of the excel file has the appropriate headers:
+File validation ensures that the first record of an Excel or Csv file has the appropriate headers:
 
 - ```ID``` - value must be numeric
 - ```TL```
@@ -36,12 +32,15 @@ Currently file validation ensures that the first record of the excel file has th
     - ```Link_Text<position>``` (ex: Link_Text5) (optional - not validated)
 - Rate fields naming conventions may be either:
     - ```Y<year>``` (ex: Y2008) value must be numeric
-    - ```Alt_<year>``` (ex: Alt_2008) (numeric)
+    - ```Alt_<year>``` (ex: Alt_2008)
     
     or
     - ```Year_<year>``` (ex: Year_2008) value must be numeric
     - ```Yea_<year>_Alt``` (ex: Year_2008_Alt)
 
+Note: 
+ - CSV files must have a comma (,) delimiter for columns
+ 
 ## Local Development
 Steps to run this application on you local for development purposes
 

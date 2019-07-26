@@ -16,9 +16,5 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>',
-  created () {
-    const html = document.documentElement
-    html.setAttribute('lang', 'en')
-  }
+  template: '<App/>'
 })
