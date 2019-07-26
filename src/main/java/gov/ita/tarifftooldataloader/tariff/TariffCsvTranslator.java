@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +29,7 @@ public class TariffCsvTranslator {
           .withFirstRecordAsHeader()
           .withTrim()
           .withNullString("")
+          .withIgnoreHeaderCase()
       );
 
       Map<String, Integer> headers = csvParser.getHeaderMap();
@@ -61,7 +61,7 @@ public class TariffCsvTranslator {
 
         List<Rate> rates = new ArrayList<>();
         headers.forEach((header, position) -> {
-          if (header.substring(0, 1).equals("Y") && !header.contains("Alt")) {
+          if (header.substring(0, 1).equalsIgnoreCase("y") && !header.toLowerCase().contains("alt")) {
             Integer year = Integer.parseInt(removeNonNumericCharacters(header));
             Double value = doubleParser(csvRecord.get(header));
             if (value != null && value != 0) rates.add(new Rate(year, value));
@@ -71,7 +71,7 @@ public class TariffCsvTranslator {
 
         List<RateAlt> rateAlts = new ArrayList<>();
         headers.forEach((header, position) -> {
-          if (header.substring(0, 1).equals("Y") && header.contains("Alt")) {
+          if (header.substring(0, 1).equalsIgnoreCase("y") && header.toLowerCase().contains("alt")) {
             Integer year = Integer.parseInt(removeNonNumericCharacters(header));
             String value = csvRecord.get(header);
             if (value != null) rateAlts.add(new RateAlt(year, value));
@@ -81,20 +81,20 @@ public class TariffCsvTranslator {
 
         Map<Integer, Link> linkMap = new HashMap<>();
         headers.forEach((header, position) -> {
-          if (header.contains("Link_")) {
+          if (header.toLowerCase().contains("link")) {
             int linkIndex = 0;
             String linkPosition = removeNonNumericCharacters(header);
             if (!linkPosition.isEmpty()) linkIndex = Integer.parseInt(linkPosition);
 
             Link link = linkMap.get(linkIndex);
             if (link != null) {
-              if (header.contains("Text")) {
+              if (header.toLowerCase().contains("text")) {
                 link.setLinkText(csvRecord.get(header));
               } else {
                 link.setLinkUrl(csvRecord.get(header));
               }
             } else {
-              if (header.contains("Text")) {
+              if (header.toLowerCase().contains("text")) {
                 linkMap.put(linkIndex, new Link(null, csvRecord.get(header)));
               } else {
                 linkMap.put(linkIndex, new Link(csvRecord.get(header), null));

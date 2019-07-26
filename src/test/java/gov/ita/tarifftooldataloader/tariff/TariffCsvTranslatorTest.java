@@ -205,11 +205,6 @@ public class TariffCsvTranslatorTest {
   }
 
   @Test(expected = InvalidCsvFileException.class)
-  public void throws_error_when_missing_required_header_field() throws InvalidCsvFileException {
-    tariffCsvTranslator.translate("KR", getFileAsReader("korea_missing_header.csv"));
-  }
-
-  @Test(expected = InvalidCsvFileException.class)
   public void throws_error_when_number_field_is_invalid() throws InvalidCsvFileException {
     tariffCsvTranslator.translate("KR", getFileAsReader("korea_invalid_number.csv"));
   }
