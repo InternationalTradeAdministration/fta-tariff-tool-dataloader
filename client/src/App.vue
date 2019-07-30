@@ -21,8 +21,13 @@ export default {
 ));
 @import "~vue-material/dist/theme/all"; // Apply the theme
 
-.md-button.top-btn {
+.top-btn {
   margin-top: 14px;
+}
+
+.loading {
+  margin-left: 30px;
+  margin-top: 15px;
 }
 
 </style>

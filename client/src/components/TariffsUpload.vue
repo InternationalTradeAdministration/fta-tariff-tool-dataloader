@@ -56,20 +56,25 @@
         >JSON</md-button>
       </div>
     </div>
-
-    <div class="error" v-if="errorOccured">
-      <ul>
-        <li v-for="message in errorMessages" v-bind:key="message">{{message}}</li>
-      </ul>
+    <div v-if="loading" class="loading">loading...</div>
+    <div class="user-feedback">
+      <div class="error" v-if="errorOccured">
+        <ul>
+          <li v-for="message in errorMessages" v-bind:key="message">{{message}}</li>
+        </ul>
+      </div>
+      <div v-if="uploading">Uploading...</div>
+      <div v-if="uploadSuccessful" class="success">
+        <p>{{this.fileName}} was uploaded successfully!</p>
+      </div>
     </div>
-    <div v-if="uploading">Uploading...</div>
-    <div v-if="uploadSuccessful" class="success">
-      <p>{{this.fileName}} was uploaded successfully!</p>
-    </div>
-    <div v-if="loading">loading...</div>
   </div>
 </template>
 <style>
+.user-feedback {
+  display: flex;
+  justify-content: center;
+}
 .error {
   color: red;
 }

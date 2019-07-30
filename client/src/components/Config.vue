@@ -26,7 +26,7 @@
           </div>
         </li>
       </md-list>
-      <div v-if="loading">loading...</div>
+      <div v-if="loading" class="loading">loading...</div>
     </div>
   </div>
 </template>
