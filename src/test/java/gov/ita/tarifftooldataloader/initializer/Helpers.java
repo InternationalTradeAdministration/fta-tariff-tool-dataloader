@@ -9,14 +9,22 @@ import java.io.Reader;
 import java.io.StringReader;
 
 public class Helpers {
+
+  public static String getFileAsString(String fileName) {
+    File file = getResourceAsFile("fixtures/" + fileName);
+
+    if (file != null)
+      try {
+        return FileUtils.readFileToString(file, "UTF-8");
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+    return null;
+  }
+
   public static Reader getFileAsReader(String fileName) {
-    String path = "fixtures/" + fileName;
-    File file = null;
-    try {
-      file = new ClassPathResource(path).getFile();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    File file = getResourceAsFile("fixtures/" + fileName);
 
     if (file != null)
       try {
@@ -25,6 +33,15 @@ public class Helpers {
         e.printStackTrace();
       }
 
+    return null;
+  }
+
+  private static File getResourceAsFile(String path) {
+    try {
+      return new ClassPathResource(path).getFile();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     return null;
   }
 }

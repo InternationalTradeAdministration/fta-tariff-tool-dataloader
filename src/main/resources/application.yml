@@ -9,6 +9,7 @@ tarifftooldataloader:
   azure-storage-account: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT}
   azure-storage-account-key: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY}
   azure-storage-container: ${TARIFFTOOL_AZURE_STORAGE_CONTAINER}
+  tariff-docs-url: https://ita-tariff-docs-endpointme-staging.s3.amazonaws.com/tariff_docs.json
 ---
 spring:
   profiles: production
@@ -27,3 +28,4 @@ tarifftooldataloader:
   azure-storage-account: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT}
   azure-storage-account-key: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY}
   azure-storage-container: ${TARIFFTOOL_AZURE_STORAGE_CONTAINER}
+  tariff-docs-url: https://ita-tariff-docs-endpointme-production.s3.amazonaws.com/tariff_docs.json

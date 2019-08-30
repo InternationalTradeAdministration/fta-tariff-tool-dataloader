@@ -1,7 +1,13 @@
 package gov.ita.tarifftooldataloader.tariff;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.jose.util.IOUtils;
 import gov.ita.tarifftooldataloader.security.AuthenticationFacade;
 import gov.ita.tarifftooldataloader.storage.Storage;
+import gov.ita.tarifftooldataloader.tariffdocs.TariffDoc;
+import gov.ita.tarifftooldataloader.tariffdocs.TariffDocGateway;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,11 +19,17 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
+import sun.nio.ch.IOUtil;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import static gov.ita.tarifftooldataloader.initializer.Helpers.getFileAsReader;
+import static gov.ita.tarifftooldataloader.initializer.Helpers.getFileAsString;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -32,6 +44,9 @@ public class TariffControllerTest {
   private Storage storage;
 
   @Mock
+  private TariffDocGateway tariffDocGateway;
+
+  @Mock
   private AuthenticationFacade authenticationFacade;
 
   @Mock
@@ -40,20 +55,20 @@ public class TariffControllerTest {
   @Mock
   private HttpServletResponse response;
 
-  @Mock
-  private TariffCsvTranslator tariffCsvTranslator;
-
   private TariffController tariffController;
 
   @Captor
   private ArgumentCaptor<HttpEntity> acHttpEntity;
+
+  @Captor
+  private ArgumentCaptor<String> stringArgumentCaptor;
 
   @Before
   public void set_up() {
     TariffRatesMetadata cool = new TariffRatesMetadata("cool", "cool.com", null, null);
     cool.setLatestUpload(true);
     when(storage.getBlobsMetadata("AU-")).thenReturn(Collections.singletonList(cool));
-    tariffController = new TariffController(storage, authenticationFacade, restTemplate, tariffCsvTranslator);
+    tariffController = new TariffController(storage, authenticationFacade, restTemplate, new TariffCsvTranslator(), tariffDocGateway);
   }
 
   @Test
@@ -74,7 +89,7 @@ public class TariffControllerTest {
   }
 
   @Test
-  public void save_tariffs() {
+  public void save_tariffs() throws JsonProcessingException {
     when(authenticationFacade.getUserName()).thenReturn("TestUser@trade.gov");
 
     TariffRatesUpload tariffRatesUpload = new TariffRatesUpload();
@@ -83,5 +98,23 @@ public class TariffControllerTest {
 
     verify(storage).save(anyString(), eq("some csv"), eq("TestUser@trade.gov"));
     assertEquals("success", message);
+  }
+
+  @Test
+  public void applies_rules_of_origin() throws IOException {
+    List<TariffDoc> tariffDocs = new ArrayList<>();
+    tariffDocs.add(new TariffDoc("http://kalivakia.pdf", "123456"));
+    when(tariffDocGateway.getTariffDocs()).thenReturn(tariffDocs);
+
+    TariffRatesUpload tariffRatesUpload = new TariffRatesUpload();
+    tariffRatesUpload.setCsv(getFileAsString("greece.csv"));
+
+    tariffController.saveTariffs("GR", tariffRatesUpload);
+
+    verify(storage).save(eq("GR.json"), stringArgumentCaptor.capture(), eq(null));
+
+    List<Tariff> results = new ObjectMapper().readValue(stringArgumentCaptor.getValue(),  new TypeReference<List<Tariff>>(){});
+
+    System.out.println(results);
   }
 }

@@ -1,7 +1,11 @@
 package gov.ita.tarifftooldataloader.tariff;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.ita.tarifftooldataloader.security.AuthenticationFacade;
 import gov.ita.tarifftooldataloader.storage.Storage;
+import gov.ita.tarifftooldataloader.tariffdocs.TariffDoc;
+import gov.ita.tarifftooldataloader.tariffdocs.TariffDocGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,15 +26,18 @@ public class TariffController {
   private AuthenticationFacade authenticationFacade;
   private RestTemplate restTemplate;
   private TariffCsvTranslator tariffCsvTranslator;
+  private TariffDocGateway tariffDocGateway;
 
   public TariffController(Storage storage,
                           AuthenticationFacade authenticationFacade,
                           RestTemplate restTemplate,
-                          TariffCsvTranslator tariffCsvTranslator) {
+                          TariffCsvTranslator tariffCsvTranslator,
+                          TariffDocGateway tariffDocGateway) {
     this.storage = storage;
     this.authenticationFacade = authenticationFacade;
     this.restTemplate = restTemplate;
     this.tariffCsvTranslator = tariffCsvTranslator;
+    this.tariffDocGateway = tariffDocGateway;
   }
 
   @GetMapping(value = "/api/tariff/log", produces = "application/json")
@@ -53,29 +60,34 @@ public class TariffController {
   }
 
   @GetMapping(value = "/api/tariff/download/json", produces = "application/json")
-  public List<Tariff> downloadLatestTariffsJsonByCountry(@RequestParam("countryCode") String countryCode,
+  public ResponseEntity<byte[]> downloadLatestTariffsJsonByCountry(@RequestParam("countryCode") String countryCode,
                                                          HttpServletResponse response) throws InvalidCsvFileException {
-    List<TariffRatesMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + "-");
-    TariffRatesMetadata latest = blobsMetadata.stream().filter(TariffRatesMetadata::isLatestUpload).findFirst().get();
+    List<TariffRatesMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + ".json");
+    TariffRatesMetadata latest = blobsMetadata.get(0);
     response.setHeader("Content-Disposition", "attachment; filename=" + countryCode + ".json");
 
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
     HttpEntity<String> entity = new HttpEntity<>(headers);
-    ResponseEntity<byte[]> exchange = restTemplate.exchange(latest.getUrl(), HttpMethod.GET, entity, byte[].class);
-
-    return tariffCsvTranslator.translate(countryCode, new StringReader(new String(exchange.getBody())));
+    return restTemplate.exchange(latest.getUrl(), HttpMethod.GET, entity, byte[].class);
   }
 
   @PreAuthorize("hasRole('ROLE_EDSP')")
   @PutMapping("/api/tariffs/save")
   public String saveTariffs(@RequestParam("countryCode") String countryCode,
-                            @RequestBody TariffRatesUpload tariffRatesUpload) {
+                            @RequestBody TariffRatesUpload tariffRatesUpload) throws JsonProcessingException {
+    List<Tariff> tariffs;
     try {
-      tariffCsvTranslator.isValid(countryCode, new StringReader(tariffRatesUpload.csv));
+      tariffs = tariffCsvTranslator.translate(countryCode, new StringReader(tariffRatesUpload.csv));
     } catch (InvalidCsvFileException e) {
       return e.getMessage();
     }
+
+    List<TariffDoc> tariffDocs = tariffDocGateway.getTariffDocs();
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    String tariffsJson = objectMapper.writeValueAsString(tariffs);
+    storage.save(countryCode + ".json", tariffsJson, authenticationFacade.getUserName());
 
     String timestampedFileName = String.format("%s-%s.csv", countryCode, LocalDateTime.now().toString());
     log.info("Creating file {}", timestampedFileName);

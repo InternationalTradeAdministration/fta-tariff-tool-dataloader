@@ -16,10 +16,6 @@ import java.util.stream.Collectors;
 @Service
 public class TariffCsvTranslator {
 
-  public void isValid(String countryCode, Reader csvReader) throws InvalidCsvFileException {
-    translate(countryCode, csvReader);
-  }
-
   public List<Tariff> translate(String countryCode, Reader csvReader) throws InvalidCsvFileException {
     CSVParser csvParser;
     List<Tariff> tariffs = new ArrayList<>();
