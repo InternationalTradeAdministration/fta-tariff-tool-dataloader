@@ -64,9 +64,7 @@ export class TariffHeadersValidator {
       'StagingBasket',
       'ProductType',
       'Base_Rate_Alt',
-      'Base_Rate',
-      'Link_Url',
-      'Link_Text'
+      'Base_Rate'
     ]
   }
 }

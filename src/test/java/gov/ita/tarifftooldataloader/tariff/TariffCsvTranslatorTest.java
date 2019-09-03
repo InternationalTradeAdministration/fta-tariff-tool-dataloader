@@ -147,13 +147,6 @@ public class TariffCsvTranslatorTest {
   }
 
   @Test
-  public void translates_Link_field() throws InvalidCsvFileException {
-    tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
-    assertEquals("cool", tariffs.get(0).getLinks().get(0).getLinkText());
-    assertEquals("http://cool.com", tariffs.get(0).getLinks().get(0).getLinkUrl());
-  }
-
-  @Test
   public void translates_LinkUrl_field() throws InvalidCsvFileException {
     tariffs = tariffCsvTranslator.translate("KR", getFileAsReader("korea.csv"));
   }
@@ -190,20 +183,7 @@ public class TariffCsvTranslatorTest {
     RateAlt year2rateAlt = tariff.getRateAlts().stream().filter(r -> r.getYear().equals(2)).findFirst().get();
     assertEquals("$50 per kilo", year2rateAlt.getValue());
   }
-
-  @Test
-  public void translates_line_Link_Urls_values() throws InvalidCsvFileException {
-    tariffs = tariffCsvTranslator.translate("CA-USMCA", getFileAsReader("canada-usmca.csv"));
-    Tariff tariff = tariffs.get(0);
-    assertEquals(3, tariff.getLinks().size(), 0);
-    assertEquals("such a cool link", tariff.getLinks().get(0).getLinkText());
-    assertEquals("https://cool.com", tariff.getLinks().get(0).getLinkUrl());
-    assertEquals("another cool link", tariff.getLinks().get(1).getLinkText());
-    assertEquals("http://what.ever", tariff.getLinks().get(1).getLinkUrl());
-    assertEquals("plenty links", tariff.getLinks().get(2).getLinkText());
-    assertEquals("https://plenty.com", tariff.getLinks().get(2).getLinkUrl());
-  }
-
+  
   @Test(expected = InvalidCsvFileException.class)
   public void throws_error_when_number_field_is_invalid() throws InvalidCsvFileException {
     tariffCsvTranslator.translate("KR", getFileAsReader("korea_invalid_number.csv"));
