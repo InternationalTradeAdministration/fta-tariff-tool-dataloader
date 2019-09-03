@@ -53,4 +53,13 @@ public class Tariff {
     rateAlts.forEach(rate -> annualRateAlts.put("Y" + rate.getYear(), rate.getValue()));
     return annualRateAlts;
   }
+
+  @JsonProperty("rulesOfOrigin")
+  public Map<String, String> getRulesOfOrigin() {
+    Map<String, String> rulesOfOrigin = new HashMap<>();
+    for (int i = 1; i < links.size(); i++) {
+      rulesOfOrigin.put("link_url_" + i, links.get(i - 1).getLinkUrl());
+    }
+    return rulesOfOrigin;
+  }
 }

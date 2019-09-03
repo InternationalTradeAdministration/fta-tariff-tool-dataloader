@@ -3,7 +3,7 @@
 #You'll need to log into Azure first 'sudo az acr login'
 cd docker
 sudo az acr login --name itacontainerregistry
-sudo docker login itacontainerregistry.azurecr.io #use container username and access key
+sudo docker login itacontainerregistry.azurecr.io -u ITAContainerRegistry -p $TARIFFTOOL_AZURE_CONTAINER_KEY  #use container username and access key
 sudo docker build -t itacontainerregistry.azurecr.io/fta-tariff-tool-dataloader .
 sudo docker push itacontainerregistry.azurecr.io/fta-tariff-tool-dataloader
 # sudo az container delete --resource-group ITA_DataServices --name fta-tariff-tool-dataloader --yes

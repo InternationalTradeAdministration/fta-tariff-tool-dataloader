@@ -25,8 +25,6 @@ File validation ensures that the first record of an Excel or Csv file has the ap
 - ```ProductType```
 - ```Base_Rate``` value must be numeric
 - ```Base_Rate_Alt```
-- ```Link_Url```
-- ```Link_Text```
 - Additional link fields may be added with the following naming convention:
     - ```Link_Url<position>``` (ex: Link_Url5) (optional - not validated)
     - ```Link_Text<position>``` (ex: Link_Text5) (optional - not validated)
@@ -40,6 +38,9 @@ File validation ensures that the first record of an Excel or Csv file has the ap
 
 Note: 
  - CSV files must have a comma (,) delimiter for columns
+ - Rules of Origin links are procured from a SharePoint document library and merged with tariff rares based on the first 2 digits of the HS6 code. Links will be appended as follows:
+    - ```link_url_<#>``` (ex: link_url_1, link_url_2)
+    - ```link_text_<#>``` (ex: link_text_1, link_text_2)
  
 ## Local Development
 Steps to run this application on you local for development purposes

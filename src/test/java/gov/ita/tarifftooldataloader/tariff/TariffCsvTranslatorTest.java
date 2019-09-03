@@ -183,7 +183,7 @@ public class TariffCsvTranslatorTest {
     RateAlt year2rateAlt = tariff.getRateAlts().stream().filter(r -> r.getYear().equals(2)).findFirst().get();
     assertEquals("$50 per kilo", year2rateAlt.getValue());
   }
-  
+
   @Test(expected = InvalidCsvFileException.class)
   public void throws_error_when_number_field_is_invalid() throws InvalidCsvFileException {
     tariffCsvTranslator.translate("KR", getFileAsReader("korea_invalid_number.csv"));

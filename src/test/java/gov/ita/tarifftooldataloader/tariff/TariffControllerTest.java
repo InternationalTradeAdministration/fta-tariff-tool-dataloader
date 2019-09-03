@@ -3,7 +3,6 @@ package gov.ita.tarifftooldataloader.tariff;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.util.IOUtils;
 import gov.ita.tarifftooldataloader.security.AuthenticationFacade;
 import gov.ita.tarifftooldataloader.storage.Storage;
 import gov.ita.tarifftooldataloader.tariffdocs.TariffDoc;
@@ -19,16 +18,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
-import sun.nio.ch.IOUtil;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-import static gov.ita.tarifftooldataloader.initializer.Helpers.getFileAsReader;
 import static gov.ita.tarifftooldataloader.initializer.Helpers.getFileAsString;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -104,6 +100,8 @@ public class TariffControllerTest {
   public void applies_rules_of_origin() throws IOException {
     List<TariffDoc> tariffDocs = new ArrayList<>();
     tariffDocs.add(new TariffDoc("http://kalivakia.pdf", "123456"));
+    tariffDocs.add(new TariffDoc("http://kakoperato.pdf", "981111"));
+    tariffDocs.add(new TariffDoc("http://kambos.pdf", "982222"));
     when(tariffDocGateway.getTariffDocs()).thenReturn(tariffDocs);
 
     TariffRatesUpload tariffRatesUpload = new TariffRatesUpload();
@@ -112,9 +110,10 @@ public class TariffControllerTest {
     tariffController.saveTariffs("GR", tariffRatesUpload);
 
     verify(storage).save(eq("GR.json"), stringArgumentCaptor.capture(), eq(null));
-
     List<Tariff> results = new ObjectMapper().readValue(stringArgumentCaptor.getValue(),  new TypeReference<List<Tariff>>(){});
 
-    System.out.println(results);
+    assertEquals("http://kalivakia.pdf", results.get(0).getLinks().get(0).getLinkUrl());
+    assertEquals("http://kakoperato.pdf", results.get(1).getLinks().get(0).getLinkUrl());
+    assertEquals("http://kambos.pdf", results.get(1).getLinks().get(1).getLinkUrl());
   }
 }

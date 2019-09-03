@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,9 +18,12 @@ public class TariffDoc {
   @JsonAlias({"FTA_Publication_HS_Code"})
   private String ftaPublicationHsCode;
 
-  public String[] getFtaPublicationHsCode() {
-    if(ftaPublicationHsCode != null)
-      return ftaPublicationHsCode.split(";");
+  public List<String> getFtaPublicationHs2Codes() {
+    if(ftaPublicationHsCode != null) {
+      List<String> hs6s = Arrays.asList(ftaPublicationHsCode.split(";"));
+      return hs6s.stream().map(hs6 -> hs6.substring(0, 2)).collect(Collectors.toList());
+    }
+
     return null;
   }
 }

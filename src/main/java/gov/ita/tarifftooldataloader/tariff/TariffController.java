@@ -17,6 +17,7 @@ import java.io.StringReader;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -84,6 +85,14 @@ public class TariffController {
     }
 
     List<TariffDoc> tariffDocs = tariffDocGateway.getTariffDocs();
+    for (Tariff t: tariffs) {
+      String hs2 = t.getHs6().substring(0, 2);
+      List<TariffDoc> filteredTariffDocs =
+        tariffDocs.stream().filter(td -> td.getFtaPublicationHs2Codes().contains(hs2)).collect(Collectors.toList());
+      List<Link> links =
+        filteredTariffDocs.stream().map(td -> new Link(td.getMetadataStoragePath(), null)).collect(Collectors.toList());
+      t.setLinks(links);
+    }
 
     ObjectMapper objectMapper = new ObjectMapper();
     String tariffsJson = objectMapper.writeValueAsString(tariffs);
