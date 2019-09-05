@@ -1,7 +1,5 @@
 package gov.ita.tarifftooldataloader.tariff;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.ita.tarifftooldataloader.security.AuthenticationFacade;
 import gov.ita.tarifftooldataloader.storage.Storage;
 import gov.ita.tarifftooldataloader.tariffdocs.TariffDoc;
@@ -50,42 +48,31 @@ public class TariffController {
   public ResponseEntity<byte[]> downloadLatestTariffsCsvByCountry(@RequestParam("countryCode") String countryCode,
                                                                   HttpServletResponse response) {
     List<TariffRatesMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + "-");
-    TariffRatesMetadata latest = blobsMetadata.stream().filter(TariffRatesMetadata::isLatestUpload).findFirst().get();
+    TariffRatesMetadata latestTariffRates = blobsMetadata.stream().filter(TariffRatesMetadata::isLatestUpload).findFirst().get();
     response.setHeader("Content-Disposition", "attachment; filename=" + countryCode + ".csv");
 
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
     HttpEntity<String> entity = new HttpEntity<>(headers);
 
-    return restTemplate.exchange(latest.getUrl(), HttpMethod.GET, entity, byte[].class);
+    return restTemplate.exchange(latestTariffRates.getUrl(), HttpMethod.GET, entity, byte[].class);
   }
 
   @GetMapping(value = "/api/tariff/download/json", produces = "application/json")
-  public ResponseEntity<byte[]> downloadLatestTariffsJsonByCountry(@RequestParam("countryCode") String countryCode,
+  public List<Tariff> downloadLatestTariffsJsonByCountry(@RequestParam("countryCode") String countryCode,
                                                          HttpServletResponse response) throws InvalidCsvFileException {
-    List<TariffRatesMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + ".json");
-    TariffRatesMetadata latest = blobsMetadata.get(0);
-    response.setHeader("Content-Disposition", "attachment; filename=" + countryCode + ".json");
+    List<TariffRatesMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + "-");
+    TariffRatesMetadata latestTariffRates = blobsMetadata.stream().filter(TariffRatesMetadata::isLatestUpload).findFirst().get();
 
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
     HttpEntity<String> entity = new HttpEntity<>(headers);
-    return restTemplate.exchange(latest.getUrl(), HttpMethod.GET, entity, byte[].class);
-  }
+    ResponseEntity<String> latestTariffRatesCsv = restTemplate.exchange(latestTariffRates.getUrl(), HttpMethod.GET, entity, String.class);
 
-  @PreAuthorize("hasRole('ROLE_EDSP')")
-  @PutMapping("/api/tariffs/save")
-  public String saveTariffs(@RequestParam("countryCode") String countryCode,
-                            @RequestBody TariffRatesUpload tariffRatesUpload) throws JsonProcessingException {
-    List<Tariff> tariffs;
-    try {
-      tariffs = tariffCsvTranslator.translate(countryCode, new StringReader(tariffRatesUpload.csv));
-    } catch (InvalidCsvFileException e) {
-      return e.getMessage();
-    }
-
+    List<Tariff> tariffs = tariffCsvTranslator.translate(countryCode, new StringReader(latestTariffRatesCsv.getBody()));
     List<TariffDoc> tariffDocs = tariffDocGateway.getTariffDocs();
-    for (Tariff t: tariffs) {
+
+    for (Tariff t : tariffs) {
       String hs2 = t.getHs6().substring(0, 2);
       List<TariffDoc> filteredTariffDocs =
         tariffDocs.stream().filter(td -> td.getFtaPublicationHs2Codes().contains(hs2)).collect(Collectors.toList());
@@ -94,9 +81,20 @@ public class TariffController {
       t.setLinks(links);
     }
 
-    ObjectMapper objectMapper = new ObjectMapper();
-    String tariffsJson = objectMapper.writeValueAsString(tariffs);
-    storage.save(countryCode + ".json", tariffsJson, authenticationFacade.getUserName());
+    response.setHeader("Content-Disposition", "attachment; filename=" + countryCode + ".json");
+    return tariffs;
+  }
+
+  @PreAuthorize("hasRole('ROLE_EDSP')")
+  @PutMapping("/api/tariffs/save")
+  public String saveTariffs(@RequestParam("countryCode") String countryCode,
+                            @RequestBody TariffRatesUpload tariffRatesUpload) {
+    try {
+      //use the translator to validate the csv string
+      tariffCsvTranslator.translate(countryCode, new StringReader(tariffRatesUpload.csv));
+    } catch (InvalidCsvFileException e) {
+      return e.getMessage();
+    }
 
     String timestampedFileName = String.format("%s-%s.csv", countryCode, LocalDateTime.now().toString());
     log.info("Creating file {}", timestampedFileName);

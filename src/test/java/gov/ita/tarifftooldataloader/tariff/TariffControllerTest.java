@@ -1,8 +1,5 @@
 package gov.ita.tarifftooldataloader.tariff;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.ita.tarifftooldataloader.security.AuthenticationFacade;
 import gov.ita.tarifftooldataloader.storage.Storage;
 import gov.ita.tarifftooldataloader.tariffdocs.TariffDoc;
@@ -17,21 +14,21 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static gov.ita.tarifftooldataloader.initializer.Helpers.getFileAsString;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TariffControllerTest {
@@ -55,9 +52,6 @@ public class TariffControllerTest {
 
   @Captor
   private ArgumentCaptor<HttpEntity> acHttpEntity;
-
-  @Captor
-  private ArgumentCaptor<String> stringArgumentCaptor;
 
   @Before
   public void set_up() {
@@ -85,7 +79,7 @@ public class TariffControllerTest {
   }
 
   @Test
-  public void save_tariffs() throws JsonProcessingException {
+  public void save_tariffs() {
     when(authenticationFacade.getUserName()).thenReturn("TestUser@trade.gov");
 
     TariffRatesUpload tariffRatesUpload = new TariffRatesUpload();
@@ -97,23 +91,24 @@ public class TariffControllerTest {
   }
 
   @Test
-  public void applies_rules_of_origin() throws IOException {
+  public void applies_rules_of_origin() throws InvalidCsvFileException {
+    TariffRatesMetadata greeceMetaData = new TariffRatesMetadata(null, "http://greece.csv", null, null);
+    greeceMetaData.setLatestUpload(true);
+
+    when(storage.getBlobsMetadata("GR-")).thenReturn(Collections.singletonList(greeceMetaData));
+    when(restTemplate.exchange(eq("http://greece.csv"), eq(HttpMethod.GET), any(), eq(String.class)))
+      .thenReturn(ResponseEntity.of(Optional.ofNullable(getFileAsString("greece.csv"))));
+
     List<TariffDoc> tariffDocs = new ArrayList<>();
     tariffDocs.add(new TariffDoc("http://kalivakia.pdf", "123456"));
     tariffDocs.add(new TariffDoc("http://kakoperato.pdf", "981111"));
     tariffDocs.add(new TariffDoc("http://kambos.pdf", "982222"));
     when(tariffDocGateway.getTariffDocs()).thenReturn(tariffDocs);
 
-    TariffRatesUpload tariffRatesUpload = new TariffRatesUpload();
-    tariffRatesUpload.setCsv(getFileAsString("greece.csv"));
+    List<Tariff> tariffs = tariffController.downloadLatestTariffsJsonByCountry("GR", mock(HttpServletResponse.class));
 
-    tariffController.saveTariffs("GR", tariffRatesUpload);
-
-    verify(storage).save(eq("GR.json"), stringArgumentCaptor.capture(), eq(null));
-    List<Tariff> results = new ObjectMapper().readValue(stringArgumentCaptor.getValue(),  new TypeReference<List<Tariff>>(){});
-
-    assertEquals("http://kalivakia.pdf", results.get(0).getLinks().get(0).getLinkUrl());
-    assertEquals("http://kakoperato.pdf", results.get(1).getLinks().get(0).getLinkUrl());
-    assertEquals("http://kambos.pdf", results.get(1).getLinks().get(1).getLinkUrl());
+    assertEquals("http://kalivakia.pdf", tariffs.get(0).getLinks().get(0).getLinkUrl());
+    assertEquals("http://kakoperato.pdf", tariffs.get(1).getLinks().get(0).getLinkUrl());
+    assertEquals("http://kambos.pdf", tariffs.get(1).getLinks().get(1).getLinkUrl());
   }
 }
