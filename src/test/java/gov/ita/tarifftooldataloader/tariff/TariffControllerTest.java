@@ -53,16 +53,17 @@ public class TariffControllerTest {
   @Captor
   private ArgumentCaptor<HttpEntity> acHttpEntity;
 
+  TariffRatesMetadata metadata;
+
   @Before
   public void set_up() {
-    TariffRatesMetadata cool = new TariffRatesMetadata("cool", "cool.com", null, null);
-    cool.setLatestUpload(true);
-    when(storage.getBlobsMetadata("AU-")).thenReturn(Collections.singletonList(cool));
+    metadata = new TariffRatesMetadata("cool", "cool.com", null, null, null);
     tariffController = new TariffController(storage, authenticationFacade, restTemplate, new TariffCsvTranslator(), tariffDocGateway);
   }
 
   @Test
   public void returns_upload_log_by_country() {
+    when(storage.getBlobsMetadata("AU")).thenReturn(Collections.singletonList(metadata));
     List<TariffRatesMetadata> meta = tariffController.getTariffUploadLogByCountry("AU");
 
     assertEquals(1, meta.size());
@@ -71,9 +72,11 @@ public class TariffControllerTest {
 
   @Test
   public void downloads_latest_tariffs_by_country() {
+    when(storage.getBlobsMetadata("AU.csv")).thenReturn(Collections.singletonList(metadata));
+
     tariffController.downloadLatestTariffsCsvByCountry("AU", response);
 
-    verify(storage).getBlobsMetadata("AU-");
+    verify(storage).getBlobsMetadata("AU.csv");
     verify(restTemplate).exchange(eq("cool.com"), eq(HttpMethod.GET), acHttpEntity.capture(), eq(byte[].class));
     assertTrue(acHttpEntity.getValue().getHeaders().getAccept().contains(MediaType.APPLICATION_OCTET_STREAM));
   }
@@ -86,16 +89,15 @@ public class TariffControllerTest {
     tariffRatesUpload.setCsv("some csv");
     String message = tariffController.saveTariffs("AU", tariffRatesUpload);
 
-    verify(storage).save(anyString(), eq("some csv"), eq("TestUser@trade.gov"));
+    verify(storage, times(2)).save(anyString(), eq("some csv"), eq("TestUser@trade.gov"));
     assertEquals("success", message);
   }
 
   @Test
   public void applies_rules_of_origin() throws InvalidCsvFileException {
-    TariffRatesMetadata greeceMetaData = new TariffRatesMetadata(null, "http://greece.csv", null, null);
-    greeceMetaData.setLatestUpload(true);
+    TariffRatesMetadata greeceMetaData = new TariffRatesMetadata(null, "http://greece.csv", null, null, null);
 
-    when(storage.getBlobsMetadata("GR-")).thenReturn(Collections.singletonList(greeceMetaData));
+    when(storage.getBlobsMetadata("GR.csv")).thenReturn(Collections.singletonList(greeceMetaData));
     when(restTemplate.exchange(eq("http://greece.csv"), eq(HttpMethod.GET), any(), eq(String.class)))
       .thenReturn(ResponseEntity.of(Optional.ofNullable(getFileAsString("greece.csv"))));
 

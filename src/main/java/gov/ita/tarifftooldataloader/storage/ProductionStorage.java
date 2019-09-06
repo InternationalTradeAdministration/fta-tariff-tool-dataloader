@@ -98,14 +98,11 @@ public class ProductionStorage implements Storage {
           x.name(),
           buildUrlForBlob(x.name()),
           x.metadata().get("uploaded_by"),
-          x.properties().lastModified().toLocalDateTime()
+          x.properties().lastModified().toLocalDateTime(),
+          x.properties().contentLength()
         ))
       .collect(Collectors.toList());
-
-    String latestBloUrl = meta.stream().max(Comparator.comparing(TariffRatesMetadata::getUploadedAt)).get().getUrl();
-    return meta.stream().peek(x -> {
-      if (x.getUrl().equals(latestBloUrl)) x.setLatestUpload(true);
-    }).collect(Collectors.toList());
+    return meta;
   }
 
   @Override

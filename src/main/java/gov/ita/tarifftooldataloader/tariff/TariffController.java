@@ -41,14 +41,14 @@ public class TariffController {
 
   @GetMapping(value = "/api/tariff/log", produces = "application/json")
   public List<TariffRatesMetadata> getTariffUploadLogByCountry(@RequestParam("countryCode") String countryCode) {
-    return storage.getBlobsMetadata(countryCode + "-");
+    return storage.getBlobsMetadata(countryCode);
   }
 
   @GetMapping(value = "/api/tariff/download/csv", produces = "text/csv")
   public ResponseEntity<byte[]> downloadLatestTariffsCsvByCountry(@RequestParam("countryCode") String countryCode,
                                                                   HttpServletResponse response) {
-    List<TariffRatesMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + "-");
-    TariffRatesMetadata latestTariffRates = blobsMetadata.stream().filter(TariffRatesMetadata::isLatestUpload).findFirst().get();
+    List<TariffRatesMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + ".csv");
+    TariffRatesMetadata latestTariffRates = blobsMetadata.get(0);
     response.setHeader("Content-Disposition", "attachment; filename=" + countryCode + ".csv");
 
     HttpHeaders headers = new HttpHeaders();
@@ -61,8 +61,8 @@ public class TariffController {
   @GetMapping(value = "/api/tariff/download/json", produces = "application/json")
   public List<Tariff> downloadLatestTariffsJsonByCountry(@RequestParam("countryCode") String countryCode,
                                                          HttpServletResponse response) throws InvalidCsvFileException {
-    List<TariffRatesMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + "-");
-    TariffRatesMetadata latestTariffRates = blobsMetadata.stream().filter(TariffRatesMetadata::isLatestUpload).findFirst().get();
+    List<TariffRatesMetadata> blobsMetadata = storage.getBlobsMetadata(countryCode + ".csv");
+    TariffRatesMetadata latestTariffRates = blobsMetadata.get(0);
 
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
@@ -97,8 +97,12 @@ public class TariffController {
     }
 
     String timestampedFileName = String.format("%s-%s.csv", countryCode, LocalDateTime.now().toString());
+
     log.info("Creating file {}", timestampedFileName);
     storage.save(timestampedFileName, tariffRatesUpload.csv, authenticationFacade.getUserName());
+
+    String fileName = String.format("%s.csv", countryCode);
+    storage.save(fileName, tariffRatesUpload.csv, authenticationFacade.getUserName());
     return "success";
   }
 }
