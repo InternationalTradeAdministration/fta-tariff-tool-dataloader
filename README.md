@@ -25,9 +25,6 @@ File validation ensures that the first record of an Excel or Csv file has the ap
 - ```ProductType```
 - ```Base_Rate``` value must be numeric
 - ```Base_Rate_Alt```
-- Additional link fields may be added with the following naming convention:
-    - ```Link_Url<position>``` (ex: Link_Url5) (optional - not validated)
-    - ```Link_Text<position>``` (ex: Link_Text5) (optional - not validated)
 - Rate fields naming conventions may be either:
     - ```Y<year>``` (ex: Y2008) value must be numeric
     - ```Alt_<year>``` (ex: Alt_2008)
