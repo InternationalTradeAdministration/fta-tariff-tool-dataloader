@@ -6,10 +6,10 @@ spring:
   profiles:
     active: staging
 tarifftooldataloader:
-  azure-storage-account: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT}
-  azure-storage-account-key: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY}
-  azure-storage-container: ${TARIFFTOOL_AZURE_STORAGE_CONTAINER}
-  tariff-docs-url: https://ita-tariff-docs-endpointme-staging.s3.amazonaws.com/tariff_docs.json
+  azure-storage-account: ${AZURE_STORAGE_ACCOUNT}
+  azure-storage-account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
+  azure-storage-container: tariff-rates
+  tariff-docs-url: ${TARIFF_DOCS_URL}
 ---
 spring:
   profiles: production
@@ -18,14 +18,14 @@ spring:
       client:
         registration:
           azure:
-            client-id: ${TARIFFTOOL_AZURE_OAUTH_CLIENT_ID}
-            client-secret: ${TARIFFTOOL_AZURE_OAUTH_CLIENT_SECRET}
+            client-id: ${AZURE_OAUTH_CLIENT_ID}
+            client-secret: ${AZURE_OAUTH_CLIENT_SECRET}
 azure:
   activedirectory:
-    tenant-id: ${TARIFFTOOL_AZURE_OAUTH_TENANT_ID}
+    tenant-id: ${AZURE_OAUTH_TENANT_ID}
     active-directory-groups: EDSP
 tarifftooldataloader:
-  azure-storage-account: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT}
-  azure-storage-account-key: ${TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY}
-  azure-storage-container: ${TARIFFTOOL_AZURE_STORAGE_CONTAINER}
-  tariff-docs-url: https://ita-tariff-docs-endpointme-production.s3.amazonaws.com/tariff_docs.json
+  azure-storage-account: ${AZURE_STORAGE_ACCOUNT}
+  azure-storage-account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
+  azure-storage-container: tariff-rates
+  tariff-docs-url: ${TARIFF_DOCS_URL}

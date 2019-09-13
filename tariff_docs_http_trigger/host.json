@@ -1,0 +1,7 @@
+{
+  "version": "2.0",
+  "functions": [
+    "TariffDocsHttpTrigger"
+  ],
+  "functionTimeout": "00:00:30"
+}

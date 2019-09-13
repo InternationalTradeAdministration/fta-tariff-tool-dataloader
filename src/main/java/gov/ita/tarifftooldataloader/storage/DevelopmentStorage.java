@@ -46,7 +46,7 @@ public class DevelopmentStorage implements Storage {
   public List<TariffRatesMetadata> getBlobsMetadata(String prefix) {
     if (prefix.equals("AU-")) {
       List<TariffRatesMetadata> blobsList = new ArrayList<>();
-      String sampleBaseUrl = "https://tarifftoolaccount.blob.core.windows.net/tariff-rates/";
+      String sampleBaseUrl = "https://storageaccount.blob.core.windows.net/tariff-rates/";
       blobsList.add(buildMeta(sampleBaseUrl, "AU.csv"));
       blobsList.add(buildMeta(sampleBaseUrl, "AU-2019-07-17T18:30:13.863.csv"));
       blobsList.add(buildMeta(sampleBaseUrl, "AU-2019-07-16T18:30:13.863.csv"));
