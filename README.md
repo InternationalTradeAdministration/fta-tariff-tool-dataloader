@@ -58,15 +58,18 @@ Steps to run this application on you local for development purposes
 
 **Frontend**  `cd client && npm test`
 
-## Production Build
-```./production-build.sh```
+## Build
+```./build.sh```
+
+## Deploy
+```./deploy.sh```
 
 ## Production Deployment Notes
+ - An Azure Blob Storage account needs to exist
+ - An Azure AD App Registration needs to be made to procure an OAuth Client ID and Client Secret
  - The following environment variables need to exist:
-    - TARIFFTOOL_AZURE_OAUTH_CLIENT_ID: Active Directory Client ID
-    - TARIFFTOOL_AZURE_OAUTH_CLIENT_SECRET: Active Directory Client Secret
-    - TARIFFTOOL_AZURE_STORAGE_ACCOUNT: Data Lake Storage Account
-    - TARIFFTOOL_AZURE_STORAGE_ACCOUNT_KEY: Data Lake Storage Account Key
- - Authentication with Active Directory is enabled; users must be part of the EDSP group to alter tariff rates.
- - `java -jar build/libs/terra-freights-0.0.1-SNAPSHOT.jar --spring.profiles.active=production`
- 
+    - AZURE_OAUTH_CLIENT_ID: Active Directory Client ID
+    - AZURE_OAUTH_CLIENT_SECRET: Active Directory Client Secret
+    - AZURE_STORAGE_ACCOUNT: Data Lake Storage Account
+    - AZURE_STORAGE_ACCOUNT_KEY: Data Lake Storage Account Key
+ - Authentication with Active Directory is enabled; users must be part of the EDSP group to alter tariff rates. 
